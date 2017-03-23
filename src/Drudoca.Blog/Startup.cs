@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Drudoca.Blog.DataAccess;
+using Drudoca.Blog.Options;
+using Drudoca.Blog.ViewModels;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +29,10 @@ namespace Drudoca.Blog
         {
             services.AddMvc();
             services.AddOptions();
+
+            services.Configure<FormattingOptions>(Configuration.GetSection("Formatting"));
+            services.AddTransient<IBlogPostRepository, BlogPostRepository>();
+            services.AddTransient<IViewModelBuilder, ViewModelBuilder>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,9 +1,13 @@
-﻿@{
+﻿@model BlogPostViewModel[]
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <h1>Dru's Delirium and Other Coding Antics: Yet another coding blog</h1>
 
-<div>
-    Welcome to the our website!
-</div>
+@foreach(var blogPost in Model){
+    <h2>@blogPost.Title</h2>
+    <p>
+        @Html.Raw(blogPost.RawHtml);
+    </p>
+}
