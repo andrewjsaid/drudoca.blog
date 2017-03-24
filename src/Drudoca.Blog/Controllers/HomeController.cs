@@ -26,7 +26,7 @@ namespace Drudoca.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var blogPosts = await _blogPostRepository.GetBlogPosts(1);
+            var blogPosts = await _blogPostRepository.GetBlogPostsAsync(1);
             var viewModels = blogPosts.ConvertAll(_viewModelBuilder.Build);
             return View(viewModels);
         }

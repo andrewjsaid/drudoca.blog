@@ -8,7 +8,7 @@ namespace Drudoca.Blog.DataAccess
 
         ValueTask<BlogPost> GetBlogPost(string headline);
 
-        ValueTask<BlogPost[]> GetBlogPosts(int pageNum);
+        ValueTask<BlogPost[]> GetBlogPostsAsync(int pageNum);
 
     }
 }

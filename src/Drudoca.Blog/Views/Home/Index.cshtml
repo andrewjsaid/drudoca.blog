@@ -7,6 +7,7 @@
 
 @foreach(var blogPost in Model){
     <h2>@blogPost.Title</h2>
+    <h3>Published on @blogPost.PublishedDate.ToString("dd MMM yy")</h3>
     <p>
         @Html.Raw(blogPost.RawHtml);
     </p>

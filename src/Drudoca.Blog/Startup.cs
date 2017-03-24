@@ -32,7 +32,9 @@ namespace Drudoca.Blog
 
             services.Configure<FormattingOptions>(Configuration.GetSection("Formatting"));
             services.AddTransient<IBlogPostRepository, BlogPostRepository>();
+            services.AddTransient<IBlogPostSource, BlogPostSource>();
             services.AddTransient<IViewModelBuilder, ViewModelBuilder>();
+            services.AddMemoryCache();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
