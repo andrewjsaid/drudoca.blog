@@ -4,29 +4,52 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Yet another coding blog">
+    <meta name="author" content="Andrew J Said">
+    <link rel="icon" href="../../favicon.ico">
     <title>@ViewData["Title"] - Drudoca</title>
 
     <environment names="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-theme.css" />
         <link rel="stylesheet" href="~/css/site.css" />
     </environment>
     <environment names="Staging,Production">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-theme.min.css" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
     @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
 <body>
     <div>
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.UtcNow.Year - Drudoca</p>
-        </footer>
-    </div>
+        <div class="top-bg-image">
+            <div class="bottom-aligner"></div>
+            <h1>Dru's Delerium and Other Coding Antics</h1>
+        </div>
 
+        <div class="container">
+
+            @RenderBody()
+
+            <hr />
+
+            <footer>
+                <p>&copy; @DateTime.UtcNow.Year - Drudoca</p>
+            </footer>
+        </div>
+    </div>
+    
     <environment names="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
 
