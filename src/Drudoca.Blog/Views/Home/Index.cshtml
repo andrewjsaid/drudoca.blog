@@ -5,9 +5,5 @@
 
 @foreach (var blogPost in Model)
 {
-    <h2 class="blog-post-title">@Html.ActionLink(blogPost.Title, "post", "blog", new { id = blogPost.Slug })</h2>
-    <p class="blog-post-date">Published @blogPost.PublishedDate.ToString("dd MMM yyyy")</p>
-    @Html.Raw(blogPost.RawHtml)
-
-    <hr />
+    @Html.Partial("_BlogPost", blogPost)
 }

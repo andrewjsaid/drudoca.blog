@@ -77,11 +77,14 @@ namespace Drudoca.Blog.DataAccess
                     fileContents = await streamReader.ReadToEndAsync();
                 }
 
+                var publishedDate = new DateTime(yyyy, mm, dd);
+
                 var result = new BlogPost
                 {
                     Title = title,
-                    PublishedDate = new DateTime(yyyy, mm, dd),
-                    Markdown = fileContents
+                    PublishedDate = publishedDate,
+                    Markdown = fileContents,
+                    Slug = GetSlug(publishedDate, title)
                 };
                 return result;
             }
@@ -90,6 +93,14 @@ namespace Drudoca.Blog.DataAccess
                 _logger.LogError(CouldNotLoadCreateSingleBlogPostLogEvent, ex, "Could not create blog post from {FILE}", fileInfo.FullName);
                 return null;
             }
+        }
+
+        private static string GetSlug(DateTime publishedDate, string title)
+        {
+            string publishedDateSlugPart = publishedDate.ToString("yyyy-MM");
+            string titleSlugPart = UrlSlug.Slugify(title);
+            var slug = $"{publishedDateSlugPart}-{titleSlugPart}";
+            return slug;
         }
     }
 }

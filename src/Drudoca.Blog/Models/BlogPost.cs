@@ -9,5 +9,6 @@ namespace Drudoca.Blog.Models
         public string Title { get; set; }
         public string Markdown { get; set; }
         public DateTime PublishedDate { get; set; }
+        public string Slug { get; set; }
     }
 }

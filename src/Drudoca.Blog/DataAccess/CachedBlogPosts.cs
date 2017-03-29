@@ -10,6 +10,7 @@ namespace Drudoca.Blog.DataAccess
             BlogPosts = blogPosts ?? throw new ArgumentNullException(nameof(blogPosts));
             Expiry = expiry;
         }
+
         public BlogPost[] BlogPosts { get; }
         public DateTime Expiry { get; }
     }

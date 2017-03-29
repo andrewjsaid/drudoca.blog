@@ -6,7 +6,7 @@ namespace Drudoca.Blog.DataAccess
     public interface IBlogPostRepository
     {
 
-        ValueTask<BlogPost> GetBlogPost(string headline);
+        ValueTask<BlogPost> GetBlogPost(string slug);
 
         ValueTask<BlogPost[]> GetBlogPostsAsync(int pageNum);
 

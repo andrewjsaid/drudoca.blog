@@ -30,17 +30,21 @@ namespace Drudoca.Blog.DataAccess
             _blogPostSource = blogPostSource ?? throw new ArgumentNullException(nameof(blogPostSource));
         }
 
-        public ValueTask<BlogPost> GetBlogPost(string slug)
+        public async ValueTask<BlogPost> GetBlogPost(string slug)
         {
             _logger.LogDebug("Retrieving post with slug {slug}", slug);
 
-            var result = new BlogPost
+            var allPosts = await GetCachedBlogPostsAsync();
+
+            foreach (var blogPost in allPosts)
             {
-                Title = "Blog Post 1",
-                Markdown = "This is the first post",
-                PublishedDate = new DateTime(2017, 03, 21)
-            };
-            return new ValueTask<BlogPost>(result);
+                if(blogPost.Slug == slug)
+                {
+                    return blogPost;
+                }
+            }
+
+            return null;
         }
 
         public async ValueTask<BlogPost[]> GetBlogPostsAsync(int pageNum)
