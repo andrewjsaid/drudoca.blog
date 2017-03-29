@@ -1,4 +1,6 @@
-﻿using Drudoca.Blog.Models;
+﻿using System;
+using Drudoca.Blog.Models;
+using HeyRed.MarkdownSharp;
 
 namespace Drudoca.Blog.ViewModels
 {
@@ -10,7 +12,7 @@ namespace Drudoca.Blog.ViewModels
             {
                 Title = blogPost.Title,
                 PublishedDate = blogPost.PublishedDate.Date,
-                RawHtml = blogPost.Markdown,
+                RawHtml = TransformMarkdown(blogPost.Markdown),
                 Slug = GetSlug(blogPost)
             };
             return result;
@@ -22,6 +24,13 @@ namespace Drudoca.Blog.ViewModels
             string titleSlugPart = UrlSlug.Slugify(blogPost.Title);
             var slug = $"{publishedDateSlugPart}-{titleSlugPart}";
             return slug;
+        }
+
+        private string TransformMarkdown(string markdownText)
+        {
+            var md = new Markdown();
+            var result = md.Transform(markdownText);
+            return result;
         }
     }
 }

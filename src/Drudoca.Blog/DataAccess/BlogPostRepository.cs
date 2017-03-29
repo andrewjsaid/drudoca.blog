@@ -10,38 +10,29 @@ using System.Threading.Tasks;
 namespace Drudoca.Blog.DataAccess
 {
     internal class BlogPostRepository : IBlogPostRepository
-    {
-        private const int GetBlogPostLogEvent = 1;
-        private const int GetBlogPostsLogEvent = 2;
-
-        private const int FirstTimeLogEvent = 3;
-        private const int ExpiredLogEvent = 4;
-        private const int LoadedLogEvent = 5;
-
-        private const int ExpiryMins = 60;
-
+    {        
         private static readonly object _blogPostsCacheKey = new object();
 
         private readonly ILogger _logger;
-        private readonly IOptions<FormattingOptions> _formatOptions;
+        private readonly IOptions<SiteOptions> _siteOptions;
         private readonly IMemoryCache _memoryCache;
         private IBlogPostSource _blogPostSource;
 
         public BlogPostRepository(
             ILogger<BlogPostRepository> logger,
-            IOptions<FormattingOptions> formatOptions,
+            IOptions<SiteOptions> siteOptions,
             IMemoryCache memoryCache,
             IBlogPostSource blogPostSource)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _formatOptions = formatOptions ?? throw new ArgumentNullException(nameof(formatOptions));
+            _siteOptions = siteOptions ?? throw new ArgumentNullException(nameof(siteOptions));
             _memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
             _blogPostSource = blogPostSource ?? throw new ArgumentNullException(nameof(blogPostSource));
         }
 
         public ValueTask<BlogPost> GetBlogPost(string slug)
         {
-            _logger.LogDebug(GetBlogPostLogEvent, "Retrieving post with slug {SLUG}", slug);
+            _logger.LogDebug("Retrieving post with slug {slug}", slug);
 
             var result = new BlogPost
             {
@@ -56,11 +47,10 @@ namespace Drudoca.Blog.DataAccess
         {
             if (pageNum <= 0) throw new ArgumentOutOfRangeException(nameof(pageNum), "pageNum must not be less than 0");
 
-            var formatOptions = _formatOptions.Value;
+            var pageSize = _siteOptions.Value.PageSize;
 
-            _logger.LogDebug(GetBlogPostsLogEvent, "Retrieving {PAGESIZE} posts on page {PAGENUM}", formatOptions.PageSize, pageNum);
-
-            var pageSize = _formatOptions.Value.PageSize;
+            _logger.LogDebug("Retrieving {page-size} posts on page {page-num}", pageSize, pageNum);
+            
             int skip = pageSize * (pageNum - 1);
 
             var blogPosts = await GetCachedBlogPostsAsync();
@@ -82,18 +72,18 @@ namespace Drudoca.Blog.DataAccess
                 }
                 else
                 {
-                    _logger.LogInformation(ExpiredLogEvent, "Cache expired at {EXPIRY} (Now={NOW})", cachedBlogPosts.Expiry, DateTime.UtcNow);
+                    _logger.LogInformation("Cache expired at {expiry} (Now={now})", cachedBlogPosts.Expiry, DateTime.UtcNow);
                 }
             }
             else
             {
-                _logger.LogInformation(FirstTimeLogEvent, "Loading cache for first time");
+                _logger.LogInformation("Loading cache for first time");
             }
 
             var blogPosts = await _blogPostSource.LoadAsync();
             Debug.Assert(blogPosts != null, "blogPosts != null");
-            var expiry = DateTime.UtcNow.AddMinutes(ExpiryMins);
-            _logger.LogInformation(LoadedLogEvent, "Loaded {COUNT} items from source, expiring on {EXPIRY}", blogPosts.Length, expiry);
+            var expiry = DateTime.UtcNow.AddMinutes(_siteOptions.Value.ExpiryMins);
+            _logger.LogInformation("Loaded {count} items from source, expiring on {expiry}", blogPosts.Length, expiry);
             cachedBlogPosts = new CachedBlogPosts(blogPosts, expiry);
             _memoryCache.Set(_blogPostsCacheKey, cachedBlogPosts);
             return cachedBlogPosts.BlogPosts;

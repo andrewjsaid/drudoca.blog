@@ -3,10 +3,11 @@
     ViewData["Title"] = "Home Page";
 }
 
-@foreach(var blogPost in Model){
-    <h2>@blogPost.Title</h2>
-    <h3>Published on @blogPost.PublishedDate.ToString("dd MMM yy")</h3>
-    <p>
-        @Html.Raw(blogPost.RawHtml);
-    </p>
+@foreach (var blogPost in Model)
+{
+    <h2 class="blog-post-title">@Html.ActionLink(blogPost.Title, "post", "blog", new { id = blogPost.Slug })</h2>
+    <p class="blog-post-date">Published @blogPost.PublishedDate.ToString("dd MMM yyyy")</p>
+    @Html.Raw(blogPost.RawHtml)
+
+    <hr />
 }

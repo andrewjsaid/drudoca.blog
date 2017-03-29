@@ -10,11 +10,9 @@ namespace Drudoca.Blog.DataAccess
 {
     internal class BlogPostSource : IBlogPostSource
     {
-        private const int StartedLogEvent = 1;
-        private const int FoundFilesLogEvent = 2;
-        private const int CouldNotParseFileNameLogEvent = 3;
-        private const int CouldNotLoadSingleLogEvent = 4;
-        private const int CouldNotLoadAnyLogEvent = 5;
+
+        private const int CouldNotLoadCreateSingleBlogPostLogEvent = 1;
+        private const int CouldNotLoadAnyBlogPostLogEvent = 2;
 
         private readonly ILogger _logger;
 
@@ -29,12 +27,12 @@ namespace Drudoca.Blog.DataAccess
             {
                 var directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "blog-posts");
 
-                _logger.LogDebug(StartedLogEvent, "Loading files from {PATH}", directoryPath);
+                _logger.LogDebug("Loading files from {path}", directoryPath);
 
                 var directoryInfo = new DirectoryInfo(directoryPath);
                 var fileInfos = directoryInfo.GetFiles("*.md");
 
-                _logger.LogInformation(FoundFilesLogEvent, "Found {COUNT} *.md files in blog-posts folder", fileInfos.Length);
+                _logger.LogInformation("Found {count} *.md files in blog-posts folder", fileInfos.Length);
 
                 var result = new List<BlogPost>(fileInfos.Length);
                 foreach (var fileInfo in fileInfos)
@@ -49,7 +47,7 @@ namespace Drudoca.Blog.DataAccess
             }
             catch (Exception ex)
             {
-                _logger.LogError(CouldNotLoadAnyLogEvent, ex, "Could not load any blog posts");
+                _logger.LogError(CouldNotLoadAnyBlogPostLogEvent, ex, "Could not load any blog posts");
                 return new BlogPost[0];
             }
         }
@@ -64,7 +62,7 @@ namespace Drudoca.Blog.DataAccess
                 var fileNameMatch = _fileNameRegex.Match(fileName);
                 if (!fileNameMatch.Success)
                 {
-                    _logger.LogWarning(CouldNotParseFileNameLogEvent, "File name does not match expected format yyyyMMdd_Title.md: {FILENAME}", fileName);
+                    _logger.LogWarning("File name does not match expected format yyyyMMdd_Title.md: {FILENAME}", fileName);
                     return null;
                 }
 
@@ -74,7 +72,7 @@ namespace Drudoca.Blog.DataAccess
                 var dd = int.Parse(fileNameMatch.Groups["D"].Value);
 
                 string fileContents;
-                using(var streamReader = new StreamReader(fileInfo.OpenRead()))
+                using (var streamReader = new StreamReader(fileInfo.OpenRead()))
                 {
                     fileContents = await streamReader.ReadToEndAsync();
                 }
@@ -89,7 +87,7 @@ namespace Drudoca.Blog.DataAccess
             }
             catch (Exception ex)
             {
-                _logger.LogError(CouldNotLoadSingleLogEvent, ex, "Could not create blog post from {FILE}", fileInfo.FullName);
+                _logger.LogError(CouldNotLoadCreateSingleBlogPostLogEvent, ex, "Could not create blog post from {FILE}", fileInfo.FullName);
                 return null;
             }
         }

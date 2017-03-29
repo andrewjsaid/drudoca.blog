@@ -30,7 +30,7 @@ namespace Drudoca.Blog
             services.AddMvc();
             services.AddOptions();
 
-            services.Configure<FormattingOptions>(Configuration.GetSection("Formatting"));
+            services.Configure<SiteOptions>(Configuration.GetSection("Site"));
             services.AddTransient<IBlogPostRepository, BlogPostRepository>();
             services.AddTransient<IBlogPostSource, BlogPostSource>();
             services.AddTransient<IViewModelBuilder, ViewModelBuilder>();

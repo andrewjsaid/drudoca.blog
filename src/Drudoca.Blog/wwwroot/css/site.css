@@ -21,3 +21,16 @@
         height: 230px;
         vertical-align: bottom;
     }
+
+.blog-post-title {
+    margin-top: 2em;
+}
+
+.blog-post-date{
+    font-style: italic;
+    margin-bottom: 2em;
+}
+
+pre {
+    background-color: transparent !important;
+}
