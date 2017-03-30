@@ -5,6 +5,16 @@ namespace Drudoca.Blog.ViewModels
 {
     public class ViewModelBuilder : IViewModelBuilder
     {
+        public BlogPostsViewModel Build(BlogPosts blogPost)
+        {
+            var result = new BlogPostsViewModel
+            {
+                NumPages = blogPost.NumPages,
+                Posts = blogPost.Posts.ConvertAll(Build)
+            };
+            return result;
+        }
+
         public BlogPostViewModel Build(BlogPost blogPost)
         {
             var result = new BlogPostViewModel

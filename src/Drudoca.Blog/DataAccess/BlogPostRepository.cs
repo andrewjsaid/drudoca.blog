@@ -47,7 +47,7 @@ namespace Drudoca.Blog.DataAccess
             return null;
         }
 
-        public async ValueTask<BlogPost[]> GetBlogPostsAsync(int pageNum)
+        public async ValueTask<BlogPosts> GetBlogPostsAsync(int pageNum)
         {
             if (pageNum <= 0) throw new ArgumentOutOfRangeException(nameof(pageNum), "pageNum must not be less than 0");
 
@@ -62,7 +62,14 @@ namespace Drudoca.Blog.DataAccess
             var results = new BlogPost[Math.Min(pageSize, blogPosts.Length - skip)];
             Array.Copy(blogPosts, skip, results, 0, results.Length);
 
-            return results;
+            var numPages = (int)Math.Ceiling(blogPosts.Length / (double)pageSize);
+
+            var result = new BlogPosts
+            {
+                Posts = results,
+                NumPages = numPages
+            };
+            return result;
         }
 
         private async ValueTask<BlogPost[]> GetCachedBlogPostsAsync()

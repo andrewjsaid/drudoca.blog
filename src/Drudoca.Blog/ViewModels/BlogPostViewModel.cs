@@ -11,4 +11,10 @@ namespace Drudoca.Blog.ViewModels
         public string RawHtml { get; set; }
         public DateTime PublishedDate { get; set; }
     }
+
+    public class BlogPostsViewModel
+    {
+        public BlogPostViewModel[] Posts { get; set; }
+        public int NumPages { get; set; }
+    }
 }

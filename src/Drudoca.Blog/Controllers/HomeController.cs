@@ -24,11 +24,9 @@ namespace Drudoca.Controllers
             _viewModelBuilder = viewModelBuilder ?? throw new ArgumentNullException(nameof(viewModelBuilder));
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var blogPosts = await _blogPostRepository.GetBlogPostsAsync(1);
-            var viewModels = blogPosts.ConvertAll(_viewModelBuilder.Build);
-            return View(viewModels);
+            return RedirectToAction("page", "blog", new { id = 1 });
         }
 
         public IActionResult Error()

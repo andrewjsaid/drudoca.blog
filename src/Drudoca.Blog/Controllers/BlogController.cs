@@ -36,5 +36,14 @@ namespace Drudoca.Controllers
             var viewModel = _viewModelBuilder.Build(blogPost);
             return View(viewModel);
         }
+
+        public async Task<IActionResult> Page(int id)
+        {
+            _logger.LogDebug("Requested page {page}", id);
+            var blogPosts = await _blogPostRepository.GetBlogPostsAsync(id);
+            var viewModel = _viewModelBuilder.Build(blogPosts);
+            return View(viewModel);
+
+        }
     }
 }

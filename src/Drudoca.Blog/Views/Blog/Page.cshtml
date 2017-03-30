@@ -1,0 +1,20 @@
+﻿@model BlogPostsViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        @for (var i = 1; i <= Model.NumPages; i++)
+        {
+            <li class="page-item">
+                @Html.ActionLink(i.ToString(), "page", "blog", new { id = i }, new { @class="page-link" })
+            </li>
+        }
+    </ul>
+</nav>
+
+@foreach (var blogPost in Model.Posts)
+{
+    @Html.Partial("_BlogPost", blogPost)
+}

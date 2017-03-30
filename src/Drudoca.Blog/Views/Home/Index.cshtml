@@ -1,9 +1,0 @@
-﻿@model BlogPostViewModel[]
-@{
-    ViewData["Title"] = "Home Page";
-}
-
-@foreach (var blogPost in Model)
-{
-    @Html.Partial("_BlogPost", blogPost)
-}

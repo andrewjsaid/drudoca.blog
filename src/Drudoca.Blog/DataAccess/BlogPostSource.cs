@@ -43,6 +43,9 @@ namespace Drudoca.Blog.DataAccess
                         result.Add(blogPost);
                     }
                 }
+
+                result.Sort(BlogPost.MostRecentFirstComparer);
+
                 return result.ToArray();
             }
             catch (Exception ex)
