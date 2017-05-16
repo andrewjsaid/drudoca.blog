@@ -7,14 +7,14 @@ namespace Drudoca.Blog
     {
         public static void Main(string[] args)
         {
-            var host = new WebHostBuilder()
+            var builder = new WebHostBuilder()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
                 .UseStartup<Startup>()
                 .UseApplicationInsights()
-                .Build();
+                .UseUrls("http://localhost:5000");
 
+            var host = builder.Build();
             host.Run();
         }
     }

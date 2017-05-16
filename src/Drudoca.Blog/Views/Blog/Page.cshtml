@@ -1,4 +1,4 @@
-﻿@model BlogPostsViewModel
+﻿@model BlogPosts
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -16,5 +16,9 @@
 
 @foreach (var blogPost in Model.Posts)
 {
-    @Html.Partial("_BlogPost", blogPost)
+    <h2 class="blog-post-title">@Html.ActionLink(blogPost.Title, "post", "blog", new { year = blogPost.Date.Year, month = blogPost.Date.Month, slug = blogPost.Slug })</h2>
+    <p class="blog-post-date">@blogPost.Date.ToString("MMM yyyy")</p>
+    @Html.Raw(blogPost.IntroHtml)
+
+    <hr />
 }

@@ -1,7 +1,8 @@
-﻿@model BlogPostViewModel
+﻿@model BlogPost
 @{
     ViewData["Title"] = Model.Title;
 }
 
-
-@Html.Partial("_BlogPost")
+<h1 class="blog-post-title">@Html.ActionLink(Model.Title, "post", "blog", new { year = Model.Date.Year, month = Model.Date.Month, slug = Model.Slug })</h1>
+<p class="blog-post-date">@Model.Date.ToString("MMM yyyy")</p>
+@Html.Raw(Model.FullHtml)

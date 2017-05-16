@@ -16,7 +16,7 @@ namespace Drudoca.Blog.DataAccess
         private readonly ILogger _logger;
         private readonly IOptions<SiteOptions> _siteOptions;
         private readonly IMemoryCache _memoryCache;
-        private IBlogPostSource _blogPostSource;
+        private readonly IBlogPostSource _blogPostSource;
 
         public BlogPostRepository(
             ILogger<BlogPostRepository> logger,
@@ -30,15 +30,17 @@ namespace Drudoca.Blog.DataAccess
             _blogPostSource = blogPostSource ?? throw new ArgumentNullException(nameof(blogPostSource));
         }
 
-        public async ValueTask<BlogPost> GetBlogPost(string slug)
+        public async ValueTask<BlogPost> GetBlogPost(int year, int month, string slug)
         {
-            _logger.LogDebug("Retrieving post with slug {slug}", slug);
+            _logger.LogDebug("Retrieving post {year}/{month}/{slug}", year, month, slug);
 
-            var allPosts = await GetCachedBlogPostsAsync();
+            var allPosts = await GetBlogPostsAsync();
 
             foreach (var blogPost in allPosts)
             {
-                if(blogPost.Slug == slug)
+                if(blogPost.Date.Year == year
+                    && blogPost.Date.Month == month
+                    && blogPost.Slug == slug)
                 {
                     return blogPost;
                 }
@@ -57,7 +59,7 @@ namespace Drudoca.Blog.DataAccess
             
             int skip = pageSize * (pageNum - 1);
 
-            var blogPosts = await GetCachedBlogPostsAsync();
+            var blogPosts = await GetBlogPostsAsync();
 
             var results = new BlogPost[Math.Min(pageSize, blogPosts.Length - skip)];
             Array.Copy(blogPosts, skip, results, 0, results.Length);
@@ -71,33 +73,32 @@ namespace Drudoca.Blog.DataAccess
             };
             return result;
         }
-
-        private async ValueTask<BlogPost[]> GetCachedBlogPostsAsync()
+        
+        private async ValueTask<BlogPost[]> GetBlogPostsAsync()
         {
-            CachedBlogPosts cachedBlogPosts;
-            if(_memoryCache.TryGetValue(_blogPostsCacheKey, out cachedBlogPosts))
+            async Task<BlogPost[]> LoadFromSourceAsync()
             {
-                if(cachedBlogPosts.Expiry > DateTime.UtcNow)
-                {
-                    return cachedBlogPosts.BlogPosts;
-                }
-                else
-                {
-                    _logger.LogInformation("Cache expired at {expiry} (Now={now})", cachedBlogPosts.Expiry, DateTime.UtcNow);
-                }
-            }
-            else
-            {
-                _logger.LogInformation("Loading cache for first time");
+                var loaded = await _blogPostSource.LoadAsync();
+                Debug.Assert(loaded != null, "loaded != null");
+                _logger.LogInformation("Loaded {count} items from source", loaded.Length);
+                return loaded;
             }
 
-            var blogPosts = await _blogPostSource.LoadAsync();
-            Debug.Assert(blogPosts != null, "blogPosts != null");
-            var expiry = DateTime.UtcNow.AddMinutes(_siteOptions.Value.ExpiryMins);
-            _logger.LogInformation("Loaded {count} items from source, expiring on {expiry}", blogPosts.Length, expiry);
-            cachedBlogPosts = new CachedBlogPosts(blogPosts, expiry);
-            _memoryCache.Set(_blogPostsCacheKey, cachedBlogPosts);
-            return cachedBlogPosts.BlogPosts;
+            var isCachingPosts = _siteOptions.Value.IsCachingPosts;
+            if (!isCachingPosts)
+            {
+                return await LoadFromSourceAsync();
+            }
+
+            BlogPost[] results;
+            if(_memoryCache.TryGetValue(_blogPostsCacheKey, out results))
+            {
+                return results;
+            }
+
+            results = await LoadFromSourceAsync();
+            _memoryCache.Set(_blogPostsCacheKey, results);
+            return results;
         }
     }
 }

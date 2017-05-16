@@ -1,48 +1,42 @@
-﻿using Drudoca.Blog.DataAccess;
-using Drudoca.Blog.ViewModels;
+﻿using System;
+using System.Threading.Tasks;
+using Drudoca.Blog.DataAccess;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Threading.Tasks;
 
-namespace Drudoca.Controllers
+namespace Drudoca.Blog.Controllers
 {
     public class BlogController : Controller
     {
         private readonly ILogger _logger;
         private readonly IBlogPostRepository _blogPostRepository;
-        private readonly IViewModelBuilder _viewModelBuilder;
 
         public BlogController(
             ILogger<BlogController> logger,
-            IBlogPostRepository blogPostRepository,
-            IViewModelBuilder viewModelBuilder)
+            IBlogPostRepository blogPostRepository)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _blogPostRepository = blogPostRepository ?? throw new ArgumentNullException(nameof(blogPostRepository));
-            _viewModelBuilder = viewModelBuilder ?? throw new ArgumentNullException(nameof(viewModelBuilder));
         }
 
-        public async Task<IActionResult> Post(string id)
+        public async Task<IActionResult> Post(int year, int month, string slug)
         {
-            _logger.LogDebug("Requested blog post {slug}", id);
-            var blogPost = await _blogPostRepository.GetBlogPost(id);
+            _logger.LogDebug("Requested blog post {year}/{month}/{slug}", year, month, slug);
+            var blogPost = await _blogPostRepository.GetBlogPost(year, month, slug);
 
             if(blogPost == null)
             {
                 return RedirectToAction("Error", "Home");
             }
 
-            var viewModel = _viewModelBuilder.Build(blogPost);
-            return View(viewModel);
+            return View(blogPost);
         }
 
         public async Task<IActionResult> Page(int id)
         {
             _logger.LogDebug("Requested page {page}", id);
             var blogPosts = await _blogPostRepository.GetBlogPostsAsync(id);
-            var viewModel = _viewModelBuilder.Build(blogPosts);
-            return View(viewModel);
+            return View(blogPosts);
 
         }
     }

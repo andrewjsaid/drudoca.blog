@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Drudoca.Blog.DataAccess
@@ -11,14 +10,16 @@ namespace Drudoca.Blog.DataAccess
     internal class BlogPostSource : IBlogPostSource
     {
 
-        private const int CouldNotLoadCreateSingleBlogPostLogEvent = 1;
+        private const int CouldNotLoadSingleBlogPostLogEvent = 1;
         private const int CouldNotLoadAnyBlogPostLogEvent = 2;
 
         private readonly ILogger _logger;
+        private readonly IBlogPostBuilder _builder;
 
-        public BlogPostSource(ILogger<BlogPostSource> logger)
+        public BlogPostSource(ILogger<BlogPostSource> logger, IBlogPostBuilder builder)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _builder = builder ?? throw new ArgumentNullException(nameof(builder)); 
         }
 
         public async Task<BlogPost[]> LoadAsync()
@@ -37,10 +38,23 @@ namespace Drudoca.Blog.DataAccess
                 var result = new List<BlogPost>(fileInfos.Length);
                 foreach (var fileInfo in fileInfos)
                 {
-                    var blogPost = await CreateBlogPostAsync(fileInfo);
-                    if (blogPost != null)
+                    string fileContents;
+                    using (var streamReader = new StreamReader(fileInfo.OpenRead()))
                     {
-                        result.Add(blogPost);
+                        fileContents = await streamReader.ReadToEndAsync();
+                    }
+
+                    try
+                    {
+                        var blogPost = _builder.Build(fileInfo.Name, fileContents);
+                        if (blogPost.IsPublished)
+                        {
+                            result.Add(blogPost);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(CouldNotLoadSingleBlogPostLogEvent, ex, "Could not create blog post from {FILE}", fileInfo.Name);
                     }
                 }
 
@@ -50,60 +64,10 @@ namespace Drudoca.Blog.DataAccess
             }
             catch (Exception ex)
             {
-                _logger.LogError(CouldNotLoadAnyBlogPostLogEvent, ex, "Could not load any blog posts");
+                _logger.LogCritical(CouldNotLoadAnyBlogPostLogEvent, ex, "Could not load any blog posts");
                 return new BlogPost[0];
             }
         }
 
-        private static readonly Regex _fileNameRegex = new Regex(@"^(?<Y>\d{4})(?<M>\d{2})(?<D>\d{2})_(?<Title>.+)\.md$");
-        private async Task<BlogPost> CreateBlogPostAsync(FileInfo fileInfo)
-        {
-            try
-            {
-                var fileName = fileInfo.Name;
-
-                var fileNameMatch = _fileNameRegex.Match(fileName);
-                if (!fileNameMatch.Success)
-                {
-                    _logger.LogWarning("File name does not match expected format yyyyMMdd_Title.md: {FILENAME}", fileName);
-                    return null;
-                }
-
-                var title = fileNameMatch.Groups["Title"].Value;
-                var yyyy = int.Parse(fileNameMatch.Groups["Y"].Value);
-                var mm = int.Parse(fileNameMatch.Groups["M"].Value);
-                var dd = int.Parse(fileNameMatch.Groups["D"].Value);
-
-                string fileContents;
-                using (var streamReader = new StreamReader(fileInfo.OpenRead()))
-                {
-                    fileContents = await streamReader.ReadToEndAsync();
-                }
-
-                var publishedDate = new DateTime(yyyy, mm, dd);
-
-                var result = new BlogPost
-                {
-                    Title = title,
-                    PublishedDate = publishedDate,
-                    Markdown = fileContents,
-                    Slug = GetSlug(publishedDate, title)
-                };
-                return result;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(CouldNotLoadCreateSingleBlogPostLogEvent, ex, "Could not create blog post from {FILE}", fileInfo.FullName);
-                return null;
-            }
-        }
-
-        private static string GetSlug(DateTime publishedDate, string title)
-        {
-            string publishedDateSlugPart = publishedDate.ToString("yyyy-MM");
-            string titleSlugPart = UrlSlug.Slugify(title);
-            var slug = $"{publishedDateSlugPart}-{titleSlugPart}";
-            return slug;
-        }
     }
 }

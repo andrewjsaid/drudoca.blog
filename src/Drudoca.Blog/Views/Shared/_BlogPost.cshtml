@@ -1,7 +1,0 @@
-﻿@model BlogPostViewModel
-
-<h2 class="blog-post-title">@Html.ActionLink(Model.Title, "post", "blog", new { id = Model.Slug })</h2>
-<p class="blog-post-date">Published @Model.PublishedDate.ToString("dd MMM yyyy")</p>
-@Html.Raw(Model.RawHtml)
-
-<hr />

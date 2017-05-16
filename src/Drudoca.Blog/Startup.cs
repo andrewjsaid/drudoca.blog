@@ -1,6 +1,5 @@
 ﻿using Drudoca.Blog.DataAccess;
 using Drudoca.Blog.Options;
-using Drudoca.Blog.ViewModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -33,7 +32,7 @@ namespace Drudoca.Blog
             services.Configure<SiteOptions>(Configuration.GetSection("Site"));
             services.AddTransient<IBlogPostRepository, BlogPostRepository>();
             services.AddTransient<IBlogPostSource, BlogPostSource>();
-            services.AddTransient<IViewModelBuilder, ViewModelBuilder>();
+            services.AddTransient<IBlogPostBuilder, BlogPostBuilder>();
             services.AddMemoryCache();
         }
 
@@ -56,6 +55,10 @@ namespace Drudoca.Blog
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name: "blog-post",
+                    template: "blog/{year:int}/{month:int}/{slug}",
+                    defaults: new {controller = "Blog", action = "post"});
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
