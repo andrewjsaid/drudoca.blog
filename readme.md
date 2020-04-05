@@ -1,7 +1,7 @@
 # Dru's Delirium and Other Coding Antics
 
 This project is an attempt to solve two birds with one stone; finally getting a website up and running
-whilst simultaneously exploring ASP.NET Core.
+whilst simultaneously exploring ASP.NET Core 3.1.
 
 ## Goals
 
@@ -9,7 +9,3 @@ whilst simultaneously exploring ASP.NET Core.
 2. To explore .NET Core and ASP.NET Core.
 3. To integrate wtih various tools to provide continuous integration and deployment.
 4. To have fun doing so.
-
-## References
-This project was heavily inspired by LightBlog, found at the URL:
-https://github.com/EliotJones/LightBlog
