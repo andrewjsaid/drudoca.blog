@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Drudoca.Blog.Data;
 using Drudoca.Blog.DataAccess;
+using Markdig;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -18,6 +19,7 @@ namespace Drudoca.Blog.Web.Pages.Blog
         }
 
         public BlogPost? Post { get; private set; }
+        public string? PostHtml { get; set; }
 
         public async Task<IActionResult> OnGet(int year, int month, int day, string slug)
         {
@@ -29,6 +31,7 @@ namespace Drudoca.Blog.Web.Pages.Blog
             }
 
             Post = post;
+            PostHtml = Markdown.ToHtml(post.Markdown);
 
             return new PageResult();
         }
