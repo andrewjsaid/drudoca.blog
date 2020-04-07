@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Drudoca.Blog.Config;
 using Drudoca.Blog.Data;
@@ -10,7 +9,7 @@ using Microsoft.Extensions.Options;
 
 namespace Drudoca.Blog.DataAccess.Store
 {
-    public class BlogStore : IBlogStore
+    internal class BlogStore : IBlogStore
     {
 
         private readonly ILogger _logger;
@@ -24,7 +23,7 @@ namespace Drudoca.Blog.DataAccess.Store
             _siteOptions = siteOptions;
         }
 
-        public virtual async ValueTask<BlogPost[]> GetAllAsync()
+        public virtual async ValueTask<BlogPostData[]> GetAllAsync()
         {
             try
             {
@@ -38,7 +37,7 @@ namespace Drudoca.Blog.DataAccess.Store
 
                 _logger.LogInformation("Found {count} *.md files in blog-posts folder", fileInfos.Length);
 
-                var result = new List<BlogPost>(fileInfos.Length);
+                var result = new List<BlogPostData>(fileInfos.Length);
                 foreach (var fileInfo in fileInfos)
                 {
                     var blogPost = await CreateBlogPostAsync(fileInfo);
@@ -48,18 +47,16 @@ namespace Drudoca.Blog.DataAccess.Store
                     }
                 }
 
-                result.Sort(new MostRecentFirstPostComparer());
-
                 return result.ToArray();
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Could not load any blog posts");
-                return Array.Empty<BlogPost>();
+                return Array.Empty<BlogPostData>();
             }
         }
 
-        private async Task<BlogPost?> CreateBlogPostAsync(FileInfo fileInfo)
+        private async Task<BlogPostData?> CreateBlogPostAsync(FileInfo fileInfo)
         {
             try
             {
@@ -103,7 +100,7 @@ namespace Drudoca.Blog.DataAccess.Store
             }
         }
 
-        private BlogPost? CreatePost(Dictionary<string, string> headers, string markdown)
+        private BlogPostData? CreatePost(Dictionary<string, string> headers, string markdown)
         {
             bool valid = true;
 
@@ -152,8 +149,7 @@ namespace Drudoca.Blog.DataAccess.Store
                 return null;
             }
 
-            var slug = UrlSlug.Slugify(title);
-            var result = new BlogPost(title, author, publishedOn, isPublished, slug, markdown);
+            var result = new BlogPostData(title, author, publishedOn, isPublished, markdown);
             return result;
         }
 

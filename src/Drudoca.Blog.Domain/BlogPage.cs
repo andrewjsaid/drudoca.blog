@@ -1,9 +1,13 @@
-﻿namespace Drudoca.Blog.Data
+﻿namespace Drudoca.Blog.Domain
 {
-    public sealed class BlogPage
+    public class BlogPage
     {
 
-        public BlogPage(int pageNum, int pageSize, int pageCount, BlogPost[] posts)
+        public BlogPage(
+            int pageNum,
+            int pageSize,
+            int pageCount,
+            BlogPost[] posts)
         {
             PageNum = pageNum;
             PageSize = pageSize;

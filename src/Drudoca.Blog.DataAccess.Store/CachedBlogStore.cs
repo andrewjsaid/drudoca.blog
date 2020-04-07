@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 
 namespace Drudoca.Blog.DataAccess.Store
 {
-    public class CachedBlogStore : BlogStore
+    internal class CachedBlogStore : BlogStore
     {
         private static readonly object _cacheKey = new object();
 
@@ -25,7 +25,7 @@ namespace Drudoca.Blog.DataAccess.Store
             _siteOptions = siteOptions;
         }
 
-        public async override ValueTask<BlogPost[]> GetAllAsync()
+        public async override ValueTask<BlogPostData[]> GetAllAsync()
         {
             if (!_memoryCache.TryGetValue<CachedBlogPosts>(_cacheKey, out var cacheItem))
             {
@@ -44,12 +44,12 @@ namespace Drudoca.Blog.DataAccess.Store
         private class CachedBlogPosts
         {
             public CachedBlogPosts(
-                BlogPost[] posts)
+                BlogPostData[] posts)
             {
                 Posts = posts;
             }
 
-            public BlogPost[] Posts { get; }
+            public BlogPostData[] Posts { get; }
         }
     }
 }

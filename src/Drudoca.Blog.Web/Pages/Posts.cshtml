@@ -1,0 +1,22 @@
+﻿@page
+@model Drudoca.Blog.Web.Pages.PostsModel
+@{
+    ViewData["Title"] = "Blog";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Posts</h1>
+
+<div class="blog-page">
+
+    @{
+        var page = Model.BlogPage!;
+    }
+
+    @foreach (var post in page.Posts)
+    {
+        <div class="summary">
+            <partial name="Shared/_BlogPostPartial" model="post" />
+        </div>
+    }
+</div>

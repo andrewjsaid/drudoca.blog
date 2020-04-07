@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace Drudoca.Blog.Data
+namespace Drudoca.Blog.Domain
 {
     [DebuggerDisplay("{Title}")]
-    public sealed class BlogPost
+    public class BlogPost
     {
 
         public BlogPost(
@@ -12,8 +12,9 @@ namespace Drudoca.Blog.Data
             string author,
             DateTime publishedOn,
             bool isPublished,
+            string markdown,
             string slug,
-            string markdown)
+            string html)
         {
             Title = title;
             Author = author;
@@ -21,13 +22,15 @@ namespace Drudoca.Blog.Data
             IsPublished = isPublished;
             Slug = slug;
             Markdown = markdown;
+            Html = html;
         }
 
         public string Title { get; }
         public string Author { get; }
         public DateTime PublishedOn { get; }
         public bool IsPublished { get; }
-        public string Slug { get; }
         public string Markdown { get; }
+        public string Slug { get; }
+        public string Html { get; }
     }
 }

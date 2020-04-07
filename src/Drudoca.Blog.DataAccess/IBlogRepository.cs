@@ -1,16 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Drudoca.Blog.Data;
 
 namespace Drudoca.Blog.DataAccess
 {
-
     public interface IBlogRepository
     {
-
-        ValueTask<BlogPost?> GetPostAsync(DateTime published, string slug);
-
-        ValueTask<BlogPage> GetPageAsync(int pageSize, int pageNum);
-
+        Task<int> CountBlogPostsAsync();
+        IAsyncEnumerable<BlogPostData> GetAllPostsAsync();
+        IAsyncEnumerable<BlogPostData> GetPostsByDateAsync(DateTime published);
     }
 }

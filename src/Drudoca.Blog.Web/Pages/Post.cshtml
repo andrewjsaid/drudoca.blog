@@ -9,10 +9,6 @@
     var post = Model.Post!;
 }
 
-<h1 class="post-title">@post.Title</h1>
-<h3 class="post-published">Published @post.PublishedOn.ToString("Y")</h3>
-<h3 class="post-author">Author @post.Author</h3>
-
-<div class="post-body">
-    @Html.Raw(Model.PostHtml)
+<div class="blog-post">
+    <partial name="Shared/_BlogPostPartial" model="post" />
 </div>

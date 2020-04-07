@@ -5,13 +5,15 @@ VisualStudioVersion = 16.0.29926.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drudoca.Blog.Web", "Drudoca.Blog.Web\Drudoca.Blog.Web.csproj", "{AAAB26D8-7895-4787-AF81-9F40220A497C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drudoca.Blog.Data", "Drudoca.Blog.Data\Drudoca.Blog.Data.csproj", "{99301003-7FDB-4EE2-882A-03E350F25455}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drudoca.Blog.Data", "Drudoca.Blog.Data\Drudoca.Blog.Data.csproj", "{99301003-7FDB-4EE2-882A-03E350F25455}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drudoca.Blog.DataAccess", "Drudoca.Blog.DataAccess\Drudoca.Blog.DataAccess.csproj", "{A13D894E-3DC2-4C63-874D-E1041D6404A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drudoca.Blog.DataAccess", "Drudoca.Blog.DataAccess\Drudoca.Blog.DataAccess.csproj", "{A13D894E-3DC2-4C63-874D-E1041D6404A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drudoca.Blog.DataAccess.Store", "Drudoca.Blog.DataAccess.Store\Drudoca.Blog.DataAccess.Store.csproj", "{089E0F36-077E-49C0-B49A-4CA05F0B5361}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drudoca.Blog.DataAccess.Store", "Drudoca.Blog.DataAccess.Store\Drudoca.Blog.DataAccess.Store.csproj", "{089E0F36-077E-49C0-B49A-4CA05F0B5361}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drudoca.Blog.Config", "Drudoca.Blog.Config\Drudoca.Blog.Config.csproj", "{BC040EE2-9291-4DE4-8347-A833EF2DA86F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drudoca.Blog.Config", "Drudoca.Blog.Config\Drudoca.Blog.Config.csproj", "{BC040EE2-9291-4DE4-8347-A833EF2DA86F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drudoca.Blog.Domain", "Drudoca.Blog.Domain\Drudoca.Blog.Domain.csproj", "{973B6B4D-74F3-4951-9AEC-27E0A4CAB1F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{BC040EE2-9291-4DE4-8347-A833EF2DA86F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC040EE2-9291-4DE4-8347-A833EF2DA86F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC040EE2-9291-4DE4-8347-A833EF2DA86F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{973B6B4D-74F3-4951-9AEC-27E0A4CAB1F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{973B6B4D-74F3-4951-9AEC-27E0A4CAB1F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{973B6B4D-74F3-4951-9AEC-27E0A4CAB1F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{973B6B4D-74F3-4951-9AEC-27E0A4CAB1F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

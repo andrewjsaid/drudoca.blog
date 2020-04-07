@@ -1,6 +1,4 @@
 using Drudoca.Blog.Config;
-using Drudoca.Blog.DataAccess;
-using Drudoca.Blog.DataAccess.Store;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,10 +21,10 @@ namespace Drudoca.Blog.Web
         {
             services.AddRazorPages();
 
-            services.AddTransient<IBlogStore, CachedBlogStore>();
-            services.AddTransient<IBlogRepository, StoreBlogRepository>();
-
             services.Configure<BlogOptions>(Configuration.GetSection("Blog"));
+
+            Drudoca.Blog.DataAccess.Store.CompositionRoot.ConfigureServices(services);
+            Drudoca.Blog.Domain.CompositionRoot.ConfigureServices(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

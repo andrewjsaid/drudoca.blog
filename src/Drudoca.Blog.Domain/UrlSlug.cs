@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Drudoca.Blog.DataAccess.Store
+namespace Drudoca.Blog.Domain
 {
     // Based on http://stackoverflow.com/questions/2920744/url-slugify-algorithm-in-c
 
