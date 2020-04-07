@@ -1,21 +1,14 @@
 ﻿@page "/{pageNum:int?}"
 @model IndexModel
 @{
-    ViewData["Title"] = "Drudoca";
-}
-
-<h1>Posts</h1>
-
-@{
     var blogPage = Model.BlogPage!;
+    ViewData["Title"] = "Blog";
 }
 
 <div class="blog-page">
     @foreach (var post in blogPage.Posts)
     {
-        <div class="summary">
-            <partial name="Shared/_BlogPostPartial" model="post" />
-        </div>
+        <partial name="Shared/_BlogPostPartial" model="(post, false)" />
     }
 </div>
 

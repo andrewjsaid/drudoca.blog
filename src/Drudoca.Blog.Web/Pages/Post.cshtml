@@ -1,14 +1,9 @@
 ﻿@page "/{year:int}/{month:int}/{day:int}/{slug}"
 @model Drudoca.Blog.Web.Pages.Blog.PostModel
 @{
-    ViewData["Title"] = "Post";
-    Layout = "~/Pages/Shared/_Layout.cshtml";
-}
-
-@{
     var post = Model.Post!;
+    ViewData["Title"] = post.Title;
 }
 
-<div class="blog-post">
-    <partial name="Shared/_BlogPostPartial" model="post" />
-</div>
+
+<partial name="Shared/_BlogPostPartial" model="(post, true)" />

@@ -66,14 +66,27 @@ namespace Drudoca.Blog.Domain
 
         private BlogPost CreatePost(BlogPostData data)
         {
+            var title = UrlSlug.Slugify(data.Title);
+            var html = Markdown.ToHtml(data.Markdown);
+
+            string? introHtml = null;
+
+            var mainSectionIndex = data.Markdown.IndexOf("\n[//]: # (Main Section)");
+            if (mainSectionIndex > -1)
+            {
+                var introMarkdown = data.Markdown.Substring(0, mainSectionIndex);
+                introHtml = Markdown.ToHtml(introMarkdown);
+            }
+
             var result = new BlogPost(
                 data.Title,
                 data.Author,
                 data.PublishedOn,
                 data.IsPublished,
                 data.Markdown,
-                UrlSlug.Slugify(data.Title),
-                Markdown.ToHtml(data.Markdown)
+                title,
+                html,
+                introHtml
             );
             return result;
         }

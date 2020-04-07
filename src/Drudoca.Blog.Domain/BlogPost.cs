@@ -14,7 +14,8 @@ namespace Drudoca.Blog.Domain
             bool isPublished,
             string markdown,
             string slug,
-            string html)
+            string html,
+            string? introHtml)
         {
             Title = title;
             Author = author;
@@ -23,6 +24,7 @@ namespace Drudoca.Blog.Domain
             Slug = slug;
             Markdown = markdown;
             Html = html;
+            IntroHtml = introHtml;
         }
 
         public string Title { get; }
@@ -32,5 +34,6 @@ namespace Drudoca.Blog.Domain
         public string Markdown { get; }
         public string Slug { get; }
         public string Html { get; }
+        public string? IntroHtml { get; }
     }
 }
