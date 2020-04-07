@@ -10,8 +10,8 @@
             @Model.Title
         </a>
     </h2>
-    <h3 class="post-published">Published @Model.PublishedOn.ToString("Y")</h3>
-    <h3 class="post-author">Author @Model.Author</h3>
+    <span class="post-published">Published @Model.PublishedOn.ToString("Y")</span>
+    <span class="post-author">Author @Model.Author</span>
 
     <div class="post-body">
         @Html.Raw(Model.Html)

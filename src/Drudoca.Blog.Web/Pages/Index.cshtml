@@ -1,10 +1,39 @@
-﻿@page
+﻿@page "/{pageNum:int?}"
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Drudoca";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h1>Posts</h1>
+
+@{
+    var blogPage = Model.BlogPage!;
+}
+
+<div class="blog-page">
+    @foreach (var post in blogPage.Posts)
+    {
+        <div class="summary">
+            <partial name="Shared/_BlogPostPartial" model="post" />
+        </div>
+    }
+</div>
+
+<div class="blog-page-control">
+    <div>
+        Page @blogPage.PageNum of @blogPage.PageCount
+    </div>
+
+    <div>
+        @if (blogPage.PageNum > 1)
+        {
+
+            <a asp-route-pageNum="@(blogPage.PageNum == 2 ? (int?)null : blogPage.PageNum - 1)">&laquo; Prev Page</a>
+        }
+
+        @if (blogPage.PageNum < blogPage.PageCount)
+        {
+            <a asp-route-pageNum="@(blogPage.PageNum + 1)">Next Page &raquo;</a>
+        }
+    </div>
 </div>

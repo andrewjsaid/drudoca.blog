@@ -1,25 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Drudoca.Blog.Config;
+using Drudoca.Blog.Domain;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+
 
 namespace Drudoca.Blog.Web.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
+        private readonly IBlogManager _blogManager;
+        private readonly IOptions<BlogOptions> _blogOptions;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public IndexModel(
+            IBlogManager blogManager,
+            IOptions<BlogOptions> blogOptions)
         {
-            _logger = logger;
+            _blogManager = blogManager;
+            _blogOptions = blogOptions;
         }
 
-        public void OnGet()
-        {
+        public BlogPage? BlogPage { get; set; }
 
+        public async Task OnGet(int pageNum = 1)
+        {
+            var pageSize = _blogOptions.Value.PageSize;
+            var page = await _blogManager.GetPageAsync(pageSize, pageNum);
+            BlogPage = page;
         }
     }
 }
