@@ -6,7 +6,8 @@
 
 <div class="blog-post">
     <h2 class="post-title">
-        <a asp-page="Post"
+        <a class="text-dark"
+           asp-page="Post"
            asp-route-year="@post.PublishedOn.Year"
            asp-route-month="@post.PublishedOn.Month"
            asp-route-day="@post.PublishedOn.Day"
@@ -14,9 +15,14 @@
             @post.Title
         </a>
     </h2>
-    <span class="post-published">Published @post.PublishedOn.ToString("Y")</span>
-    <span class="post-author">Author @post.Author</span>
-
+    <p class="publish-info lead text-info">
+        <small>
+            Published
+            on <span class="post-published-on">@post.PublishedOn.ToString("dd MMMM yyyy")</span>
+            by <span class="post-author">@post.Author</span>
+        </small>
+    </p>
+    
     @if (isFull)
     {
         <div class="post-body">
