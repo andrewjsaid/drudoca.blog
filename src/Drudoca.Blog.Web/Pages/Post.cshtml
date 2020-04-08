@@ -1,5 +1,5 @@
 ﻿@page "/{year:int}/{month:int}/{day:int}/{slug}"
-@model Drudoca.Blog.Web.Pages.Blog.PostModel
+@model Drudoca.Blog.Web.Pages.PostModel
 @{
     var post = Model.Post!;
     ViewData["Title"] = post.Title;

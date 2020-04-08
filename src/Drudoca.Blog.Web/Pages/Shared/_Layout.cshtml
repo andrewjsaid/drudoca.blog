@@ -4,12 +4,19 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Drudoca</title>
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link rel="manifest" href="/icons/site.webmanifest">
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
+        <!-- Change to "navbar-expand-sm navbar-toggleable-sm" if menu grows -->
+        <nav class="navbar navbar-expand navbar-toggleable navbar-light bg-white border-bottom box-shadow">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-page="/Index">Drudoca</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -38,10 +45,10 @@
             </div>
         </nav>
         <div class="container text-center py-2">
-            <h1 class="display-4">Dru's Delirium <small class="super-small">and Other Coding Antics</small></h1>
+            <h1 class="display-4">Dru's Delirium <small class="super-small d-inline-block">and Other Coding Antics</small></h1>
         </div>
     </header>
-    <div class="main-parallax shadow-lg mb-4"></div>
+    <div class="main-parallax shadow mb-4"></div>
          
     <div class="container">
         <main role="main" class="pb-3">

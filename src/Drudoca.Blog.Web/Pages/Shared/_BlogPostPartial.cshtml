@@ -7,7 +7,7 @@
 <div class="blog-post">
     <h2 class="post-title">
         <a class="text-dark"
-           asp-page="Post"
+           asp-page="/Post"
            asp-route-year="@post.PublishedOn.Year"
            asp-route-month="@post.PublishedOn.Month"
            asp-route-day="@post.PublishedOn.Day"
@@ -38,7 +38,7 @@
         @if (post.IntroHtml != null)
         {
             <div class="post-read-more">
-                <a asp-page="Post"
+                <a asp-page="/Post"
                    asp-route-year="@post.PublishedOn.Year"
                    asp-route-month="@post.PublishedOn.Month"
                    asp-route-day="@post.PublishedOn.Day"

@@ -4,7 +4,7 @@ using Drudoca.Blog.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Drudoca.Blog.Web.Pages.Blog
+namespace Drudoca.Blog.Web.Pages
 {
     public class PostModel : PageModel
     {

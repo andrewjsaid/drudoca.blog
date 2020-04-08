@@ -1,0 +1,7 @@
+﻿https://favicon.io/favicon-generator/
+Text: Dru
+Background: Rounded
+Font Family: Smythe
+Font Size: 90
+Font Color: #FFFFFF
+Background Color: #550
