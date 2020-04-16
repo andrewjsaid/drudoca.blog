@@ -6,6 +6,7 @@
         public int BlogCacheDurationMins { get; set; } = 10;
         public string BlogFolder { get; set; } = "blog-posts";
         public int PageSize { get; set; } = 3;
+        public bool ListFuturePosts { get; set; } = false;
 
     }
 }

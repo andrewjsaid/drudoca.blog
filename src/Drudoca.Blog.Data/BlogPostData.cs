@@ -12,12 +12,14 @@ namespace Drudoca.Blog.Data
             string author,
             DateTime publishedOn,
             bool isPublished,
+            bool isListed,
             string markdown)
         {
             Title = title;
             Author = author;
             PublishedOn = publishedOn;
             IsPublished = isPublished;
+            IsListed = isListed;
             Markdown = markdown;
         }
 
@@ -25,6 +27,7 @@ namespace Drudoca.Blog.Data
         public string Author { get; }
         public DateTime PublishedOn { get; }
         public bool IsPublished { get; }
+        public bool IsListed { get; }
         public string Markdown { get; }
     }
 }

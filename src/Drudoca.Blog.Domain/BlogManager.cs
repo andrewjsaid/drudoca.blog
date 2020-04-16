@@ -1,20 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
+using Drudoca.Blog.Config;
 using Drudoca.Blog.Data;
 using Drudoca.Blog.DataAccess;
 using Markdig;
+using Microsoft.Extensions.Options;
 
 namespace Drudoca.Blog.Domain
 {
     internal class BlogManager : IBlogManager
     {
         private readonly IBlogRepository _repository;
+        private readonly IOptions<BlogOptions> _options;
 
         public BlogManager(
-            IBlogRepository repository)
+            IBlogRepository repository,
+            IOptions<BlogOptions> options)
         {
             _repository = repository;
+            _options = options;
+        }
+
+        private bool ShowInListing(BlogPostData post, bool showFuture)
+        {
+            if (!post.IsListed)
+                return false;
+
+            if (!post.IsPublished)
+                return false;
+
+            if (!showFuture && post.PublishedOn > DateTime.UtcNow)
+                return false;
+
+            return true;
         }
 
         public async Task<BlogPage> GetPageAsync(int pageSize, int pageNum)
@@ -23,28 +43,47 @@ namespace Drudoca.Blog.Domain
 
             int skip = pageSize * (pageNum - 1);
 
+            Debug.Assert(pageSize > 0);
             var pagePosts = new List<BlogPost>(pageSize);
+
+            // We can't use _repository.CountBlogPostsAsync() since
+            // it includes "hidden" posts.
+            int count = 0;
+            bool stop = false;
+
+            var showFuture = _options.Value.ListFuturePosts;
 
             await foreach (var postData in _repository.GetAllPostsAsync())
             {
+                if (!ShowInListing(postData, showFuture))
+                {
+                    continue;
+                }
+
+                count++;
+
+                if (stop)
+                {
+                    continue;
+                }
+                
                 // Keep skipping
                 if (skip > 0)
                 {
                     skip--;
-                    continue;
                 }
-
-                // Check if we filled the page
-                if (pagePosts.Count == pageSize)
+                else
                 {
-                    break;
-                }
+                    var post = CreatePost(postData);
+                    pagePosts.Add(post);
 
-                var post = CreatePost(postData);
-                pagePosts.Add(post);
+                    if (pagePosts.Count == pageSize)
+                    {
+                        stop = true;
+                    }
+                }
             }
 
-            var count = await _repository.CountBlogPostsAsync();
             var pageCount = (int)Math.Ceiling(count / (double)pageSize);
 
             var result = new BlogPage(pageNum, pageSize, pageCount, pagePosts.ToArray());
@@ -53,12 +92,19 @@ namespace Drudoca.Blog.Domain
 
         public async Task<BlogPost?> GetPostAsync(DateTime published, string slug)
         {
+            // Allow users to access posts with direct links, even if they are not listed or are future posts
+            // Useful for asking friends to have a look at something.
+            // We do respect the "IsPublished" flag though.
+
             await foreach (var post in _repository.GetPostsByDateAsync(published))
             {
-                var postSlug = UrlSlug.Slugify(post.Title);
-                if (string.Equals(postSlug, slug, StringComparison.OrdinalIgnoreCase))
+                if (post.IsPublished)
                 {
-                    return CreatePost(post);
+                    var postSlug = UrlSlug.Slugify(post.Title);
+                    if (string.Equals(postSlug, slug, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return CreatePost(post);
+                    }
                 }
             }
             return null;
@@ -83,6 +129,7 @@ namespace Drudoca.Blog.Domain
                 data.Author,
                 data.PublishedOn,
                 data.IsPublished,
+                data.IsListed,
                 data.Markdown,
                 title,
                 html,

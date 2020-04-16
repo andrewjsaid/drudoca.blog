@@ -91,7 +91,7 @@ namespace Drudoca.Blog.DataAccess.Store
                     markdown = await streamReader.ReadToEndAsync();
                 }
 
-                var result = CreatePost(headers, markdown);
+                var result = CreatePost(fileInfo.Name, headers, markdown);
                 return result;
             }
             catch (Exception ex)
@@ -101,47 +101,60 @@ namespace Drudoca.Blog.DataAccess.Store
             }
         }
 
-        private BlogPostData? CreatePost(Dictionary<string, string> headers, string markdown)
+        private BlogPostData? CreatePost(string fileName, Dictionary<string, string> headers, string markdown)
         {
             bool valid = true;
 
             if (!headers.TryGetValue("title", out var title))
             {
-                _logger.LogWarning("File {file-name} has missing title");
+                _logger.LogWarning("File {file-name} has missing title", fileName);
                 title = string.Empty;
                 valid = false;
             }
 
             if (!headers.TryGetValue("author", out var author))
             {
-                _logger.LogWarning("File {file-name} has missing author");
+                _logger.LogWarning("File {file-name} has missing author", fileName);
                 author = string.Empty;
                 valid = false;
             }
 
             if (!headers.TryGetValue("date", out var dateString))
             {
-                _logger.LogWarning("File {file-name} has missing date");
+                _logger.LogWarning("File {file-name} has missing date", fileName);
                 dateString = string.Empty;
                 valid = false;
             }
 
             if (!DateTime.TryParse(dateString, out var publishedOn))
             {
-                _logger.LogWarning("File {file-name} has invalid date");
+                _logger.LogWarning("File {file-name} has invalid date", fileName);
                 valid = false;
             }
 
             if (!headers.TryGetValue("published", out var publishedString))
             {
-                _logger.LogWarning("File {file-name} has missing published");
+                _logger.LogWarning("File {file-name} has missing published", fileName);
                 publishedString = string.Empty;
                 valid = false;
             }
 
             if (!bool.TryParse(publishedString, out var isPublished))
             {
-                _logger.LogWarning("File {file-name} has invalid published");
+                _logger.LogWarning("File {file-name} has invalid published", fileName);
+                valid = false;
+            }
+
+            if (!headers.TryGetValue("listed", out var listedString))
+            {
+                _logger.LogWarning("File {file-name} has missing listed", fileName);
+                listedString = string.Empty;
+                valid = false;
+            }
+
+            if (!bool.TryParse(listedString, out var isListed))
+            {
+                _logger.LogWarning("File {file-name} has invalid published", fileName);
                 valid = false;
             }
 
@@ -150,7 +163,7 @@ namespace Drudoca.Blog.DataAccess.Store
                 return null;
             }
 
-            var result = new BlogPostData(title, author, publishedOn, isPublished, markdown);
+            var result = new BlogPostData(title, author, publishedOn, isPublished, isListed, markdown);
             return result;
         }
 
