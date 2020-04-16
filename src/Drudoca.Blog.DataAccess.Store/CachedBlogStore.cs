@@ -30,13 +30,20 @@ namespace Drudoca.Blog.DataAccess.Store
             if (!_memoryCache.TryGetValue<CachedBlogPosts>(_cacheKey, out var cacheItem))
             {
                 var posts = await base.GetAllAsync();
-                cacheItem = new CachedBlogPosts(posts);
                 var cacheMins = _siteOptions.CurrentValue.BlogCacheDurationMins;
+
+                if (cacheMins == 0)
+                {
+                    return posts;
+                }
+
+                cacheItem = new CachedBlogPosts(posts);
                 var options = new MemoryCacheEntryOptions
                 {
                     AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(cacheMins),
                 };
                 _memoryCache.Set(_cacheKey, cacheItem, options);
+
             }
             return cacheItem.Posts;
         }
