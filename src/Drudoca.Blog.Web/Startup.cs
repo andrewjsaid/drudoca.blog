@@ -45,6 +45,18 @@ namespace Drudoca.Blog.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            {
+                // Remove this next one for ASP.NET Core upgrade - https://github.com/aspnet/AspNetCore/issues/2442
+                var provider = new Microsoft.AspNetCore.StaticFiles.FileExtensionContentTypeProvider();
+                provider.Mappings[".webmanifest"] = "application/json";
+                app.UseStaticFiles(new StaticFileOptions
+                {
+                    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "wwwroot")),
+                    RequestPath = "",
+                    ContentTypeProvider = provider
+                });
+            }
+
             app.UseRouting();
 
             app.UseAuthorization();
