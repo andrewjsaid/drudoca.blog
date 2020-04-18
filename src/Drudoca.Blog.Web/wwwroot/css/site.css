@@ -89,6 +89,14 @@ small.super-small {
 
 /* Post Body (markdown) styles
 -------------------------------------------------- */
+.post-title {
+    font-size: 2.5rem;
+}
+
+.post-body {
+    margin: 2rem 0;
+}
+
 .post-body h1 {
     font-size: 1.5rem;
 }

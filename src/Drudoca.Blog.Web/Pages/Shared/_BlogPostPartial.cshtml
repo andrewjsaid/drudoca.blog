@@ -5,7 +5,7 @@
 }
 
 <div class="blog-post">
-    <h2 class="post-title">
+    <h1 class="post-title">
         <a class="text-dark"
            asp-page="/Post"
            asp-route-year="@post.PublishedOn.Year"
@@ -14,12 +14,15 @@
            asp-route-slug="@post.Slug">
             @post.Title
         </a>
-    </h2>
-    <p class="publish-info lead text-info">
+    </h1>
+    <p class="publish-info lead">
         <small>
-            Published
-            on <span class="post-published-on">@post.PublishedOn.ToString("dd MMMM yyyy")</span>
-            by <span class="post-author">@post.Author</span>
+            <i class="far fa-calendar"></i>
+            <span class="post-published-on">@post.PublishedOn.ToString("dd MMMM yyyy")</span>
+        </small>
+        <small class="ml-2">
+            <i class="fas fa-pen-nib"></i>
+            <span class="post-author">@post.Author</span>
         </small>
     </p>
     
