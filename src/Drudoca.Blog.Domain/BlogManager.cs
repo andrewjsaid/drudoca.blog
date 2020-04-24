@@ -12,18 +12,21 @@ namespace Drudoca.Blog.Domain
 {
     internal class BlogManager : IBlogManager
     {
-        private readonly IBlogRepository _repository;
+        private readonly IPostRepository _postRepository;
+        private readonly ICommentRepository _commentRepository;
         private readonly IOptions<BlogOptions> _options;
 
         public BlogManager(
-            IBlogRepository repository,
+            IPostRepository postRepository,
+            ICommentRepository commentRepository,
             IOptions<BlogOptions> options)
         {
-            _repository = repository;
+            _postRepository = postRepository;
+            _commentRepository = commentRepository;
             _options = options;
         }
 
-        private bool ShowInListing(BlogPostData post, bool showFuture)
+        private bool ShowInListing(PostData post, bool showFuture)
         {
             if (!post.IsListed)
                 return false;
@@ -53,7 +56,7 @@ namespace Drudoca.Blog.Domain
 
             var showFuture = _options.Value.ListFuturePosts;
 
-            await foreach (var postData in _repository.GetAllPostsAsync())
+            await foreach (var postData in _postRepository.GetAllPostsAsync())
             {
                 if (!ShowInListing(postData, showFuture))
                 {
@@ -74,7 +77,7 @@ namespace Drudoca.Blog.Domain
                 }
                 else
                 {
-                    var post = CreatePost(postData);
+                    var post = CreatePost(postData, null);
                     pagePosts.Add(post);
 
                     if (pagePosts.Count == pageSize)
@@ -96,21 +99,24 @@ namespace Drudoca.Blog.Domain
             // Useful for asking friends to have a look at something.
             // We do respect the "IsPublished" flag though.
 
-            await foreach (var post in _repository.GetPostsByDateAsync(published))
+            await foreach (var postData in _postRepository.GetPostsByDateAsync(published))
             {
-                if (post.IsPublished)
+                if (postData.IsPublished)
                 {
-                    var postSlug = UrlSlug.Slugify(post.Title);
+                    var postSlug = UrlSlug.Slugify(postData.Title);
                     if (string.Equals(postSlug, slug, StringComparison.OrdinalIgnoreCase))
                     {
-                        return CreatePost(post);
+                        var comments = await _commentRepository.GetCommentsForPostAsync(postData.FileName);
+                        var post = CreatePost(postData, comments);
+                        return post;
                     }
                 }
             }
+
             return null;
         }
 
-        private BlogPost CreatePost(BlogPostData data)
+        private BlogPost CreatePost(PostData data, CommentData[]? comments)
         {
             var title = UrlSlug.Slugify(data.Title);
             var html = Markdown.ToHtml(data.Markdown);

@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drudoca.Blog.DataAccess.Sto
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drudoca.Blog.Config", "Drudoca.Blog.Config\Drudoca.Blog.Config.csproj", "{BC040EE2-9291-4DE4-8347-A833EF2DA86F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drudoca.Blog.Domain", "Drudoca.Blog.Domain\Drudoca.Blog.Domain.csproj", "{973B6B4D-74F3-4951-9AEC-27E0A4CAB1F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drudoca.Blog.Domain", "Drudoca.Blog.Domain\Drudoca.Blog.Domain.csproj", "{973B6B4D-74F3-4951-9AEC-27E0A4CAB1F4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drudoca.Blog.DataAccess.Sql", "Drudoca.Blog.DataAccess.Sql\Drudoca.Blog.DataAccess.Sql.csproj", "{CD6A8E8A-DE9C-455E-8E75-24C16433A3A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{973B6B4D-74F3-4951-9AEC-27E0A4CAB1F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{973B6B4D-74F3-4951-9AEC-27E0A4CAB1F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{973B6B4D-74F3-4951-9AEC-27E0A4CAB1F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD6A8E8A-DE9C-455E-8E75-24C16433A3A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD6A8E8A-DE9C-455E-8E75-24C16433A3A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD6A8E8A-DE9C-455E-8E75-24C16433A3A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD6A8E8A-DE9C-455E-8E75-24C16433A3A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -8,7 +8,7 @@ namespace Drudoca.Blog.DataAccess.Store
         {
             services
                 .AddTransient<IBlogStore, CachedBlogStore>()
-                .AddTransient<IBlogRepository, StoreBlogRepository>();
+                .AddTransient<IPostRepository, FilePostRepository>();
         }
     }
 }

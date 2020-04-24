@@ -22,8 +22,11 @@ namespace Drudoca.Blog.Web
             services.AddRazorPages();
 
             services.Configure<BlogOptions>(Configuration.GetSection("Blog"));
+            services.Configure<DatabaseOptions>(Configuration.GetSection("Database"));
+            services.Configure<StoreOptions>(Configuration.GetSection("Store"));
 
             Drudoca.Blog.DataAccess.Store.CompositionRoot.ConfigureServices(services);
+            Drudoca.Blog.DataAccess.Sql.CompositionRoot.ConfigureServices(services);
             Drudoca.Blog.Domain.CompositionRoot.ConfigureServices(services);
         }
 

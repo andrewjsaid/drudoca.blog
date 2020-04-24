@@ -5,6 +5,6 @@ namespace Drudoca.Blog.DataAccess.Store
 {
     public interface IBlogStore
     {
-        ValueTask<BlogPostData[]> GetAllAsync();
+        ValueTask<PostData[]> GetAllAsync();
     }
 }

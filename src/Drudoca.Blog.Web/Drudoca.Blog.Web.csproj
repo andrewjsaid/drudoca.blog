@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Drudoca.Blog.Config\Drudoca.Blog.Config.csproj" />
+    <ProjectReference Include="..\Drudoca.Blog.DataAccess.Sql\Drudoca.Blog.DataAccess.Sql.csproj" />
     <ProjectReference Include="..\Drudoca.Blog.DataAccess.Store\Drudoca.Blog.DataAccess.Store.csproj" />
     <ProjectReference Include="..\Drudoca.Blog.DataAccess\Drudoca.Blog.DataAccess.csproj" />
     <ProjectReference Include="..\Drudoca.Blog.Data\Drudoca.Blog.Data.csproj" />

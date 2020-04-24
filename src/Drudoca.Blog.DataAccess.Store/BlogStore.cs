@@ -13,21 +13,21 @@ namespace Drudoca.Blog.DataAccess.Store
     {
 
         private readonly ILogger _logger;
-        private readonly IOptionsMonitor<BlogOptions> _siteOptions;
+        private readonly IOptionsMonitor<StoreOptions> _storeOptions;
 
         public BlogStore(
             ILogger<BlogStore> logger,
-            IOptionsMonitor<BlogOptions> siteOptions)
+            IOptionsMonitor<StoreOptions> storeOptions)
         {
             _logger = logger;
-            _siteOptions = siteOptions;
+            _storeOptions = storeOptions;
         }
 
-        public virtual async ValueTask<BlogPostData[]> GetAllAsync()
+        public virtual async ValueTask<PostData[]> GetAllAsync()
         {
             try
             {
-                var configPath = _siteOptions.CurrentValue.BlogFolder;
+                var configPath = _storeOptions.CurrentValue.BlogFolder;
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", configPath);
 
                 _logger.LogDebug("Loading files from {path}", path);
@@ -37,7 +37,7 @@ namespace Drudoca.Blog.DataAccess.Store
 
                 _logger.LogInformation("Found {count} *.md files in blog-posts folder", fileInfos.Length);
 
-                var result = new List<BlogPostData>(fileInfos.Length);
+                var result = new List<PostData>(fileInfos.Length);
                 foreach (var fileInfo in fileInfos)
                 {
                     var blogPost = await CreateBlogPostAsync(fileInfo);
@@ -53,11 +53,11 @@ namespace Drudoca.Blog.DataAccess.Store
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Could not load any blog posts");
-                return Array.Empty<BlogPostData>();
+                return Array.Empty<PostData>();
             }
         }
 
-        private async Task<BlogPostData?> CreateBlogPostAsync(FileInfo fileInfo)
+        private async Task<PostData?> CreateBlogPostAsync(FileInfo fileInfo)
         {
             try
             {
@@ -101,7 +101,7 @@ namespace Drudoca.Blog.DataAccess.Store
             }
         }
 
-        private BlogPostData? CreatePost(string fileName, Dictionary<string, string> headers, string markdown)
+        private PostData? CreatePost(string fileName, Dictionary<string, string> headers, string markdown)
         {
             bool valid = true;
 
@@ -163,7 +163,7 @@ namespace Drudoca.Blog.DataAccess.Store
                 return null;
             }
 
-            var result = new BlogPostData(title, author, publishedOn, isPublished, isListed, markdown);
+            var result = new PostData(fileName, title, author, publishedOn, isPublished, isListed, markdown);
             return result;
         }
 
