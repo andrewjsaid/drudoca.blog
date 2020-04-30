@@ -1,5 +1,8 @@
-﻿namespace Drudoca.Blog.Domain
+﻿using System.Diagnostics;
+
+namespace Drudoca.Blog.Domain
 {
+    [DebuggerDisplay("Page {PageNum}")]
     public class BlogPage
     {
 

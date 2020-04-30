@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Drudoca.Blog.Config;
 using Drudoca.Blog.Data;
 using Drudoca.Blog.DataAccess;
-using Markdig;
 using Microsoft.Extensions.Options;
 
 namespace Drudoca.Blog.Domain
@@ -14,15 +13,21 @@ namespace Drudoca.Blog.Domain
     {
         private readonly IPostRepository _postRepository;
         private readonly ICommentRepository _commentRepository;
+        private readonly IPostBuilder _postBuilder;
+        private readonly ICommentBuilder _commentBuilder;
         private readonly IOptions<BlogOptions> _options;
 
         public BlogManager(
             IPostRepository postRepository,
             ICommentRepository commentRepository,
+            IPostBuilder postBuilder,
+            ICommentBuilder commentBuilder,
             IOptions<BlogOptions> options)
         {
             _postRepository = postRepository;
             _commentRepository = commentRepository;
+            _postBuilder = postBuilder;
+            _commentBuilder = commentBuilder;
             _options = options;
         }
 
@@ -42,7 +47,7 @@ namespace Drudoca.Blog.Domain
 
         public async Task<BlogPage> GetPageAsync(int pageSize, int pageNum)
         {
-            if (pageNum <= 0) throw new ArgumentOutOfRangeException(nameof(pageNum), "pageNum must not be less than 0");
+            if (pageNum <= 0) throw new ArgumentOutOfRangeException(nameof(pageNum), "pageNum must not be less than 1");
 
             int skip = pageSize * (pageNum - 1);
 
@@ -77,7 +82,7 @@ namespace Drudoca.Blog.Domain
                 }
                 else
                 {
-                    var post = CreatePost(postData, null);
+                    var post = _postBuilder.Build(postData);
                     pagePosts.Add(post);
 
                     if (pagePosts.Count == pageSize)
@@ -107,7 +112,7 @@ namespace Drudoca.Blog.Domain
                     if (string.Equals(postSlug, slug, StringComparison.OrdinalIgnoreCase))
                     {
                         var comments = await _commentRepository.GetCommentsForPostAsync(postData.FileName);
-                        var post = CreatePost(postData, comments);
+                        var post = _postBuilder.Build(postData);
                         return post;
                     }
                 }
@@ -116,32 +121,13 @@ namespace Drudoca.Blog.Domain
             return null;
         }
 
-        private BlogPost CreatePost(PostData data, CommentData[]? comments)
+        public async Task<BlogComment[]> GetCommentsAsync(string postFileName)
         {
-            var title = UrlSlug.Slugify(data.Title);
-            var html = Markdown.ToHtml(data.Markdown);
+            var commentData = await _commentRepository.GetCommentsForPostAsync(postFileName);
+            
+            var results = _commentBuilder.BuildTree(commentData);
 
-            string? introHtml = null;
-
-            var mainSectionIndex = data.Markdown.IndexOf("\n[//]: # (Main Section)");
-            if (mainSectionIndex > -1)
-            {
-                var introMarkdown = data.Markdown.Substring(0, mainSectionIndex);
-                introHtml = Markdown.ToHtml(introMarkdown);
-            }
-
-            var result = new BlogPost(
-                data.Title,
-                data.Author,
-                data.PublishedOn,
-                data.IsPublished,
-                data.IsListed,
-                data.Markdown,
-                title,
-                html,
-                introHtml
-            );
-            return result;
+            return results;
         }
     }
 }

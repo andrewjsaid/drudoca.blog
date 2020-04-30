@@ -8,33 +8,36 @@ namespace Drudoca.Blog.Domain
     {
 
         public BlogPost(
+            string fileName,
             string title,
             string author,
             DateTime publishedOn,
             bool isPublished,
             bool isListed,
-            string markdown,
             string slug,
             string html,
             string? introHtml)
         {
+            FileName = fileName;
             Title = title;
             Author = author;
             PublishedOn = publishedOn;
             IsPublished = isPublished;
             IsListed = isListed;
             Slug = slug;
-            Markdown = markdown;
             Html = html;
             IntroHtml = introHtml;
         }
 
+        /// <summary>
+        /// Serves as an identifier for the post.
+        /// </summary>
+        public string FileName { get; }
         public string Title { get; }
         public string Author { get; }
         public DateTime PublishedOn { get; }
         public bool IsPublished { get; }
         public bool IsListed { get; }
-        public string Markdown { get; }
         public string Slug { get; }
         public string Html { get; }
         public string? IntroHtml { get; }

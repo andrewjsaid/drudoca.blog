@@ -7,5 +7,6 @@ namespace Drudoca.Blog.Domain
     {
         Task<BlogPage> GetPageAsync(int pageSize, int pageNum);
         Task<BlogPost?> GetPostAsync(DateTime published, string slug);
+        Task<BlogComment[]> GetCommentsAsync(string postFileName);
     }
 }

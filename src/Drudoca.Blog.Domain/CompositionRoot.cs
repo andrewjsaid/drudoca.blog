@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace Drudoca.Blog.Domain
 {
@@ -8,6 +7,8 @@ namespace Drudoca.Blog.Domain
         public static void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddTransient<IPostBuilder, PostBuilder>()
+                .AddTransient<ICommentBuilder, CommentBuilder>()
                 .AddTransient<IBlogManager, BlogManager>();
         }
     }

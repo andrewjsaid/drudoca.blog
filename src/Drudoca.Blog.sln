@@ -15,7 +15,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drudoca.Blog.Config", "Drud
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drudoca.Blog.Domain", "Drudoca.Blog.Domain\Drudoca.Blog.Domain.csproj", "{973B6B4D-74F3-4951-9AEC-27E0A4CAB1F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drudoca.Blog.DataAccess.Sql", "Drudoca.Blog.DataAccess.Sql\Drudoca.Blog.DataAccess.Sql.csproj", "{CD6A8E8A-DE9C-455E-8E75-24C16433A3A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drudoca.Blog.DataAccess.Sql", "Drudoca.Blog.DataAccess.Sql\Drudoca.Blog.DataAccess.Sql.csproj", "{CD6A8E8A-DE9C-455E-8E75-24C16433A3A6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0B367EF4-350F-4350-8CED-2F322517261E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drudoca.Blog.Domain.Tests", "Drudoca.Blog.Domain.Tests\Drudoca.Blog.Domain.Tests.csproj", "{D6EE25FA-2003-4FEB-8ECF-B5CBB746B7D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,9 +55,16 @@ Global
 		{CD6A8E8A-DE9C-455E-8E75-24C16433A3A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD6A8E8A-DE9C-455E-8E75-24C16433A3A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD6A8E8A-DE9C-455E-8E75-24C16433A3A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6EE25FA-2003-4FEB-8ECF-B5CBB746B7D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6EE25FA-2003-4FEB-8ECF-B5CBB746B7D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6EE25FA-2003-4FEB-8ECF-B5CBB746B7D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6EE25FA-2003-4FEB-8ECF-B5CBB746B7D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D6EE25FA-2003-4FEB-8ECF-B5CBB746B7D1} = {0B367EF4-350F-4350-8CED-2F322517261E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3A220764-1ECA-4ECA-BB4E-CFC9EC12910D}
