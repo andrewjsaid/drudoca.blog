@@ -96,7 +96,7 @@ namespace Drudoca.Blog.DataAccess.Store
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Could not create blog post from {FILE}", fileInfo.FullName);
+                _logger.LogError(ex, "Could not create blog post from {file}", fileInfo.FullName);
                 return null;
             }
         }

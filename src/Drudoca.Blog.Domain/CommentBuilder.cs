@@ -135,6 +135,7 @@ namespace Drudoca.Blog.Domain
             var result = new BlogComment(
                 data.Id,
                 data.Author,
+                data.Email,
                 data.PostedOnUtc,
                 html,
                 data.IsDeleted,

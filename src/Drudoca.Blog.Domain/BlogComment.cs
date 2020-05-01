@@ -9,6 +9,7 @@ namespace Drudoca.Blog.Domain
         public BlogComment(
             Guid id,
             string author,
+            string email,
             DateTime postedOnUtc,
             string html,
             bool isDeleted,
@@ -16,6 +17,7 @@ namespace Drudoca.Blog.Domain
         {
             Id = id;
             Author = author;
+            Email = email;
             PostedOnUtc = postedOnUtc;
             Html = html;
             IsDeleted = isDeleted;
@@ -24,6 +26,7 @@ namespace Drudoca.Blog.Domain
 
         public Guid Id { get; }
         public string Author { get; }
+        public string Email { get; }
         public DateTime PostedOnUtc { get; }
         public string Html { get; }
         public bool IsDeleted { get; }

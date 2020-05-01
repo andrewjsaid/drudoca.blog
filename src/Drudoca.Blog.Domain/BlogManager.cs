@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Drudoca.Blog.Config;
 using Drudoca.Blog.Data;
 using Drudoca.Blog.DataAccess;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Drudoca.Blog.Domain
@@ -16,19 +17,22 @@ namespace Drudoca.Blog.Domain
         private readonly IPostBuilder _postBuilder;
         private readonly ICommentBuilder _commentBuilder;
         private readonly IOptions<BlogOptions> _options;
+        private readonly ILogger _logger;
 
         public BlogManager(
             IPostRepository postRepository,
             ICommentRepository commentRepository,
             IPostBuilder postBuilder,
             ICommentBuilder commentBuilder,
-            IOptions<BlogOptions> options)
+            IOptions<BlogOptions> options,
+            ILogger<BlogManager> logger)
         {
             _postRepository = postRepository;
             _commentRepository = commentRepository;
             _postBuilder = postBuilder;
             _commentBuilder = commentBuilder;
             _options = options;
+            _logger = logger;
         }
 
         private bool ShowInListing(PostData post, bool showFuture)
@@ -74,7 +78,7 @@ namespace Drudoca.Blog.Domain
                 {
                     continue;
                 }
-                
+
                 // Keep skipping
                 if (skip > 0)
                 {
@@ -111,23 +115,72 @@ namespace Drudoca.Blog.Domain
                     var postSlug = UrlSlug.Slugify(postData.Title);
                     if (string.Equals(postSlug, slug, StringComparison.OrdinalIgnoreCase))
                     {
-                        var comments = await _commentRepository.GetCommentsForPostAsync(postData.FileName);
                         var post = _postBuilder.Build(postData);
                         return post;
                     }
                 }
             }
 
+            _logger.LogDebug("Post with date {date} and slug {slug} not found", published, slug);
             return null;
         }
 
         public async Task<BlogComment[]> GetCommentsAsync(string postFileName)
         {
-            var commentData = await _commentRepository.GetCommentsForPostAsync(postFileName);
-            
+            var commentData = await _commentRepository.GetByPostAsync(postFileName);
+
+            _logger.LogDebug("Found {count} comments for {post}", commentData.Length, postFileName);
+
             var results = _commentBuilder.BuildTree(commentData);
 
             return results;
+        }
+
+        public async Task CreateCommentAsync(string postFileName, Guid? parentId, string author, string email, string markdown)
+        {
+            if (parentId != null)
+            {
+                var parent = await _commentRepository.GetAsync(parentId.Value);
+                if (parent == null)
+                {
+                    _logger.LogWarning("Comment {id} not found", parentId);
+                    return;
+                }
+
+                if (parent.PostFileName != postFileName)
+                {
+                    _logger.LogWarning("Comment {id} and post {post} do not match", parentId, postFileName);
+                    return;
+                }
+
+                if (parent.IsDeleted)
+                {
+                    _logger.LogDebug("Attempted to reply to deleted comment {id}", parentId);
+                    return;
+                }
+            }
+
+            var comment = new CommentData(
+                Guid.NewGuid(),
+                postFileName,
+                parentId,
+                author,
+                email,
+                markdown,
+                DateTime.UtcNow,
+                false);
+
+            await _commentRepository.CreateAsync(comment);
+
+            _logger.LogDebug("Created comment {id} for post {post} with author: {author}",
+                comment.Id, comment.PostFileName, comment.Author);
+        }
+
+        public async Task DeleteCommentAsync(Guid id)
+        {
+            await _commentRepository.MarkDeletedAsync(id);
+
+            _logger.LogDebug("Marked comment {id} as deleted (if it exists)");
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Drudoca.Blog.Data;
 using Dapper;
@@ -24,8 +23,8 @@ namespace Drudoca.Blog.DataAccess.Sql
             }
 
             const string sql = @"
-                INSERT INTO Comments ( Id, PostFileName, ParentId, UserId, Author, Markdown, PostedOnUtc, IsDeleted )
-                VALUES ( :id, :postFileName, :parentId, :author, :markdown, :postedOnUtc, :isDeleted )
+                INSERT INTO Comments ( Id, PostFileName, ParentId, UserId, Author, Email, Markdown, PostedOnUtc, IsDeleted )
+                VALUES ( :id, :postFileName, :parentId, :author, :email, :markdown, :postedOnUtc, :isDeleted )
             ";
 
             using var connection = await _connectionFactory.CreateConnectionAsync();
@@ -33,10 +32,28 @@ namespace Drudoca.Blog.DataAccess.Sql
             await connection.ExecuteAsync(sql, comment);
         }
 
-        public async Task<CommentData[]> GetCommentsForPostAsync(string postFileName)
+        public async Task<CommentData?> GetAsync(Guid id)
         {
             const string sql = @"
-                SELECT Id, PostFileName, ParentId, Author, Markdown, PostedOnUtc, IsDeleted
+                SELECT Id, PostFileName, ParentId, Author, Email, Markdown, PostedOnUtc, IsDeleted
+                FROM   Comments
+                WHERE  Id = :id
+            ";
+
+            using var connection = await _connectionFactory.CreateConnectionAsync();
+
+            var query = await connection.QueryAsync<CommentData>(
+                sql,
+                new { id });
+
+            var result = query.FirstOrDefault();
+            return result;
+        }
+
+        public async Task<CommentData[]> GetByPostAsync(string postFileName)
+        {
+            const string sql = @"
+                SELECT Id, PostFileName, ParentId, Author, Email, Markdown, PostedOnUtc, IsDeleted
                 FROM   Comments
                 WHERE  PostFileName = :postFileName
             ";
@@ -45,13 +62,25 @@ namespace Drudoca.Blog.DataAccess.Sql
 
             var query = await connection.QueryAsync<CommentData>(
                 sql,
-                new
-                {
-                    postFileName = postFileName
-                });
+                new { postFileName });
 
             var results = query.ToArray();
             return results;
+        }
+
+        public async Task MarkDeletedAsync(Guid id)
+        {
+            const string sql = @"
+                UPDATE Comments
+                SET    IsDeleted = 1
+                WHERE  Id = :id
+            ";
+
+            using var connection = await _connectionFactory.CreateConnectionAsync();
+
+            await connection.ExecuteAsync(
+                sql,
+                new { id });
         }
     }
 }

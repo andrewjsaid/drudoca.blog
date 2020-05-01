@@ -9,6 +9,7 @@ namespace Drudoca.Blog.Data
             string postFileName,
             Guid? parentId,
             string author,
+            string email,
             string markdown,
             DateTime postedOnUtc,
             bool isDeleted)
@@ -17,6 +18,7 @@ namespace Drudoca.Blog.Data
             PostFileName = postFileName;
             ParentId = parentId;
             Author = author;
+            Email = email;
             Markdown = markdown;
             PostedOnUtc = postedOnUtc;
             IsDeleted = isDeleted;
@@ -26,6 +28,7 @@ namespace Drudoca.Blog.Data
         public string PostFileName { get; }
         public Guid? ParentId { get; }
         public string Author { get; }
+        public string Email { get; }
         public string Markdown { get; }
         public DateTime PostedOnUtc { get; }
         public bool IsDeleted { get; }

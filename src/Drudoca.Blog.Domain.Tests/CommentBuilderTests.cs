@@ -165,6 +165,7 @@ namespace Drudoca.Blog.Domain.Tests
                     _fileName,
                     _parent,
                     author,
+                    $"{author}@drudoca.com",
                     markdown,
                     DateTime.UtcNow.AddMinutes(_testClass._comments.Count), // Otherwise they all have the same timestamp
                     false);
