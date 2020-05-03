@@ -1,0 +1,21 @@
+﻿@model BlogComment
+
+<div class="border p-3 shadow-sm mb-2">
+    <div>
+        <h3 class="comment-author d-inline-block"><a id="@($"c{Model.Id}")">@Model.Author</a></h3>
+        <span class="ml-2 comment-date">@Model.PostedOnUtc.ToString("g")</span>
+    </div>
+    <div class="comment-md">
+        @Html.Raw(Model.Html)
+    </div>
+
+    @if (Model.Replies != null)
+    {
+        <div class="replies">
+            @foreach (var reply in Model.Replies)
+            {
+                <partial name="CommentPartial" model="reply" />
+            }
+        </div>
+    }
+</div>

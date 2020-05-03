@@ -7,13 +7,13 @@ namespace Drudoca.Blog.Domain
     public class BlogComment
     {
         public BlogComment(
-            Guid id,
+            long id,
             string author,
             string email,
             DateTime postedOnUtc,
             string html,
             bool isDeleted,
-            BlogComment[]? children)
+            BlogComment[]? replies)
         {
             Id = id;
             Author = author;
@@ -21,15 +21,15 @@ namespace Drudoca.Blog.Domain
             PostedOnUtc = postedOnUtc;
             Html = html;
             IsDeleted = isDeleted;
-            Children = children;
+            Replies = replies;
         }
 
-        public Guid Id { get; }
+        public long Id { get; }
         public string Author { get; }
         public string Email { get; }
         public DateTime PostedOnUtc { get; }
         public string Html { get; }
         public bool IsDeleted { get; }
-        public BlogComment[]? Children { get; }
+        public BlogComment[]? Replies { get; }
     }
 }

@@ -5,9 +5,9 @@ namespace Drudoca.Blog.Data
     public class CommentData
     {
         public CommentData(
-            Guid id,
+            long id,
             string postFileName,
-            Guid? parentId,
+            long? parentId,
             string author,
             string email,
             string markdown,
@@ -24,9 +24,9 @@ namespace Drudoca.Blog.Data
             IsDeleted = isDeleted;
         }
 
-        public Guid Id { get; }
+        public long Id { get; }
         public string PostFileName { get; }
-        public Guid? ParentId { get; }
+        public long? ParentId { get; }
         public string Author { get; }
         public string Email { get; }
         public string Markdown { get; }

@@ -9,11 +9,11 @@ namespace Drudoca.Blog.Web.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly IBlogManager _blogManager;
+        private readonly IBlogService _blogManager;
         private readonly IOptions<BlogOptions> _blogOptions;
 
         public IndexModel(
-            IBlogManager blogManager,
+            IBlogService blogManager,
             IOptions<BlogOptions> blogOptions)
         {
             _blogManager = blogManager;

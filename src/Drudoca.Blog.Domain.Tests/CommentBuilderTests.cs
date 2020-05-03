@@ -134,13 +134,13 @@ namespace Drudoca.Blog.Domain.Tests
 
             public CommentAssertions HasChildren(int n)
             {
-                Assert.AreEqual(n, (_result.Children?.Length).GetValueOrDefault());
+                Assert.AreEqual(n, (_result.Replies?.Length).GetValueOrDefault());
                 return this;
             }
 
             public CommentAssertions AndChild(int n, Action<CommentAssertions> f)
             {
-                f(new CommentAssertions(_result.Children![n]));
+                f(new CommentAssertions(_result.Replies![n]));
                 return this;
             }
         }
@@ -148,11 +148,11 @@ namespace Drudoca.Blog.Domain.Tests
         private class CommentTreeFluent
         {
             private readonly CommentBuilderTests _testClass;
-            private readonly Guid? _parent;
+            private readonly long? _parent;
 
             public CommentTreeFluent(
                 CommentBuilderTests testClass,
-                Guid? parent)
+                long? parent)
             {
                 _testClass = testClass;
                 _parent = parent;
@@ -161,7 +161,7 @@ namespace Drudoca.Blog.Domain.Tests
             public CommentTreeFluent GivenAComment(string author, string markdown, Action<CommentTreeFluent>? setupChildren = null)
             {
                 var comment = new CommentData(
-                    Guid.NewGuid(),
+                    0,
                     _fileName,
                     _parent,
                     author,

@@ -15,24 +15,26 @@ namespace Drudoca.Blog.DataAccess.Sql
             _connectionFactory = connectionFactory;
         }
 
-        public async Task CreateAsync(CommentData comment)
+        public async Task<long> CreateAsync(CommentData comment)
         {
-            if (comment.Id == default)
+            if (comment.Id != default)
             {
-                throw new ArgumentException("Comment must have an id set.");
+                throw new ArgumentException("Comment must not have an id set.");
             }
 
             const string sql = @"
-                INSERT INTO Comments ( Id, PostFileName, ParentId, UserId, Author, Email, Markdown, PostedOnUtc, IsDeleted )
-                VALUES ( :id, :postFileName, :parentId, :author, :email, :markdown, :postedOnUtc, :isDeleted )
+                INSERT INTO Comments ( PostFileName, ParentId, Author, Email, Markdown, PostedOnUtc, IsDeleted )
+                VALUES ( :postFileName, :parentId, :author, :email, :markdown, :postedOnUtc, :isDeleted )
             ";
 
             using var connection = await _connectionFactory.CreateConnectionAsync();
 
             await connection.ExecuteAsync(sql, comment);
+
+            return ((System.Data.SQLite.SQLiteConnection)connection).LastInsertRowId;
         }
 
-        public async Task<CommentData?> GetAsync(Guid id)
+        public async Task<CommentData?> GetAsync(long id)
         {
             const string sql = @"
                 SELECT Id, PostFileName, ParentId, Author, Email, Markdown, PostedOnUtc, IsDeleted
@@ -68,7 +70,7 @@ namespace Drudoca.Blog.DataAccess.Sql
             return results;
         }
 
-        public async Task MarkDeletedAsync(Guid id)
+        public async Task MarkDeletedAsync(long id)
         {
             const string sql = @"
                 UPDATE Comments

@@ -10,7 +10,7 @@ using Microsoft.Extensions.Options;
 
 namespace Drudoca.Blog.Domain
 {
-    internal class BlogManager : IBlogManager
+    internal class BlogService : IBlogService
     {
         private readonly IPostRepository _postRepository;
         private readonly ICommentRepository _commentRepository;
@@ -19,13 +19,13 @@ namespace Drudoca.Blog.Domain
         private readonly IOptions<BlogOptions> _options;
         private readonly ILogger _logger;
 
-        public BlogManager(
+        public BlogService(
             IPostRepository postRepository,
             ICommentRepository commentRepository,
             IPostBuilder postBuilder,
             ICommentBuilder commentBuilder,
             IOptions<BlogOptions> options,
-            ILogger<BlogManager> logger)
+            ILogger<BlogService> logger)
         {
             _postRepository = postRepository;
             _commentRepository = commentRepository;
@@ -136,7 +136,7 @@ namespace Drudoca.Blog.Domain
             return results;
         }
 
-        public async Task CreateCommentAsync(string postFileName, Guid? parentId, string author, string email, string markdown)
+        public async Task<long?> CreateCommentAsync(string postFileName, long? parentId, string author, string email, string markdown)
         {
             if (parentId != null)
             {
@@ -144,24 +144,24 @@ namespace Drudoca.Blog.Domain
                 if (parent == null)
                 {
                     _logger.LogWarning("Comment {id} not found", parentId);
-                    return;
+                    return null;
                 }
 
                 if (parent.PostFileName != postFileName)
                 {
                     _logger.LogWarning("Comment {id} and post {post} do not match", parentId, postFileName);
-                    return;
+                    return null;
                 }
 
                 if (parent.IsDeleted)
                 {
                     _logger.LogDebug("Attempted to reply to deleted comment {id}", parentId);
-                    return;
+                    return null;
                 }
             }
 
             var comment = new CommentData(
-                Guid.NewGuid(),
+                0,
                 postFileName,
                 parentId,
                 author,
@@ -170,13 +170,14 @@ namespace Drudoca.Blog.Domain
                 DateTime.UtcNow,
                 false);
 
-            await _commentRepository.CreateAsync(comment);
+            var id = await _commentRepository.CreateAsync(comment);
 
-            _logger.LogDebug("Created comment {id} for post {post} with author: {author}",
-                comment.Id, comment.PostFileName, comment.Author);
+            _logger.LogDebug("Created comment {id} for post {post} with author: {author}", id, comment.PostFileName, comment.Author);
+
+            return id;
         }
 
-        public async Task DeleteCommentAsync(Guid id)
+        public async Task DeleteCommentAsync(long id)
         {
             await _commentRepository.MarkDeletedAsync(id);
 

@@ -9,7 +9,7 @@ namespace Drudoca.Blog.Domain
             services
                 .AddTransient<IPostBuilder, PostBuilder>()
                 .AddTransient<ICommentBuilder, CommentBuilder>()
-                .AddTransient<IBlogManager, BlogManager>();
+                .AddTransient<IBlogService, BlogService>();
         }
     }
 }

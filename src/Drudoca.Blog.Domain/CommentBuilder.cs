@@ -12,7 +12,7 @@ namespace Drudoca.Blog.Domain
         {
             var edges = GetEdges(commentData);
 
-            var internalNodes = new Dictionary<Guid, List<BlogComment>>(); // internal nodes which have already been converted
+            var internalNodes = new Dictionary<long, List<BlogComment>>(); // internal nodes which have already been converted
             var roots = new List<BlogComment>(); // root nodes which have already been converted
 
             var postedOnUtcComparer = new PostedOnUtcComparer();
@@ -77,8 +77,8 @@ namespace Drudoca.Blog.Domain
         }
 
         private void AddToInternalNodes(
-            Dictionary<Guid, List<BlogComment>> nodes,
-            Guid parentId,
+            Dictionary<long, List<BlogComment>> nodes,
+            long parentId,
             BlogComment domainObject)
         {
             if (!nodes.TryGetValue(parentId, out var parentDomainList))
@@ -89,7 +89,7 @@ namespace Drudoca.Blog.Domain
             parentDomainList.Add(domainObject);
         }
 
-        private static BlogComment[]? GetLeaves(Guid id, Dictionary<Guid, List<BlogComment>> leaves)
+        private static BlogComment[]? GetLeaves(long id, Dictionary<long, List<BlogComment>> leaves)
         {
             if (!leaves.TryGetValue(id, out List<BlogComment> domainChildren))
                 return null;
@@ -104,9 +104,9 @@ namespace Drudoca.Blog.Domain
         /// Gets all edges from the data.
         /// All comments have a key in the result.
         /// </summary>
-        private static Dictionary<Guid, List<CommentData>> GetEdges(CommentData[] commentData)
+        private static Dictionary<long, List<CommentData>> GetEdges(CommentData[] commentData)
         {
-            var edges = new Dictionary<Guid, List<CommentData>>();
+            var edges = new Dictionary<long, List<CommentData>>();
             foreach (var cd in commentData)
             {
                 if (!edges.TryGetValue(cd.Id, out var _))
