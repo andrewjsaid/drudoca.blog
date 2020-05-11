@@ -115,3 +115,8 @@ small.super-small {
 .post-body h3, h4, h5, h6 {
     font-size: 1rem;
 }
+
+.post-body p {
+    text-align: justify;
+
+}
