@@ -11,6 +11,6 @@ namespace Drudoca.Blog.Web.Models
 
         public DateTime GetDate() => new DateTime(Year, Month, Day);
 
-        public override string ToString() => $"{Year}/{Month}/{Day}/{Slug}";
+        public override string ToString() => $"/{Year}/{Month}/{Day}/{Slug}";
     }
 }

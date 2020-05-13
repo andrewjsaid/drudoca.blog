@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drudoca.Blog.DataAccess.Sql
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0B367EF4-350F-4350-8CED-2F322517261E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drudoca.Blog.Domain.Tests", "Drudoca.Blog.Domain.Tests\Drudoca.Blog.Domain.Tests.csproj", "{D6EE25FA-2003-4FEB-8ECF-B5CBB746B7D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drudoca.Blog.Domain.Tests", "Drudoca.Blog.Domain.Tests\Drudoca.Blog.Domain.Tests.csproj", "{D6EE25FA-2003-4FEB-8ECF-B5CBB746B7D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
