@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 namespace Drudoca.Blog.Web
 {
@@ -24,6 +25,10 @@ namespace Drudoca.Blog.Web
             services.Configure<BlogOptions>(Configuration.GetSection("Blog"));
             services.Configure<DatabaseOptions>(Configuration.GetSection("Database"));
             services.Configure<StoreOptions>(Configuration.GetSection("Store"));
+
+            services.AddTransient(r => r.GetRequiredService<IOptions<BlogOptions>>().Value);
+            services.AddTransient(r => r.GetRequiredService<IOptions<DatabaseOptions>>().Value);
+            services.AddTransient(r => r.GetRequiredService<IOptions<StoreOptions>>().Value);
 
             Drudoca.Blog.DataAccess.Store.CompositionRoot.ConfigureServices(services);
             Drudoca.Blog.DataAccess.Sql.CompositionRoot.ConfigureServices(services);

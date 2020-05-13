@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Drudoca.Blog.Config;
 using Drudoca.Blog.Data;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace Drudoca.Blog.DataAccess.Store
 {
@@ -13,11 +12,11 @@ namespace Drudoca.Blog.DataAccess.Store
     {
 
         private readonly ILogger _logger;
-        private readonly IOptionsMonitor<StoreOptions> _storeOptions;
+        private readonly StoreOptions _storeOptions;
 
         public BlogStore(
             ILogger<BlogStore> logger,
-            IOptionsMonitor<StoreOptions> storeOptions)
+            StoreOptions storeOptions)
         {
             _logger = logger;
             _storeOptions = storeOptions;
@@ -27,7 +26,7 @@ namespace Drudoca.Blog.DataAccess.Store
         {
             try
             {
-                var configPath = _storeOptions.CurrentValue.BlogFolder;
+                var configPath = _storeOptions.BlogFolder;
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", configPath);
 
                 _logger.LogDebug("Loading files from {path}", path);

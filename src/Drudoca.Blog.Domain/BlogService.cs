@@ -6,7 +6,6 @@ using Drudoca.Blog.Config;
 using Drudoca.Blog.Data;
 using Drudoca.Blog.DataAccess;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace Drudoca.Blog.Domain
 {
@@ -16,7 +15,7 @@ namespace Drudoca.Blog.Domain
         private readonly ICommentRepository _commentRepository;
         private readonly IPostBuilder _postBuilder;
         private readonly ICommentBuilder _commentBuilder;
-        private readonly IOptions<BlogOptions> _options;
+        private readonly BlogOptions _options;
         private readonly ILogger _logger;
 
         public BlogService(
@@ -24,7 +23,7 @@ namespace Drudoca.Blog.Domain
             ICommentRepository commentRepository,
             IPostBuilder postBuilder,
             ICommentBuilder commentBuilder,
-            IOptions<BlogOptions> options,
+            BlogOptions options,
             ILogger<BlogService> logger)
         {
             _postRepository = postRepository;
@@ -63,7 +62,7 @@ namespace Drudoca.Blog.Domain
             int count = 0;
             bool stop = false;
 
-            var showFuture = _options.Value.ListFuturePosts;
+            var showFuture = _options.ListFuturePosts;
 
             await foreach (var postData in _postRepository.GetAllPostsAsync())
             {

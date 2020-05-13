@@ -4,7 +4,6 @@ using Drudoca.Blog.Config;
 using Drudoca.Blog.Data;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace Drudoca.Blog.DataAccess.Store
 {
@@ -13,13 +12,13 @@ namespace Drudoca.Blog.DataAccess.Store
         private static readonly object _cacheKey = new object();
 
         private readonly IMemoryCache _memoryCache;
-        private readonly IOptionsMonitor<BlogOptions> _blogOptions;
+        private readonly BlogOptions _blogOptions;
 
         public CachedBlogStore(
             IMemoryCache memoryCache,
             ILogger<BlogStore> logger,
-            IOptionsMonitor<StoreOptions> storeOptions,
-            IOptionsMonitor<BlogOptions> blogOptions)
+            StoreOptions storeOptions,
+            BlogOptions blogOptions)
             : base(logger, storeOptions)
         {
             _memoryCache = memoryCache;
@@ -31,7 +30,7 @@ namespace Drudoca.Blog.DataAccess.Store
             if (!_memoryCache.TryGetValue<CachedBlogPosts>(_cacheKey, out var cacheItem))
             {
                 var posts = await base.GetAllAsync();
-                var cacheMins = _blogOptions.CurrentValue.BlogCacheDurationMins;
+                var cacheMins = _blogOptions.BlogCacheDurationMins;
 
                 if (cacheMins == 0)
                 {
