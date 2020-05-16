@@ -1,4 +1,6 @@
 using Drudoca.Blog.Config;
+using Drudoca.Blog.Web.Extensions;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,11 +36,15 @@ namespace Drudoca.Blog.Web
 
             services.Configure<BlogOptions>(Configuration.GetSection("Blog"));
             services.Configure<DatabaseOptions>(Configuration.GetSection("Database"));
+            services.Configure<SiteOptions>(Configuration.GetSection("Site"));
             services.Configure<StoreOptions>(Configuration.GetSection("Store"));
 
             services.AddTransient(r => r.GetRequiredService<IOptions<BlogOptions>>().Value);
             services.AddTransient(r => r.GetRequiredService<IOptions<DatabaseOptions>>().Value);
+            services.AddTransient(r => r.GetRequiredService<IOptions<SiteOptions>>().Value);
             services.AddTransient(r => r.GetRequiredService<IOptions<StoreOptions>>().Value);
+
+            services.AddTransient<IClaimsTransformation, SiteAdmininstratorClaimsTransformation>();
 
             Drudoca.Blog.DataAccess.Store.CompositionRoot.ConfigureServices(services);
             Drudoca.Blog.DataAccess.Sql.CompositionRoot.ConfigureServices(services);
