@@ -113,15 +113,24 @@ small.super-small {
 .comments {
     margin-top: 2rem;
 }
-
     .comments h2 {
         font-size: 1.5rem;
     }
 
-    .comments h3.comment-author {
-        font-size: 1.25rem;
+    .comments .comment {
+        margin-top: 2rem;
+        padding-left: 0.5rem;
+        border-left: 3px solid #0003;
     }
 
-    .comments .comment-date {
+    .comment h3.comment-author {
+        font-size: 1rem;
+    }
+
+    .comment .comment-md {
+        padding-left: 0.5rem;
+    }
+
+    .comment .comment-date {
         font-weight: 300;
     }
