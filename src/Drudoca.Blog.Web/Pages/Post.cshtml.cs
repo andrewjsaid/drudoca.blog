@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Drudoca.Blog.Domain;
 using Drudoca.Blog.Web.Models;
@@ -21,6 +22,9 @@ namespace Drudoca.Blog.Web.Pages
         [BindProperty(SupportsGet = true), FromRoute]
         public PostUrlModel PostUrl { get; set; } = default!;
 
+        public string AuthorName => User.Identity.Name!;
+        public string AuthorEmail => User.FindFirstValue(ClaimTypes.Email)!;
+
         [BindProperty]
         public PostPageCommentForm? CommentForm { get; set; }
 
@@ -42,6 +46,10 @@ namespace Drudoca.Blog.Web.Pages
 
         public async Task<IActionResult> OnPost()
         {
+            // Can't use authorization filters on single methods
+            if (!User.Identity.IsAuthenticated)
+                return Challenge();
+
             Post = await _blogManager.GetPostAsync(PostUrl.GetDate(), PostUrl.Slug);
             if (Post == null)
             {
@@ -55,8 +63,8 @@ namespace Drudoca.Blog.Web.Pages
                 var id = await _blogManager.CreateCommentAsync(
                     Post.FileName,
                     form.ParentId,
-                    form.Author,
-                    form.Email,
+                    AuthorName,
+                    AuthorEmail,
                     form.Markdown);
 
                 if (id != null)
