@@ -1,9 +1,13 @@
 using Drudoca.Blog.Config;
+using Drudoca.Blog.Web.Extensions;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 namespace Drudoca.Blog.Web
 {
@@ -19,11 +23,31 @@ namespace Drudoca.Blog.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                    .AddCookie()
+                    .AddGoogle(options =>
+                    {
+                        var googleAuthNSection = Configuration.GetSection("Authentication:Google");
+                        options.ClientId = googleAuthNSection["ClientId"];
+                        options.ClientSecret = googleAuthNSection["ClientSecret"];
+                    });
+
             services.AddRazorPages();
 
             services.Configure<BlogOptions>(Configuration.GetSection("Blog"));
+            services.Configure<DatabaseOptions>(Configuration.GetSection("Database"));
+            services.Configure<SiteOptions>(Configuration.GetSection("Site"));
+            services.Configure<StoreOptions>(Configuration.GetSection("Store"));
+
+            services.AddTransient(r => r.GetRequiredService<IOptions<BlogOptions>>().Value);
+            services.AddTransient(r => r.GetRequiredService<IOptions<DatabaseOptions>>().Value);
+            services.AddTransient(r => r.GetRequiredService<IOptions<SiteOptions>>().Value);
+            services.AddTransient(r => r.GetRequiredService<IOptions<StoreOptions>>().Value);
+
+            services.AddTransient<IClaimsTransformation, SiteAdmininstratorClaimsTransformation>();
 
             Drudoca.Blog.DataAccess.Store.CompositionRoot.ConfigureServices(services);
+            Drudoca.Blog.DataAccess.Sql.CompositionRoot.ConfigureServices(services);
             Drudoca.Blog.Domain.CompositionRoot.ConfigureServices(services);
         }
 
@@ -41,7 +65,7 @@ namespace Drudoca.Blog.Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -59,10 +83,12 @@ namespace Drudoca.Blog.Web
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllers();
                 endpoints.MapRazorPages();
             });
         }

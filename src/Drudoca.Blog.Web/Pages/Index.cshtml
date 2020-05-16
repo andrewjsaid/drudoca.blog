@@ -9,7 +9,7 @@
     @foreach (var post in blogPage.Posts)
     {
     <div class="border p-3 shadow mb-3">
-        <partial name="Shared/_BlogPostPartial" model="(post, false)" />
+        <partial name="PostPartial" model="(post, false)" />
     </div>
     }
 </div>

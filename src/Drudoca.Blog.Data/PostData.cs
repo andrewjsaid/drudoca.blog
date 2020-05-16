@@ -4,10 +4,11 @@ using System.Diagnostics;
 namespace Drudoca.Blog.Data
 {
     [DebuggerDisplay("{Title}")]
-    public class BlogPostData
+    public class PostData
     {
 
-        public BlogPostData(
+        public PostData(
+            string fileName,
             string title,
             string author,
             DateTime publishedOn,
@@ -15,6 +16,7 @@ namespace Drudoca.Blog.Data
             bool isListed,
             string markdown)
         {
+            FileName = fileName;
             Title = title;
             Author = author;
             PublishedOn = publishedOn;
@@ -23,6 +25,7 @@ namespace Drudoca.Blog.Data
             Markdown = markdown;
         }
 
+        public string FileName { get; }
         public string Title { get; }
         public string Author { get; }
         public DateTime PublishedOn { get; }

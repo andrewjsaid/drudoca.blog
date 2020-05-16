@@ -3,8 +3,8 @@ using Drudoca.Blog.Data;
 
 namespace Drudoca.Blog.DataAccess.Store
 {
-    internal class MostRecentFirstPostComparer : IComparer<BlogPostData>
+    internal class MostRecentFirstPostComparer : IComparer<PostData>
     {
-        public int Compare(BlogPostData x, BlogPostData y) => y.PublishedOn.CompareTo(x.PublishedOn);
+        public int Compare(PostData x, PostData y) => y.PublishedOn.CompareTo(x.PublishedOn);
     }
 }
