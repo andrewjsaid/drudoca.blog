@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using Drudoca.Blog.Data;
-using Markdig;
 
 namespace Drudoca.Blog.Domain
 {
     internal class CommentBuilder : ICommentBuilder
     {
+        private readonly IMarkdownParser _markdownParser;
+
+        public CommentBuilder(IMarkdownParser markdownParser)
+        {
+            _markdownParser = markdownParser;
+        }
 
         public BlogComment[] BuildTree(CommentData[] commentData)
         {
@@ -130,7 +135,7 @@ namespace Drudoca.Blog.Domain
 
         private BlogComment BuildComment(CommentData data, BlogComment[]? children)
         {
-            var html = Markdown.ToHtml(data.Markdown);
+            var html = _markdownParser.ToCommentHtml(data.Markdown);
 
             var result = new BlogComment(
                 data.Id,

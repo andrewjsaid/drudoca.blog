@@ -1,15 +1,20 @@
 ﻿using Drudoca.Blog.Data;
-using Markdig;
 
 namespace Drudoca.Blog.Domain
 {
     internal class PostBuilder : IPostBuilder
     {
+        private readonly IMarkdownParser _markdownParser;
+
+        public PostBuilder(IMarkdownParser markdownParser)
+        {
+            _markdownParser = markdownParser;
+        }
 
         public BlogPost Build(PostData data)
         {
             var title = UrlSlug.Slugify(data.Title);
-            var html = Markdown.ToHtml(data.Markdown);
+            var html = _markdownParser.ToPostHtml(data.Markdown);
 
             string? introHtml = null;
 
@@ -17,7 +22,7 @@ namespace Drudoca.Blog.Domain
             if (mainSectionIndex > -1)
             {
                 var introMarkdown = data.Markdown.Substring(0, mainSectionIndex);
-                introHtml = Markdown.ToHtml(introMarkdown);
+                introHtml = _markdownParser.ToPostHtml(introMarkdown);
             }
 
             var result = new BlogPost(

@@ -16,7 +16,7 @@ namespace Drudoca.Blog.Domain.Tests
         private CommentTreeFluent Tree => new CommentTreeFluent(this, null);
         private CommentAssertions ThenRootComment(int i) => new CommentAssertions(_results![i]);
 
-        private string ToHtml(string markdown) => $"<p>{markdown}</p>";
+        private int _nextCommentId = 1;
 
         [TestMethod]
         public void No_Comments()
@@ -37,7 +37,7 @@ namespace Drudoca.Blog.Domain.Tests
 
             ThenRootComment(0)
                 .HasAuthor("andrew")
-                .HasHtml(ToHtml("hello"))
+                .HasHtml("hello")
                 .HasChildren(0);
         }
 
@@ -55,12 +55,12 @@ namespace Drudoca.Blog.Domain.Tests
 
             ThenRootComment(0)
                 .HasAuthor("andrew")
-                .HasHtml(ToHtml("hello1"))
+                .HasHtml("hello1")
                 .HasChildren(0);
 
             ThenRootComment(1)
                 .HasAuthor("bob")
-                .HasHtml(ToHtml("hello2"))
+                .HasHtml("hello2")
                 .HasChildren(0);
         }
 
@@ -100,7 +100,7 @@ namespace Drudoca.Blog.Domain.Tests
 
         private void WhenBuilt()
         {
-            var sut = new CommentBuilder();
+            var sut = new CommentBuilder(new MockMarkdownParser());
             _results = sut.BuildTree(_comments.ToArray());
         }
 
@@ -161,7 +161,7 @@ namespace Drudoca.Blog.Domain.Tests
             public CommentTreeFluent GivenAComment(string author, string markdown, Action<CommentTreeFluent>? setupChildren = null)
             {
                 var comment = new CommentData(
-                    0,
+                    _testClass._nextCommentId++,
                     _fileName,
                     _parent,
                     author,
