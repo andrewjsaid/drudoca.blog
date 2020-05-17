@@ -65,7 +65,13 @@ namespace Drudoca.Blog.Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            
+
+            // As long as we are deploying behind a reverse proxy, we need to allow this. REMOVE this once we support being an external-facing service.
+            var forwardedHeadersOptions = new ForwardedHeadersOptions { ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.All };
+            forwardedHeadersOptions.KnownProxies.Clear();   // Don't know the docker address that nginx will use
+            forwardedHeadersOptions.KnownNetworks.Clear();  // Don't know the docker address that nginx will use
+            app.UseForwardedHeaders(forwardedHeadersOptions);
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
