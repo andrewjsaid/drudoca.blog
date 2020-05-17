@@ -14,6 +14,19 @@
     <link rel="stylesheet" href="~/css/site.css" />
 
     <script src="https://kit.fontawesome.com/05e2a11eb5.js" crossorigin="anonymous"></script>
+
+    <environment names="Production">
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-166874827-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+
+            gtag('config', 'UA-166874827-1');
+        </script>
+    </environment>
+
 </head>
 <body>
     <header>
