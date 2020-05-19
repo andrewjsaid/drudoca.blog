@@ -7,22 +7,22 @@ namespace Drudoca.Blog.DataAccess.Store
 {
     internal class FilePostRepository : IPostRepository
     {
-        private readonly IBlogStore _store;
+        private readonly IMarkdownStore<PostData> _blogPostStore;
 
-        public FilePostRepository(IBlogStore store)
+        public FilePostRepository(IMarkdownStore<PostData> blogPostStore)
         {
-            _store = store;
+            _blogPostStore = blogPostStore;
         }
 
         public async Task<int> CountPostsAsync()
         {
-            var posts = await _store.GetAllAsync();
+            var posts = await _blogPostStore.GetAllAsync();
             return posts.Length;
         }
 
         public async IAsyncEnumerable<PostData> GetAllPostsAsync()
         {
-            var posts = await _store.GetAllAsync();
+            var posts = await _blogPostStore.GetAllAsync();
 
             foreach (var post in posts)
             {
@@ -32,7 +32,7 @@ namespace Drudoca.Blog.DataAccess.Store
 
         public async IAsyncEnumerable<PostData> GetPostsByDateAsync(DateTime published)
         {
-            var posts = await _store.GetAllAsync();
+            var posts = await _blogPostStore.GetAllAsync();
 
             foreach (var post in posts)
             {

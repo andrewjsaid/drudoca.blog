@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Drudoca.Blog.Data;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Drudoca.Blog.DataAccess.Store
 {
@@ -7,8 +8,11 @@ namespace Drudoca.Blog.DataAccess.Store
         public static void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddTransient<IBlogStore, CachedBlogStore>()
-                .AddTransient<IPostRepository, FilePostRepository>();
+                .AddTransient<IMarkdownFileConverter<PostData>, BlogPostFileConverter>()
+                .AddTransient<IMarkdownStore<PostData>, CachedMarkdownStore<PostData>>()
+
+                .AddTransient<IPostRepository, FilePostRepository>()
+                .AddTransient<IMarkdownDirectoryReader, MarkdownDirectoryReader>();
         }
     }
 }
