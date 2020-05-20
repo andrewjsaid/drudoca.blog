@@ -1,4 +1,5 @@
-﻿using Drudoca.Blog.Data;
+﻿using System;
+using Drudoca.Blog.Data;
 
 namespace Drudoca.Blog.Domain
 {
@@ -18,7 +19,7 @@ namespace Drudoca.Blog.Domain
 
             string? introHtml = null;
 
-            var mainSectionIndex = data.Markdown.IndexOf("\n[//]: # (Main Section)");
+            var mainSectionIndex = data.Markdown.IndexOf("\n[//]: # (Main Section)", StringComparison.Ordinal);
             if (mainSectionIndex > -1)
             {
                 var introMarkdown = data.Markdown.Substring(0, mainSectionIndex);

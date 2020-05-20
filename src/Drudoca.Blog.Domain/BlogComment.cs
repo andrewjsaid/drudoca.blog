@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace Drudoca.Blog.Domain
 {
-    [DebuggerDisplay("Comment by: {Author}")]
+    [DebuggerDisplay("Comment by: {" + nameof(Author) + "}")]
     public class BlogComment
     {
         public BlogComment(

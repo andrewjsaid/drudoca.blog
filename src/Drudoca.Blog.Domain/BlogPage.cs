@@ -2,7 +2,7 @@
 
 namespace Drudoca.Blog.Domain
 {
-    [DebuggerDisplay("Page {PageNum}")]
+    [DebuggerDisplay("Page {" + nameof(PageNum) + "}")]
     public class BlogPage
     {
 

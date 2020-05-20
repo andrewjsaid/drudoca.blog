@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace Drudoca.Blog.Data
 {
-    [DebuggerDisplay("{Title}")]
+    [DebuggerDisplay("{" + nameof(FileName) + "}")]
     public class PostData
     {
 
