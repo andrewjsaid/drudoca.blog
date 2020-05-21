@@ -26,6 +26,9 @@ namespace Drudoca.Blog.DataAccess.Store
             try
             {
                 var path = _converter.DirectoryPath;
+                if (path == null)
+                    return Array.Empty<T>();
+
                 var files = await _reader.ReadAsync(path);
 
                 var results = new List<T>(files.Length);

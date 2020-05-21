@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using Drudoca.Blog.Config;
 using Drudoca.Blog.Data;
 using Microsoft.Extensions.Logging;
@@ -18,15 +16,7 @@ namespace Drudoca.Blog.DataAccess.Store
             _storeOptions = storeOptions;
         }
 
-        public string DirectoryPath
-        {
-            get
-            {
-                var configPath = _storeOptions.BlogPostPath;
-                var path = Path.Combine(Directory.GetCurrentDirectory(), configPath);
-                return path;
-            }
-        }
+        public string? DirectoryPath => _storeOptions.BlogPostPath;
 
         public IComparer<PostData> Comparer { get; } = new MostRecentFirstPostComparer();
 

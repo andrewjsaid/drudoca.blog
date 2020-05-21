@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using Drudoca.Blog.Config;
 using Drudoca.Blog.Data;
 using Microsoft.Extensions.Logging;
@@ -17,15 +16,7 @@ namespace Drudoca.Blog.DataAccess.Store
             _storeOptions = storeOptions;
         }
 
-        public string DirectoryPath
-        {
-            get
-            {
-                var configPath = _storeOptions.StaticPagePath;
-                var path = Path.Combine(Directory.GetCurrentDirectory(), configPath);
-                return path;
-            }
-        }
+        public string? DirectoryPath => _storeOptions.StaticPagePath;
 
         public IComparer<StaticPageData> Comparer { get; } = new SequenceStaticPageComparer();
 
@@ -34,10 +25,10 @@ namespace Drudoca.Blog.DataAccess.Store
             var helper = new MarkdownFileHelper(file, _logger);
 
             var uriSegment = helper.GetRequiredString("uri-segment");
-            var menuIcon = helper.GetRequiredString("menu-icon");
-            var menuText = helper.GetRequiredString("menu-text");
             var isPublished = helper.GetRequiredBoolean("published");
-            var sequence = helper.GetRequiredInt32("sequence");
+            var menuIcon = helper.GetOptionalString("menu-icon");
+            var menuText = helper.GetOptionalString("menu-text");
+            var menuSequence = helper.GetOptionalInt32("menu-sequence");
 
             if (!helper.IsValid)
             {
@@ -47,10 +38,10 @@ namespace Drudoca.Blog.DataAccess.Store
             var result = new StaticPageData(
                 file.Name,
                 uriSegment,
+                isPublished,
+                menuSequence,
                 menuIcon,
                 menuText,
-                isPublished,
-                sequence,
                 file.Markdown);
 
             return result;

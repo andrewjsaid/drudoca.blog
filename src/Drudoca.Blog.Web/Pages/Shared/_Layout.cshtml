@@ -43,6 +43,25 @@
                         <li class="nav-item">
                             <a asp-area="" asp-page="/Index" class="nav-link text-dark">Home</a>
                         </li>
+
+                        @{
+                            var menu = (StaticPageMenuItem[]) ViewData["StaticPageMenu"];
+                        }
+                        @if (menu?.Length > 0)
+                        {
+                            foreach (var menuItem in menu)
+                            {
+                                <li class="nav-item">
+                                    <a href="/@menuItem.UriSegment" class="nav-link text-dark">
+                                        @if (menuItem.Icon != null)
+                                        {
+                                            <i class="@menuItem.Icon"></i>
+                                        }
+                                        @menuItem.Text
+                                    </a>
+                                </li>
+                            }
+                        }
                     </ul>
                     <ul class="navbar-nav">
                         <li class="nav-item">

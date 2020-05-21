@@ -8,11 +8,15 @@ namespace Drudoca.Blog.DataAccess.Store
         public static void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddTransient<IMarkdownDirectoryReader, MarkdownDirectoryReader>()
+
                 .AddTransient<IMarkdownFileConverter<PostData>, BlogPostFileConverter>()
                 .AddTransient<IMarkdownStore<PostData>, CachedMarkdownStore<PostData>>()
-
                 .AddTransient<IPostRepository, FilePostRepository>()
-                .AddTransient<IMarkdownDirectoryReader, MarkdownDirectoryReader>();
+
+                .AddTransient<IMarkdownFileConverter<StaticPageData>, StaticPageFileConverter>()
+                .AddTransient<IMarkdownStore<StaticPageData>, CachedMarkdownStore<StaticPageData>>()
+                .AddTransient<IStaticPageRepository, StaticPageRepository>();
         }
     }
 }

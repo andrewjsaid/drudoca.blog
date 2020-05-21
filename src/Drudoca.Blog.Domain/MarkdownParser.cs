@@ -15,12 +15,12 @@ namespace Drudoca.Blog.Domain
             _commentPipeline = new Lazy<MarkdownPipeline>(CreateCommentPipeline);
         }
 
-        private MarkdownPipeline CreatePostPipeline()
+        private static MarkdownPipeline CreatePostPipeline()
         {
             return new MarkdownPipelineBuilder().Build();
         }
 
-        private MarkdownPipeline CreateCommentPipeline()
+        private static MarkdownPipeline CreateCommentPipeline()
         {
             var pb = new MarkdownPipelineBuilder();
             pb.DisableHtml();
@@ -28,6 +28,12 @@ namespace Drudoca.Blog.Domain
             pb.InlineParsers.TryRemove<LinkInlineParser>();
 
             return pb.Build();
+        }
+
+        public string ToStaticPageHtml(string markdown)
+        {
+            var html = Markdown.ToHtml(markdown, _postPipeline.Value);
+            return html;
         }
 
         public string ToPostHtml(string markdown)

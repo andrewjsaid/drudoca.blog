@@ -3,8 +3,8 @@
     public class StoreOptions
     {
         public int CacheDurationMins { get; set; } = 10;
-        public string BlogPostPath { get; set; } = default!;
-        public string StaticPagePath { get; set; } = default!;
-        public string ContentImagesPath { get; set; } = default!;
+        public string? BlogPostPath { get; set; }
+        public string? StaticPagePath { get; set; }
+        public string? ContentImagesPath { get; set; }
     }
 }

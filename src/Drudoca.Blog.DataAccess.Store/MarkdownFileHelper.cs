@@ -14,9 +14,9 @@ namespace Drudoca.Blog.DataAccess.Store
             _logger = logger;
         }
 
-        public bool IsValid { get; private set; }
+        public bool IsValid { get; private set; } = true;
 
-        public string? GetString(string header)
+        public string? GetOptionalString(string header)
         {
             _file.Headers.TryGetValue(header, out var result);
             return result;
@@ -24,7 +24,7 @@ namespace Drudoca.Blog.DataAccess.Store
 
         public string GetRequiredString(string header)
         {
-            var result = GetString(header);
+            var result = GetOptionalString(header);
             if (result != null)
                 return result;
 
@@ -61,6 +61,20 @@ namespace Drudoca.Blog.DataAccess.Store
             return default;
         }
 
+        public int? GetOptionalInt32(string header)
+        {
+            var intString = GetRequiredString(header);
+            if (string.IsNullOrEmpty(intString))
+                return default;
+
+            if (int.TryParse(intString, out var result))
+                return result;
+
+            _logger.LogWarning("File {file-name} has invalid int {header}", _file.Name, header);
+            IsValid = false;
+            return default;
+        }
+
         public int GetRequiredInt32(string header)
         {
             var intString = GetRequiredString(header);
@@ -74,5 +88,6 @@ namespace Drudoca.Blog.DataAccess.Store
             IsValid = false;
             return default;
         }
+
     }
 }

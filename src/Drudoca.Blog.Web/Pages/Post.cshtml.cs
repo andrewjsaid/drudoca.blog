@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Drudoca.Blog.Domain;
+using Drudoca.Blog.Web.Filters;
 using Drudoca.Blog.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,12 +10,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Drudoca.Blog.Web.Pages
 {
     [ValidateAntiForgeryToken]
+    [LayoutViewData]
     public class PostModel : PageModel
     {
         private readonly IBlogService _blogManager;
 
-        public PostModel(
-            IBlogService blogManager)
+        public PostModel(IBlogService blogManager)
         {
             _blogManager = blogManager;
         }
@@ -30,7 +31,7 @@ namespace Drudoca.Blog.Web.Pages
 
         public BlogPost? Post { get; private set; }
         public BlogComment[]? Comments { get; private set; }
-
+        
         public async Task<IActionResult> OnGet()
         {
             Post = await _blogManager.GetPostAsync(PostUrl.GetDate(), PostUrl.Slug);
