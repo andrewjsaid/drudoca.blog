@@ -60,5 +60,7 @@ namespace Drudoca.Blog.Domain
             var result = _builder.Build(page);
             return result;
         }
+
+        public Task<bool> HasPageAsync(string uriSegment) => _repository.HasPageAsync(uriSegment);
     }
 }

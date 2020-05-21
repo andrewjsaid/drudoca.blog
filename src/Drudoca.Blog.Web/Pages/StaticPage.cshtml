@@ -1,0 +1,9 @@
+﻿@page "/s/{uriSegment}"
+@model StaticPageModel
+@{
+    ViewData["Title"] = Model.SPage!.Title;
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+@Html.Raw(Model.SPage!.Html)
+

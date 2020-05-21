@@ -7,6 +7,7 @@ namespace Drudoca.Blog.Data
     {
         public StaticPageData(
             string fileName,
+            string title,
             string uriSegment,
             bool isPublished,
             int? menuSequence,
@@ -15,6 +16,7 @@ namespace Drudoca.Blog.Data
             string markdown)
         {
             FileName = fileName;
+            Title = title;
             UriSegment = uriSegment;
             IsPublished = isPublished;
             MenuSequence = menuSequence;
@@ -24,6 +26,7 @@ namespace Drudoca.Blog.Data
         }
 
         public string FileName { get; }
+        public string Title { get; }
         public string UriSegment { get; }
         public bool IsPublished { get; }
         public int? MenuSequence { get; }

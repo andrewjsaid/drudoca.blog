@@ -24,6 +24,7 @@ namespace Drudoca.Blog.DataAccess.Store
         {
             var helper = new MarkdownFileHelper(file, _logger);
 
+            var title = helper.GetRequiredString("title");
             var uriSegment = helper.GetRequiredString("uri-segment");
             var isPublished = helper.GetRequiredBoolean("published");
             var menuIcon = helper.GetOptionalString("menu-icon");
@@ -37,6 +38,7 @@ namespace Drudoca.Blog.DataAccess.Store
 
             var result = new StaticPageData(
                 file.Name,
+                title,
                 uriSegment,
                 isPublished,
                 menuSequence,

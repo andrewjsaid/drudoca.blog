@@ -1,5 +1,6 @@
 using Drudoca.Blog.Config;
 using Drudoca.Blog.Web.Extensions;
+using Drudoca.Blog.Web.Routing;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -45,6 +46,8 @@ namespace Drudoca.Blog.Web
             services.AddTransient(r => r.GetRequiredService<IOptions<StoreOptions>>().Value);
 
             services.AddTransient<IClaimsTransformation, SiteAdmininstratorClaimsTransformation>();
+
+            services.AddTransient<StaticPageRouteValueTransformer>();
 
             Drudoca.Blog.DataAccess.Store.CompositionRoot.ConfigureServices(services);
             Drudoca.Blog.DataAccess.Sql.CompositionRoot.ConfigureServices(services);
@@ -94,6 +97,7 @@ namespace Drudoca.Blog.Web
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapDynamicPageRoute<StaticPageRouteValueTransformer>("{uriSegment}");
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
             });

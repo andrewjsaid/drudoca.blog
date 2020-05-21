@@ -17,6 +17,7 @@ namespace Drudoca.Blog.Domain
 
             var result = new StaticPage(
                 data.FileName,
+                data.Title,
                 data.UriSegment,
                 data.IsPublished,
                 html);

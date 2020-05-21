@@ -8,5 +8,6 @@ namespace Drudoca.Blog.DataAccess
     {
         IAsyncEnumerable<StaticPageData> GetAllAsync();
         Task<StaticPageData?> GetByUriSegmentAsync(string uriSegment);
+        Task<bool> HasPageAsync(string uriSegment);
     }
 }

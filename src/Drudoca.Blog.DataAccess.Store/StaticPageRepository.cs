@@ -38,5 +38,20 @@ namespace Drudoca.Blog.DataAccess.Store
 
             return null;
         }
+
+        public async Task<bool> HasPageAsync(string uriSegment)
+        {
+            var posts = await _store.GetAllAsync();
+
+            foreach (var post in posts)
+            {
+                if (string.Equals(uriSegment, post.UriSegment, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }
