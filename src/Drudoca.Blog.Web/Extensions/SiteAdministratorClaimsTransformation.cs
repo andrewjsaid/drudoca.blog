@@ -1,5 +1,4 @@
-﻿using System;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Threading.Tasks;
 using Drudoca.Blog.Config;
 using Microsoft.AspNetCore.Authentication;
@@ -7,14 +6,14 @@ using Microsoft.Extensions.Logging;
 
 namespace Drudoca.Blog.Web.Extensions
 {
-    public class SiteAdmininstratorClaimsTransformation : IClaimsTransformation
+    public class SiteAdministratorClaimsTransformation : IClaimsTransformation
 	{
 		private readonly SiteOptions _siteOptions;
 		private readonly ILogger _logger;
 
-		public SiteAdmininstratorClaimsTransformation(
+		public SiteAdministratorClaimsTransformation(
 			SiteOptions siteOptions,
-			ILogger<SiteAdmininstratorClaimsTransformation> logger)
+			ILogger<SiteAdministratorClaimsTransformation> logger)
 		{
 			_siteOptions = siteOptions;
 			_logger = logger;

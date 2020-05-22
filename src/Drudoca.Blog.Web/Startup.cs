@@ -1,6 +1,8 @@
+using System.IO;
 using Drudoca.Blog.Config;
 using Drudoca.Blog.Web.Extensions;
 using Drudoca.Blog.Web.Routing;
+using LettuceEncrypt;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -35,6 +37,19 @@ namespace Drudoca.Blog.Web
 
             services.AddRazorPages();
 
+            var lettuceEncryptConfig = Configuration.GetSection("LettuceEncrypt");
+            if (lettuceEncryptConfig.Exists())
+            {
+                var lettuceEncryptService = services.AddLettuceEncrypt();
+
+                var certificateDirectory = lettuceEncryptConfig.GetValue<string?>("CertificateDirectoryPath");
+                var certificatePassword = lettuceEncryptConfig.GetValue<string?>("CertificatePassword");
+                if (certificateDirectory != null && certificatePassword != null)
+                {
+                    lettuceEncryptService.PersistDataToDirectory(new DirectoryInfo(certificateDirectory), certificatePassword);
+                }
+            }
+
             services.Configure<BlogOptions>(Configuration.GetSection("Blog"));
             services.Configure<DatabaseOptions>(Configuration.GetSection("Database"));
             services.Configure<SiteOptions>(Configuration.GetSection("Site"));
@@ -45,7 +60,7 @@ namespace Drudoca.Blog.Web
             services.AddTransient(r => r.GetRequiredService<IOptions<SiteOptions>>().Value);
             services.AddTransient(r => r.GetRequiredService<IOptions<StoreOptions>>().Value);
 
-            services.AddTransient<IClaimsTransformation, SiteAdmininstratorClaimsTransformation>();
+            services.AddTransient<IClaimsTransformation, SiteAdministratorClaimsTransformation>();
 
             services.AddTransient<StaticPageRouteValueTransformer>();
 
@@ -68,13 +83,7 @@ namespace Drudoca.Blog.Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
-            // As long as we are deploying behind a reverse proxy, we need to allow this. REMOVE this once we support being an external-facing service.
-            var forwardedHeadersOptions = new ForwardedHeadersOptions { ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.All };
-            forwardedHeadersOptions.KnownProxies.Clear();   // Don't know the docker address that nginx will use
-            forwardedHeadersOptions.KnownNetworks.Clear();  // Don't know the docker address that nginx will use
-            app.UseForwardedHeaders(forwardedHeadersOptions);
-
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -84,7 +93,7 @@ namespace Drudoca.Blog.Web
                 provider.Mappings[".webmanifest"] = "application/json";
                 app.UseStaticFiles(new StaticFileOptions
                 {
-                    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "wwwroot")),
+                    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")),
                     RequestPath = "",
                     ContentTypeProvider = provider
                 });
