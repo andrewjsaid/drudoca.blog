@@ -6,9 +6,24 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-weight: 600; 
+    font-weight: 600;
 }
 
+.bg-navbar {
+    background-color: #36453B
+}
+
+.navbar-nav .nav-link {
+    background-color: #F5F9E9;
+    color: black !important;
+    font-size: larger;
+    margin-left: 1rem;
+    border-radius: 5px;
+}
+
+    .navbar-nav .nav-link:hover {
+        background-color: #C2C1A5;
+    }
 
 a.navbar-brand {
     white-space: normal;
@@ -126,6 +141,7 @@ small.super-small {
 .comments {
     margin-top: 2rem;
 }
+
     .comments h2 {
         font-size: 1.5rem;
     }
@@ -136,14 +152,14 @@ small.super-small {
         border-left: 3px solid #0003;
     }
 
-    .comment h3.comment-author {
-        font-size: 1rem;
-    }
+.comment h3.comment-author {
+    font-size: 1rem;
+}
 
-    .comment .comment-md {
-        padding-left: 0.5rem;
-    }
+.comment .comment-md {
+    padding-left: 0.5rem;
+}
 
-    .comment .comment-date {
-        font-weight: 300;
-    }
+.comment .comment-date {
+    font-weight: 300;
+}

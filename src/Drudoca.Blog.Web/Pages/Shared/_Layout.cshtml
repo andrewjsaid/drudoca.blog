@@ -16,7 +16,7 @@
     @{
         var model = (Models.LayoutModel)ViewData["LayoutModel"];
     }
-    
+
     @if (model.FontAwesomeId != null)
     {
         <script src="https://kit.fontawesome.com/@(model.FontAwesomeId).js" crossorigin="anonymous"></script>
@@ -40,28 +40,27 @@
 
 </head>
 <body>
-    <header>
-        <!-- Change to "navbar-expand-sm navbar-toggleable-sm" if menu grows -->
-        <nav class="navbar navbar-expand navbar-toggleable navbar-light bg-white border-bottom box-shadow">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">Drudoca</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row">
-                    <ul class="navbar-nav flex-grow-1">
+    <!-- Change to "navbar-expand-sm navbar-toggleable-sm" if menu grows -->
+    <nav class="navbar navbar-expand navbar-toggleable navbar-dark bg-navbar box-shadow sticky-top">
+        <div class="container">
+            <a class="navbar-brand" asp-area="" asp-page="/Index">Drudoca</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a asp-page="/Index" class="nav-link">Home</a>
+                    </li>
+
+                    @{
+                        var model2 = (Models.LayoutModel)ViewData["LayoutModel"];
+                    }
+                    @foreach (var menuItem in model2.Menu)
+                    {
                         <li class="nav-item">
-                            <a asp-page="/Index" class="nav-link text-dark">Home</a>
-                        </li>
-                        
-                        @{
-                            var model2 = (Models.LayoutModel)ViewData["LayoutModel"];
-                        }
-                        @foreach (var menuItem in model2.Menu)
-                        {
-                        <li class="nav-item">
-                            <a href="/@menuItem.UriSegment" class="nav-link text-dark">
+                            <a href="/@menuItem.UriSegment" class="nav-link">
                                 @if (menuItem.Icon != null)
                                 {
                                     <i class="@menuItem.Icon"></i>
@@ -69,29 +68,30 @@
                                 @menuItem.Text
                             </a>
                         </li>
-                        }
-                    </ul>
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a href="https://github.com/andrewjsaid/" class="nav-link text-dark">
-                                <img height="24" width="24" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/github.svg" />
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="https://www.linkedin.com/in/andrewjsaid/" class="nav-link text-dark">
-                                <img height="24" width="24" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/linkedin.svg" />
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                    }
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a href="https://github.com/andrewjsaid/" class="nav-link text-dark">
+                            <img height="24" width="24" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/github.svg" />
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://www.linkedin.com/in/andrewjsaid/" class="nav-link text-dark">
+                            <img height="24" width="24" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/linkedin.svg" />
+                        </a>
+                    </li>
+                </ul>
             </div>
-        </nav>
+        </div>
+    </nav>
+    <header class="shadow">
         <div class="container text-center py-2">
             <h1 class="display-4">Dru's Delirium <small class="super-small d-inline-block">and Other Coding Antics</small></h1>
         </div>
     </header>
     <div class="main-parallax shadow mb-4"></div>
-         
+
     <div class="container mt-5">
         <main role="main" class="pb-3">
             @RenderBody()
