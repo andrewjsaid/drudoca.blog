@@ -6,6 +6,7 @@ using LettuceEncrypt;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,16 +27,12 @@ namespace Drudoca.Blog.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                    .AddCookie()
-                    .AddGoogle(options =>
-                    {
-                        var googleAuthNSection = Configuration.GetSection("Authentication:Google");
-                        options.ClientId = googleAuthNSection["ClientId"];
-                        options.ClientSecret = googleAuthNSection["ClientSecret"];
-                    });
-
-            services.AddRazorPages();
+            var dataProtectionPath = Configuration.GetSection("Site:DataProtectionPath").Value;
+            if (!string.IsNullOrEmpty(dataProtectionPath))
+            {
+                services.AddDataProtection()
+                    .PersistKeysToFileSystem(new DirectoryInfo(dataProtectionPath));
+            }
 
             var lettuceEncryptConfig = Configuration.GetSection("LettuceEncrypt");
             if (lettuceEncryptConfig.Exists())
@@ -49,6 +46,17 @@ namespace Drudoca.Blog.Web
                     lettuceEncryptService.PersistDataToDirectory(new DirectoryInfo(certificateDirectory), certificatePassword);
                 }
             }
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                    .AddCookie()
+                    .AddGoogle(options =>
+                    {
+                        var googleAuthNSection = Configuration.GetSection("Authentication:Google");
+                        options.ClientId = googleAuthNSection["ClientId"];
+                        options.ClientSecret = googleAuthNSection["ClientSecret"];
+                    });
+
+            services.AddRazorPages();
 
             services.Configure<BlogOptions>(Configuration.GetSection("Blog"));
             services.Configure<DatabaseOptions>(Configuration.GetSection("Database"));
