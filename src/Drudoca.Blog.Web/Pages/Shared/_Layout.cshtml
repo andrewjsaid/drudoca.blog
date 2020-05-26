@@ -13,19 +13,30 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="~/css/site.css" />
 
-    <script src="https://kit.fontawesome.com/05e2a11eb5.js" crossorigin="anonymous"></script>
+    @{
+        var model = (Models.LayoutModel)ViewData["LayoutModel"];
+    }
+    
+    @if (model.FontAwesomeId != null)
+    {
+        <script src="https://kit.fontawesome.com/@(model.FontAwesomeId).js" crossorigin="anonymous"></script>
+    }
 
-    <environment names="Production">
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-166874827-1"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag() { dataLayer.push(arguments); }
-            gtag('js', new Date());
+    @if (model.GoogleAnalyticsClientId != null)
+    {
+        <environment names="Production">
+            <!-- Global site tag (gtag.js) - Google Analytics -->
+            <script async src="https://www.googletagmanager.com/gtag/js?id=@(model.GoogleAnalyticsClientId)"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag() { dataLayer.push(arguments); }
+                gtag('js', new Date());
 
-            gtag('config', 'UA-166874827-1');
-        </script>
-    </environment>
+                gtag('config', @(model.GoogleAnalyticsClientId));
+            </script>
+        </environment>
+
+    }
 
 </head>
 <body>
@@ -43,24 +54,21 @@
                         <li class="nav-item">
                             <a asp-page="/Index" class="nav-link text-dark">Home</a>
                         </li>
-
+                        
                         @{
-                            var menu = (StaticPageMenuItem[]) ViewData["StaticPageMenu"];
+                            var model2 = (Models.LayoutModel)ViewData["LayoutModel"];
                         }
-                        @if (menu?.Length > 0)
+                        @foreach (var menuItem in model2.Menu)
                         {
-                            foreach (var menuItem in menu)
-                            {
-                                <li class="nav-item">
-                                    <a href="/@menuItem.UriSegment" class="nav-link text-dark">
-                                        @if (menuItem.Icon != null)
-                                        {
-                                            <i class="@menuItem.Icon"></i>
-                                        }
-                                        @menuItem.Text
-                                    </a>
-                                </li>
-                            }
+                        <li class="nav-item">
+                            <a href="/@menuItem.UriSegment" class="nav-link text-dark">
+                                @if (menuItem.Icon != null)
+                                {
+                                    <i class="@menuItem.Icon"></i>
+                                }
+                                @menuItem.Text
+                            </a>
+                        </li>
                         }
                     </ul>
                     <ul class="navbar-nav">
@@ -101,6 +109,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
-    @RenderSection("Scripts", required: false)
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
