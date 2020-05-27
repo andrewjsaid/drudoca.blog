@@ -4,39 +4,41 @@
     var (post, isFull) = Model;
 }
 
-<div class="blog-post">
-    <h1 class="post-title">
-        <a class="text-dark"
-           asp-page="/Post"
-           asp-route-year="@post.PublishedOn.Year"
-           asp-route-month="@post.PublishedOn.Month"
-           asp-route-day="@post.PublishedOn.Day"
-           asp-route-slug="@post.Slug">
-            @post.Title
-        </a>
-    </h1>
-    <p class="publish-info lead">
-        <small>
-            <i class="far fa-calendar"></i>
-            <span class="post-published-on">@post.PublishedOn.ToString("dd MMMM yyyy")</span>
-        </small>
-        <small class="ml-2">
-            <i class="fas fa-pen-nib"></i>
-            <span class="post-author">@post.Author</span>
-        </small>
-    </p>
-    
+<article class="blog-post">
+    <header>
+        <h1 class="post-title">
+            <a class="text-dark"
+               asp-page="/Post"
+               asp-route-year="@post.PublishedOn.Year"
+               asp-route-month="@post.PublishedOn.Month"
+               asp-route-day="@post.PublishedOn.Day"
+               asp-route-slug="@post.Slug">
+                @post.Title
+            </a>
+        </h1>
+        <p class="publish-info lead">
+            <small>
+                <i class="far fa-calendar"></i>
+                <span class="post-published-on">@post.PublishedOn.ToString("dd MMMM yyyy")</span>
+            </small>
+            <small class="ml-2">
+                <i class="fas fa-pen-nib"></i>
+                <span class="post-author">@post.Author</span>
+            </small>
+        </p>
+    </header>
+
     @if (isFull)
     {
-        <div class="post-body">
+        <section class="post-body">
             @Html.Raw(post.Html)
-        </div>
+        </section>
     }
     else
     {
-        <div class="post-body">
+        <section class="post-body">
             @Html.Raw(post.IntroHtml ?? post.Html)
-        </div>
+        </section>
 
         @if (post.IntroHtml != null)
         {
@@ -51,4 +53,4 @@
             </div>
         }
     }
-</div>
+</article>
