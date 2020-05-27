@@ -1,0 +1,33 @@
+﻿.new-comment {
+    margin-top: 2rem;
+}
+
+    .new-comment h2 {
+        font-size: 1.5rem;
+    }
+
+.comments {
+    margin-top: 2rem;
+}
+
+    .comments h2 {
+        font-size: 1.5rem;
+    }
+
+    .comments .comment {
+        margin-top: 2rem;
+        padding-left: 0.5rem;
+        border-left: 3px solid rgba(0, 0, 0, 3);
+    }
+
+.comment h3.comment-author {
+    font-size: 1rem;
+}
+
+.comment .comment-md {
+    padding-left: 0.5rem;
+}
+
+.comment .comment-date {
+    font-weight: 300;
+}

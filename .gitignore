@@ -288,5 +288,6 @@ __pycache__/
 *.odx.cs
 *.xsd.cs
 
-# Blog Posts
-blog-posts
+# Minified files
+*.min.js
+*.min.css

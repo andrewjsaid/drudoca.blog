@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using Drudoca.Blog.Config;
 using Drudoca.Blog.Web.Extensions;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Microsoft.Net.Http.Headers;
 
 namespace Drudoca.Blog.Web
 {
@@ -95,7 +97,13 @@ namespace Drudoca.Blog.Web
             }
             
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                OnPrepareResponse = ctx =>
+                {
+                    ctx.Context.Response.Headers[HeaderNames.CacheControl] = "public,max-age=86400";
+                }
+            });
 
             {
                 // Remove this next one for ASP.NET Core upgrade - https://github.com/aspnet/AspNetCore/issues/2442

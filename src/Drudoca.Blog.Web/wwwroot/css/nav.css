@@ -1,0 +1,25 @@
+﻿.bg-navbar {
+    background-color: #36453B
+}
+
+.navbar-nav .nav-link {
+    background-color: #F5F9E9;
+    color: black !important;
+    font-size: larger;
+    margin-left: 1rem;
+    border-radius: 5px;
+}
+
+.navbar-nav .nav-link:hover {
+    background-color: #C2C1A5;
+}
+
+.navbar menu {
+    margin-top: 0;
+}
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+}

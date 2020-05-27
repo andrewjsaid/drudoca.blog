@@ -1,7 +1,4 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-body {
+﻿body {
     font-family: Consolas, monospace;
 }
 
@@ -9,36 +6,16 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
 }
 
-.bg-navbar {
-    background-color: #36453B
-}
-
-.navbar-nav .nav-link {
-    background-color: #F5F9E9;
-    color: black !important;
-    font-size: larger;
-    margin-left: 1rem;
-    border-radius: 5px;
-}
-
-    .navbar-nav .nav-link:hover {
-        background-color: #C2C1A5;
-    }
-
-a.navbar-brand {
-    white-space: normal;
-    text-align: center;
-    word-break: break-all;
-}
-
-/* Provide sufficient contrast against white background */
 a {
     color: #0366d6;
 }
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
     font-size: 14px;
+    position: relative;
+    min-height: 100%;
 }
 
 @media (min-width: 768px) {
@@ -47,33 +24,9 @@ html {
     }
 }
 
-.border-top {
-    border-top: 1px solid #e5e5e5;
-}
-
-.border-bottom {
-    border-bottom: 1px solid #e5e5e5;
-}
-
-.box-shadow {
-    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
-
-button.accept-policy {
-    font-size: 1rem;
-    line-height: inherit;
-}
-
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-    position: relative;
-    min-height: 100%;
-}
-
 body {
     /* Margin bottom by footer height */
-    margin-bottom: 60px;
+    padding-bottom: 60px;
 }
 
 .footer {
@@ -82,80 +35,4 @@ body {
     width: 100%;
     white-space: nowrap;
     line-height: 60px; /* Vertically center the text there */
-}
-
-/* Main layout styles
--------------------------------------------------- */
-.main-parallax {
-    /* The image used */
-    background-image: url("/images/main-banner.jpg");
-    /* Create the parallax scrolling effect */
-    background-attachment: fixed;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    height: 300px;
-}
-
-small.super-small {
-    font-size: 50% !important;
-}
-
-/* Post Body (markdown) styles
--------------------------------------------------- */
-.post-title {
-    font-size: 1.5rem;
-}
-
-.post-body {
-    margin: 2rem 0;
-}
-
-    .post-body h1 {
-        font-size: 1.5rem;
-    }
-
-    .post-body h2 {
-        font-size: 1.25rem;
-    }
-
-    .post-body h3, h4, h5, h6 {
-        font-size: 1rem;
-    }
-
-
-/* Comment Section styles
--------------------------------------------------- */
-.new-comment {
-    margin-top: 2rem;
-}
-
-    .new-comment h2 {
-        font-size: 1.5rem;
-    }
-
-.comments {
-    margin-top: 2rem;
-}
-
-    .comments h2 {
-        font-size: 1.5rem;
-    }
-
-    .comments .comment {
-        margin-top: 2rem;
-        padding-left: 0.5rem;
-        border-left: 3px solid #0003;
-    }
-
-.comment h3.comment-author {
-    font-size: 1rem;
-}
-
-.comment .comment-md {
-    padding-left: 0.5rem;
-}
-
-.comment .comment-date {
-    font-weight: 300;
 }

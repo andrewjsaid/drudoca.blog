@@ -1,0 +1,19 @@
+﻿.post-title {
+    font-size: 1.5rem;
+}
+
+.post-body {
+    margin: 2rem 0;
+}
+
+    .post-body h1 {
+        font-size: 1.5rem;
+    }
+
+    .post-body h2 {
+        font-size: 1.25rem;
+    }
+
+    .post-body h3, h4, h5, h6 {
+        font-size: 1rem;
+    }
