@@ -40,7 +40,7 @@
     <link rel="manifest" href="/site.webmanifest">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    
+
     <link rel="stylesheet" href="~/site.min.css" asp-append-version="true" />
 
 
@@ -142,5 +142,12 @@
     </environment>
 
     @await RenderSectionAsync("Scripts", required: false)
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/vs2015.min.css" integrity="sha256-e+xyu+n0Lf/CcIJO7HoFhKOu97JVj09p39g25tzh6is=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js" integrity="sha256-/2C3CAfmuTGkUqK2mVrhkTacBscoR1caE0u2QZZ3Uh8=" crossorigin="anonymous"></script>
+<script>
+    hljs.configure({languages: ['csharp']});
+    hljs.initHighlighting();
+</script>
 </body>
 </html>
