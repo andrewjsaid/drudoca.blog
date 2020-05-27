@@ -6,10 +6,14 @@ namespace Drudoca.Blog.Domain
     internal class PostBuilder : IPostBuilder
     {
         private readonly IMarkdownParser _markdownParser;
+        private readonly IPageMetadataBuilder _pageMetadataBuilder;
 
-        public PostBuilder(IMarkdownParser markdownParser)
+        public PostBuilder(
+            IMarkdownParser markdownParser,
+            IPageMetadataBuilder pageMetadataBuilder)
         {
             _markdownParser = markdownParser;
+            _pageMetadataBuilder = pageMetadataBuilder;
         }
 
         public BlogPost Build(PostData data)
@@ -26,6 +30,8 @@ namespace Drudoca.Blog.Domain
                 introHtml = _markdownParser.ToPostHtml(introMarkdown);
             }
 
+            var pageMetadata = _pageMetadataBuilder.Build(data.PageMetaData);
+
             var result = new BlogPost(
                 data.FileName,
                 data.Title,
@@ -35,7 +41,8 @@ namespace Drudoca.Blog.Domain
                 data.IsListed,
                 title,
                 html,
-                introHtml
+                introHtml,
+                pageMetadata
             );
             return result;
         }

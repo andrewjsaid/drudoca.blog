@@ -10,7 +10,9 @@ namespace Drudoca.Blog.DataAccess.Store
         private readonly ILogger _logger;
         private readonly StoreOptions _storeOptions;
 
-        public BlogPostFileConverter(ILogger<BlogPostFileConverter> logger, StoreOptions storeOptions)
+        public BlogPostFileConverter(
+            ILogger<BlogPostFileConverter> logger,
+            StoreOptions storeOptions)
         {
             _logger = logger;
             _storeOptions = storeOptions;
@@ -30,12 +32,29 @@ namespace Drudoca.Blog.DataAccess.Store
             var isPublished = helper.GetRequiredBoolean("published");
             var isListed = helper.GetRequiredBoolean("listed");
 
+            var metaAuthor = helper.GetOptionalString("meta-author");
+            var metaDescription = helper.GetOptionalString("meta-description");
+            var metaKeywords = helper.GetOptionalString("meta-keywords");
+
             if (!helper.IsValid)
             {
                 return null;
             }
 
-            var result = new PostData(file.Name, title, author, publishedOn, isPublished, isListed, file.Markdown);
+            var metaData = new PageMetaData(
+                metaAuthor ?? author,
+                metaDescription, 
+                metaKeywords);
+
+            var result = new PostData(
+                file.Name,
+                title, 
+                author, 
+                publishedOn, 
+                isPublished, 
+                isListed, 
+                file.Markdown, 
+                metaData);
 
             return result;
         }

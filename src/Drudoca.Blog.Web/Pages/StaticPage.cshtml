@@ -2,6 +2,7 @@
 @model StaticPageModel
 @{
     ViewData["Title"] = Model.SPage!.Title;
+    ViewData["PageMetadata"] = Model.SPage!.PageMetadata;
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 

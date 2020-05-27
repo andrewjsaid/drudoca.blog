@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Drudoca.Blog.Web.Pages
 {
     [ValidateAntiForgeryToken]
-    [LayoutViewData]
+    [LayoutModel]
     public class PostModel : PageModel
     {
         private readonly IBlogService _blogManager;

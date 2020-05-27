@@ -7,8 +7,7 @@ namespace Drudoca.Blog.Domain
     public class BlogPost
     {
 
-        public BlogPost(
-            string fileName,
+        public BlogPost(string fileName,
             string title,
             string author,
             DateTime publishedOn,
@@ -16,7 +15,8 @@ namespace Drudoca.Blog.Domain
             bool isListed,
             string slug,
             string html,
-            string? introHtml)
+            string? introHtml,
+            PageMetadata pageMetadata)
         {
             FileName = fileName;
             Title = title;
@@ -27,6 +27,7 @@ namespace Drudoca.Blog.Domain
             Slug = slug;
             Html = html;
             IntroHtml = introHtml;
+            PageMetadata = pageMetadata;
         }
 
         /// <summary>
@@ -41,5 +42,6 @@ namespace Drudoca.Blog.Domain
         public string Slug { get; }
         public string Html { get; }
         public string? IntroHtml { get; }
+        public PageMetadata PageMetadata { get; }
     }
 }

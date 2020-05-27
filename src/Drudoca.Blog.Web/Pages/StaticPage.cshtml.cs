@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Drudoca.Blog.Web.Pages
 {
-    [LayoutViewData]
+    [LayoutModel]
     public class StaticPageModel : PageModel
     {
         private readonly IStaticContentService _staticContentService;

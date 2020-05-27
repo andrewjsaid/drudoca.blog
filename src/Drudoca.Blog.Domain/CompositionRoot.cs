@@ -7,8 +7,9 @@ namespace Drudoca.Blog.Domain
         public static void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddTransient<IPostBuilder, PostBuilder>()
                 .AddTransient<ICommentBuilder, CommentBuilder>()
+                .AddTransient<IPageMetadataBuilder, PageMetadataBuilder>()
+                .AddTransient<IPostBuilder, PostBuilder>()
                 .AddTransient<IStaticPageBuilder, StaticPageBuilder>()
                 .AddTransient<IStaticPageMenuItemBuilder, StaticPageMenuItemBuilder>()
 

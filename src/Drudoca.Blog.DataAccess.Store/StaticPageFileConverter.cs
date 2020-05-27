@@ -31,10 +31,19 @@ namespace Drudoca.Blog.DataAccess.Store
             var menuText = helper.GetOptionalString("menu-text");
             var menuSequence = helper.GetOptionalInt32("menu-sequence");
 
+            var metaAuthor = helper.GetOptionalString("meta-author");
+            var metaDescription = helper.GetOptionalString("meta-description");
+            var metaKeywords = helper.GetOptionalString("meta-keywords");
+
             if (!helper.IsValid)
             {
                 return null;
             }
+
+            var metaData = new PageMetaData(
+                metaAuthor,
+                metaDescription,
+                metaKeywords);
 
             var result = new StaticPageData(
                 file.Name,
@@ -44,7 +53,8 @@ namespace Drudoca.Blog.DataAccess.Store
                 menuSequence,
                 menuIcon,
                 menuText,
-                file.Markdown);
+                file.Markdown,
+                metaData);
 
             return result;
         }

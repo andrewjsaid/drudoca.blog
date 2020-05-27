@@ -11,13 +11,15 @@ namespace Drudoca.Blog.Domain
             string title,
             string uriSegment,
             bool isPublished,
-            string html)
+            string html, 
+            PageMetadata pageMetadata)
         {
             FileName = fileName;
             Title = title;
             UriSegment = uriSegment;
             IsPublished = isPublished;
             Html = html;
+            PageMetadata = pageMetadata;
         }
 
         public string FileName { get; }
@@ -25,5 +27,7 @@ namespace Drudoca.Blog.Domain
         public string UriSegment { get; }
         public bool IsPublished { get; }
         public string Html { get; }
+
+        public PageMetadata PageMetadata { get; }
     }
 }

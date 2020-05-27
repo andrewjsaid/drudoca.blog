@@ -13,7 +13,8 @@ namespace Drudoca.Blog.Data
             int? menuSequence,
             string? menuIcon,
             string? menuText,
-            string markdown)
+            string markdown,
+            PageMetaData pageMetaData)
         {
             FileName = fileName;
             Title = title;
@@ -23,6 +24,7 @@ namespace Drudoca.Blog.Data
             MenuIcon = menuIcon;
             MenuText = menuText;
             Markdown = markdown;
+            PageMetaData = pageMetaData;
         }
 
         public string FileName { get; }
@@ -33,5 +35,6 @@ namespace Drudoca.Blog.Data
         public string? MenuIcon { get; }
         public string? MenuText { get; }
         public string Markdown { get; }
+        public PageMetaData PageMetaData { get; }
     }
 }

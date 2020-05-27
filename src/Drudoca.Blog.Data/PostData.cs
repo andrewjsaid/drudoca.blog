@@ -14,7 +14,8 @@ namespace Drudoca.Blog.Data
             DateTime publishedOn,
             bool isPublished,
             bool isListed,
-            string markdown)
+            string markdown,
+            PageMetaData pageMetaData)
         {
             FileName = fileName;
             Title = title;
@@ -23,6 +24,7 @@ namespace Drudoca.Blog.Data
             IsPublished = isPublished;
             IsListed = isListed;
             Markdown = markdown;
+            PageMetaData = pageMetaData;
         }
 
         public string FileName { get; }
@@ -32,5 +34,6 @@ namespace Drudoca.Blog.Data
         public bool IsPublished { get; }
         public bool IsListed { get; }
         public string Markdown { get; }
+        public PageMetaData PageMetaData { get; }
     }
 }
