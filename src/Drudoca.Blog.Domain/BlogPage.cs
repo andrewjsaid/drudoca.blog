@@ -10,7 +10,7 @@ namespace Drudoca.Blog.Domain
             int pageNum,
             int pageSize,
             int pageCount,
-            BlogPost[] posts)
+            BlogPagePost[] posts)
         {
             PageNum = pageNum;
             PageSize = pageSize;
@@ -21,6 +21,6 @@ namespace Drudoca.Blog.Domain
         public int PageNum { get; }
         public int PageSize { get; }
         public int PageCount { get; }
-        public BlogPost[] Posts { get; }
+        public BlogPagePost[] Posts { get; }
     }
 }

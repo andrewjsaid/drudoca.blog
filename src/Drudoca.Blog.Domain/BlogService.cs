@@ -55,12 +55,12 @@ namespace Drudoca.Blog.Domain
             int skip = pageSize * (pageNum - 1);
 
             Debug.Assert(pageSize > 0);
-            var pagePosts = new List<BlogPost>(pageSize);
+            var pagePosts = new List<BlogPagePost>(pageSize);
 
             // We can't use _repository.CountBlogPostsAsync() since
             // it includes "hidden" posts.
-            int count = 0;
-            bool stop = false;
+            var count = 0;
+            var stop = false;
 
             var showFuture = _options.ListFuturePosts;
 
@@ -86,7 +86,8 @@ namespace Drudoca.Blog.Domain
                 else
                 {
                     var post = _postBuilder.Build(postData);
-                    pagePosts.Add(post);
+                    var numComments = await _commentRepository.CountByPostAsync(post.FileName);
+                    pagePosts.Add(new BlogPagePost(post, numComments));
 
                     if (pagePosts.Count == pageSize)
                     {
@@ -124,6 +125,12 @@ namespace Drudoca.Blog.Domain
             return null;
         }
 
+        public async Task<int> CountCommentsAsync(string postFileName)
+        {
+            var result = await _commentRepository.CountByPostAsync(postFileName);
+            return result;
+        }
+             
         public async Task<BlogComment[]> GetCommentsAsync(string postFileName)
         {
             var commentData = await _commentRepository.GetByPostAsync(postFileName);

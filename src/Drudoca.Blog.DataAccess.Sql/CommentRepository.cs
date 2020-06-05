@@ -70,6 +70,23 @@ namespace Drudoca.Blog.DataAccess.Sql
             return results;
         }
 
+        public async Task<int> CountByPostAsync(string postFileName)
+        {
+            const string sql = @"
+                SELECT COUNT(1)
+                FROM   Comments
+                WHERE  PostFileName = :postFileName
+            ";
+
+            using var connection = await _connectionFactory.CreateConnectionAsync();
+
+            var result = await connection.ExecuteScalarAsync<int>(
+                sql,
+                new { postFileName });
+
+            return result;
+        }
+
         public async Task MarkDeletedAsync(long id)
         {
             const string sql = @"

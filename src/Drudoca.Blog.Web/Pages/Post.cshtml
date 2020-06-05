@@ -7,7 +7,7 @@
 }
 
 
-<partial name="PostPartial" model="(post, true)" />
+<partial name="PostPartial" model="new PostPartialModel(post, false, null)" />
 
 <section class="new-comment">
     <div class="border p-3 shadow-sm mb-5">
@@ -16,7 +16,7 @@
         {
             <p class="lead">You must be signed in to comment.</p>
             <div>
-                <partial name="_SignInPartial" model="@(Model.PostUrl.ToString() + "#new-comment")" />
+                <partial name="_SignInPartial" model="@(Model.PostUrl + "#new-comment")" />
             </div>
             <small>No user information will be stored on our site until you comment.</small>
         }
@@ -59,7 +59,7 @@
 @if (Model.Comments?.Length > 0)
 {
     <section class="comments">
-        <h2>Comments</h2>
+        <h2><a id="comments">Comments</a></h2>
         @foreach (var comment in Model.Comments)
         {
             <partial name="CommentPartial" model="comment" />

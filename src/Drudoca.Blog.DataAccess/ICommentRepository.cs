@@ -8,6 +8,7 @@ namespace Drudoca.Blog.DataAccess
         Task<long> CreateAsync(CommentData comment);
         Task<CommentData?> GetAsync(long id);
         Task<CommentData[]> GetByPostAsync(string postFileName);
+        Task<int> CountByPostAsync(string postFileName);
         Task MarkDeletedAsync(long id);
     }
 }

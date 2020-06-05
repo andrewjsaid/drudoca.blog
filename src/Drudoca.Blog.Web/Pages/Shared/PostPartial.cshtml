@@ -1,7 +1,7 @@
-﻿@model (BlogPost post, bool isFull)
+﻿@model PostPartialModel
 
 @{
-    var (post, isFull) = Model;
+    var post = Model.Post;
 }
 
 <article class="blog-post">
@@ -28,7 +28,7 @@
         </p>
     </header>
 
-    @if (isFull)
+    @if (!Model.OnlyIntro)
     {
         <section class="post-body">
             @Html.Raw(post.Html)
@@ -50,6 +50,19 @@
                    asp-route-slug="@post.Slug">
                     Read more
                 </a>
+
+                @if (Model.NumComments > 0)
+                {
+                    <a class="float-right"
+                       asp-page="/Post"
+                       asp-route-year="@post.PublishedOn.Year"
+                       asp-route-month="@post.PublishedOn.Month"
+                       asp-route-day="@post.PublishedOn.Day"
+                       asp-route-slug="@post.Slug"
+                       asp-fragment="comments">
+                        @Model.NumComments <i class="far fa-comment"></i>
+                    </a>
+                }
             </div>
         }
     }
