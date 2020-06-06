@@ -17,7 +17,7 @@ namespace Drudoca.Blog.Domain
 
         public StaticPage Build(StaticPageData data)
         {
-            var html = _markdownParser.ToStaticPageHtml(data.Markdown);
+            var html = _markdownParser.ToTrustedHtml(data.Markdown);
 
             var pageMetadata = _pageMetadataBuilder.Build(data.PageMetaData);
 

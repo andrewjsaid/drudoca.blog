@@ -47,6 +47,20 @@ namespace Drudoca.Blog.DataAccess.Store
             return default;
         }
 
+        public bool? GetOptionalBoolean(string header)
+        {
+            var boolString = GetOptionalString(header);
+            if (string.IsNullOrEmpty(boolString))
+                return null;
+
+            if (bool.TryParse(boolString, out var result))
+                return result;
+
+            _logger.LogWarning("File {file-name} has invalid bool {header}", _file.Name, header);
+            IsValid = false;
+            return default;
+        }
+
         public bool GetRequiredBoolean(string header)
         {
             var boolString = GetRequiredString(header);
@@ -65,7 +79,7 @@ namespace Drudoca.Blog.DataAccess.Store
         {
             var intString = GetRequiredString(header);
             if (string.IsNullOrEmpty(intString))
-                return default;
+                return null;
 
             if (int.TryParse(intString, out var result))
                 return result;
@@ -87,6 +101,17 @@ namespace Drudoca.Blog.DataAccess.Store
             _logger.LogWarning("File {file-name} has invalid int {header}", _file.Name, header);
             IsValid = false;
             return default;
+        }
+
+        public string[] GetOptionalStringList(string header)
+        {
+            var text = GetOptionalString(header);
+            if (string.IsNullOrEmpty(text))
+                return Array.Empty<string>();
+
+            var split = text.Split(';', StringSplitOptions.RemoveEmptyEntries);
+            split = Array.ConvertAll(split, s => s.Trim());
+            return split;
         }
 
     }

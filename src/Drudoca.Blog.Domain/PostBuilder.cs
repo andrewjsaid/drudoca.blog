@@ -19,7 +19,7 @@ namespace Drudoca.Blog.Domain
         public BlogPost Build(PostData data)
         {
             var title = UrlSlug.Slugify(data.Title);
-            var html = _markdownParser.ToPostHtml(data.Markdown);
+            var html = _markdownParser.ToTrustedHtml(data.Markdown);
 
             string? introHtml = null;
 
@@ -27,7 +27,7 @@ namespace Drudoca.Blog.Domain
             if (mainSectionIndex > -1)
             {
                 var introMarkdown = data.Markdown.Substring(0, mainSectionIndex);
-                introHtml = _markdownParser.ToPostHtml(introMarkdown);
+                introHtml = _markdownParser.ToTrustedHtml(introMarkdown);
             }
 
             var pageMetadata = _pageMetadataBuilder.Build(data.PageMetaData);

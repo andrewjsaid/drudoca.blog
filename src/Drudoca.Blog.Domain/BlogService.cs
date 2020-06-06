@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Drudoca.Blog.Config;
 using Drudoca.Blog.Data;
 using Drudoca.Blog.DataAccess;
+using Drudoca.Blog.Domain.Notifications;
 using Microsoft.Extensions.Logging;
 
 namespace Drudoca.Blog.Domain
@@ -15,6 +16,8 @@ namespace Drudoca.Blog.Domain
         private readonly ICommentRepository _commentRepository;
         private readonly IPostBuilder _postBuilder;
         private readonly ICommentBuilder _commentBuilder;
+        private readonly IEmailService _emailService;
+        private readonly INotificationBuilder _notificationBuilder;
         private readonly BlogOptions _options;
         private readonly ILogger _logger;
 
@@ -23,6 +26,8 @@ namespace Drudoca.Blog.Domain
             ICommentRepository commentRepository,
             IPostBuilder postBuilder,
             ICommentBuilder commentBuilder,
+            IEmailService emailService,
+            INotificationBuilder notificationBuilder,
             BlogOptions options,
             ILogger<BlogService> logger)
         {
@@ -30,11 +35,13 @@ namespace Drudoca.Blog.Domain
             _commentRepository = commentRepository;
             _postBuilder = postBuilder;
             _commentBuilder = commentBuilder;
+            _emailService = emailService;
+            _notificationBuilder = notificationBuilder;
             _options = options;
             _logger = logger;
         }
 
-        private bool ShowInListing(PostData post, bool showFuture)
+        private static bool ShowInListing(PostData post, bool showFuture)
         {
             if (!post.IsListed)
                 return false;
@@ -130,7 +137,7 @@ namespace Drudoca.Blog.Domain
             var result = await _commentRepository.CountByPostAsync(postFileName);
             return result;
         }
-             
+
         public async Task<BlogComment[]> GetCommentsAsync(string postFileName)
         {
             var commentData = await _commentRepository.GetByPostAsync(postFileName);
@@ -144,6 +151,13 @@ namespace Drudoca.Blog.Domain
 
         public async Task<long?> CreateCommentAsync(string postFileName, long? parentId, string author, string email, string markdown)
         {
+            var post = await _postRepository.GetPostByFileName(postFileName);
+            if (post == null)
+            {
+                _logger.LogWarning("Post with file name '{file-name}' was not found", postFileName);
+                return null;
+            }
+
             if (parentId != null)
             {
                 var parent = await _commentRepository.GetAsync(parentId.Value);
@@ -180,6 +194,8 @@ namespace Drudoca.Blog.Domain
 
             _logger.LogDebug("Created comment {id} for post {post} with author: {author}", id, comment.PostFileName, comment.Author);
 
+            await NotifyOnCommentAsync(post, comment);
+
             return id;
         }
 
@@ -188,6 +204,33 @@ namespace Drudoca.Blog.Domain
             await _commentRepository.MarkDeletedAsync(id);
 
             _logger.LogDebug("Marked comment {id} as deleted (if it exists)");
+        }
+
+        private async Task NotifyOnCommentAsync(PostData post, CommentData comment)
+        {
+            CommentData? parent = null;
+            if (comment.ParentId != null)
+            {
+                parent = await _commentRepository.GetAsync(comment.ParentId.Value);
+                if (parent == null)
+                {
+                    _logger.LogWarning(
+                        "Parent {parent-id} for comment {comment-id} was not found so could not be notified.",
+                        comment.ParentId, comment.Id);
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(parent?.Email))
+            {
+                var notification = await _notificationBuilder.BlogCommentReplyAsync(post, comment, parent);
+                await _emailService.SendEmailAsync(parent.Email, notification);
+            }
+
+            if (!string.IsNullOrEmpty(post.Email))
+            {
+                var notification = await _notificationBuilder.BlogCommentAuthorAsync(post, comment);
+                await _emailService.SendEmailAsync(post.Email, notification);
+            }
         }
     }
 }

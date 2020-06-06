@@ -2,8 +2,7 @@
 {
     internal interface IMarkdownParser
     {
-        string ToStaticPageHtml(string markdown);
-        string ToPostHtml(string markdown);
-        string ToCommentHtml(string markdown);
+        string ToTrustedHtml(string markdown);
+        string ToUntrustedHtml(string markdown);
     }
 }

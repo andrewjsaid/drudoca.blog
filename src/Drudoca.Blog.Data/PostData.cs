@@ -11,6 +11,7 @@ namespace Drudoca.Blog.Data
             string fileName,
             string title,
             string author,
+            string? email,
             DateTime publishedOn,
             bool isPublished,
             bool isListed,
@@ -20,6 +21,7 @@ namespace Drudoca.Blog.Data
             FileName = fileName;
             Title = title;
             Author = author;
+            Email = email;
             PublishedOn = publishedOn;
             IsPublished = isPublished;
             IsListed = isListed;
@@ -30,6 +32,7 @@ namespace Drudoca.Blog.Data
         public string FileName { get; }
         public string Title { get; }
         public string Author { get; }
+        public string? Email { get; }
         public DateTime PublishedOn { get; }
         public bool IsPublished { get; }
         public bool IsListed { get; }

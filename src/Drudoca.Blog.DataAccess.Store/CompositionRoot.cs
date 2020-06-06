@@ -16,7 +16,11 @@ namespace Drudoca.Blog.DataAccess.Store
 
                 .AddTransient<IMarkdownFileConverter<StaticPageData>, StaticPageFileConverter>()
                 .AddTransient<IMarkdownStore<StaticPageData>, CachedMarkdownStore<StaticPageData>>()
-                .AddTransient<IStaticPageRepository, StaticPageRepository>();
+                .AddTransient<IStaticPageRepository, StaticPageRepository>()
+
+                .AddTransient<IMarkdownFileConverter<EmailTemplateData>, EmailTemplateFileConverter>()
+                .AddTransient<IMarkdownStore<EmailTemplateData>, CachedMarkdownStore<EmailTemplateData>>()
+                .AddTransient<IEmailTemplateRepository, EmailTemplateRepository>();
         }
     }
 }

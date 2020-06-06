@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Drudoca.Blog.Domain.Notifications;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Drudoca.Blog.Domain
 {
@@ -15,6 +16,10 @@ namespace Drudoca.Blog.Domain
 
                 .AddTransient<IBlogService, BlogService>()
                 .AddTransient<IStaticContentService, StaticContentService>()
+
+                .AddTransient<IEmailService, EmailService>()
+                .AddTransient<ITemplateEngine, TemplateEngine>()
+                .AddTransient<INotificationBuilder, NotificationBuilder>()
 
                 .AddScoped<IMarkdownParser, MarkdownParser>();
         }

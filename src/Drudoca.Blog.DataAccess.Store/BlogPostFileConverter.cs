@@ -28,9 +28,10 @@ namespace Drudoca.Blog.DataAccess.Store
 
             var title = helper.GetRequiredString("title");
             var author = helper.GetRequiredString("author");
+            var email = helper.GetOptionalString("email");
             var publishedOn = helper.GetRequiredDate("date");
-            var isPublished = helper.GetRequiredBoolean("published");
-            var isListed = helper.GetRequiredBoolean("listed");
+            var isPublished = helper.GetOptionalBoolean("published") ?? true;
+            var isListed = helper.GetOptionalBoolean("listed") ?? true;
 
             var metaAuthor = helper.GetOptionalString("meta-author");
             var metaDescription = helper.GetOptionalString("meta-description");
@@ -49,7 +50,8 @@ namespace Drudoca.Blog.DataAccess.Store
             var result = new PostData(
                 file.Name,
                 title, 
-                author, 
+                author,
+                email,
                 publishedOn, 
                 isPublished, 
                 isListed, 

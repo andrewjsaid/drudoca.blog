@@ -26,7 +26,7 @@ namespace Drudoca.Blog.DataAccess.Store
 
             var title = helper.GetRequiredString("title");
             var uriSegment = helper.GetRequiredString("uri-segment");
-            var isPublished = helper.GetRequiredBoolean("published");
+            var isPublished = helper.GetOptionalBoolean("published") ?? true;
             var menuIcon = helper.GetOptionalString("menu-icon");
             var menuText = helper.GetOptionalString("menu-text");
             var menuSequence = helper.GetOptionalInt32("menu-sequence");

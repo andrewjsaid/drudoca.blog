@@ -62,12 +62,14 @@ namespace Drudoca.Blog.Web
 
             services.Configure<BlogOptions>(Configuration.GetSection("Blog"));
             services.Configure<DatabaseOptions>(Configuration.GetSection("Database"));
+            services.Configure<EmailOptions>(Configuration.GetSection("Email"));
             services.Configure<SiteOptions>(Configuration.GetSection("Site"));
             services.Configure<StoreOptions>(Configuration.GetSection("Store"));
             services.Configure<SeoOptions>(Configuration.GetSection("SEO"));
 
             services.AddTransient(r => r.GetRequiredService<IOptions<BlogOptions>>().Value);
             services.AddTransient(r => r.GetRequiredService<IOptions<DatabaseOptions>>().Value);
+            services.AddTransient(r => r.GetRequiredService<IOptions<EmailOptions>>().Value);
             services.AddTransient(r => r.GetRequiredService<IOptions<SiteOptions>>().Value);
             services.AddTransient(r => r.GetRequiredService<IOptions<StoreOptions>>().Value);
             services.AddTransient(r => r.GetRequiredService<IOptions<SeoOptions>>().Value);

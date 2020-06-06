@@ -6,13 +6,13 @@ namespace Drudoca.Blog.Domain
 {
     internal class MarkdownParser : IMarkdownParser
     {
-        private readonly Lazy<MarkdownPipeline> _postPipeline;
-        private readonly Lazy<MarkdownPipeline> _commentPipeline;
+        private readonly Lazy<MarkdownPipeline> _trustedPipeline;
+        private readonly Lazy<MarkdownPipeline> _untrustedPipeline;
 
         public MarkdownParser()
         {
-            _postPipeline = new Lazy<MarkdownPipeline>(CreatePostPipeline);
-            _commentPipeline = new Lazy<MarkdownPipeline>(CreateCommentPipeline);
+            _trustedPipeline = new Lazy<MarkdownPipeline>(CreatePostPipeline);
+            _untrustedPipeline = new Lazy<MarkdownPipeline>(CreateCommentPipeline);
         }
 
         private static MarkdownPipeline CreatePostPipeline()
@@ -30,21 +30,15 @@ namespace Drudoca.Blog.Domain
             return pb.Build();
         }
 
-        public string ToStaticPageHtml(string markdown)
+        public string ToTrustedHtml(string markdown)
         {
-            var html = Markdown.ToHtml(markdown, _postPipeline.Value);
+            var html = Markdown.ToHtml(markdown, _trustedPipeline.Value);
             return html;
         }
 
-        public string ToPostHtml(string markdown)
+        public string ToUntrustedHtml(string markdown)
         {
-            var html = Markdown.ToHtml(markdown, _postPipeline.Value);
-            return html;
-        }
-
-        public string ToCommentHtml(string markdown)
-        {
-            var html = Markdown.ToHtml(markdown, _commentPipeline.Value);
+            var html = Markdown.ToHtml(markdown, _untrustedPipeline.Value);
             return html;
         }
     }

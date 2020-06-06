@@ -30,6 +30,21 @@ namespace Drudoca.Blog.DataAccess.Store
             }
         }
 
+        public async Task<PostData?> GetPostByFileName(string fileName)
+        {
+            var posts = await _store.GetAllAsync();
+
+            foreach (var post in posts)
+            {
+                if (string.Equals(post.FileName, fileName, StringComparison.OrdinalIgnoreCase))
+                {
+                    return post;
+                }
+            }
+
+            return null;
+        }
+
         public async IAsyncEnumerable<PostData> GetPostsByDateAsync(DateTime published)
         {
             var posts = await _store.GetAllAsync();

@@ -135,7 +135,7 @@ namespace Drudoca.Blog.Domain
 
         private BlogComment BuildComment(CommentData data, BlogComment[]? children)
         {
-            var html = _markdownParser.ToCommentHtml(data.Markdown);
+            var html = _markdownParser.ToUntrustedHtml(data.Markdown);
 
             var result = new BlogComment(
                 data.Id,

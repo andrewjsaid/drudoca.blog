@@ -13,11 +13,11 @@ namespace Drudoca.Blog.Web.Pages
     [LayoutModel]
     public class PostModel : PageModel
     {
-        private readonly IBlogService _blogManager;
+        private readonly IBlogService _blogService;
 
-        public PostModel(IBlogService blogManager)
+        public PostModel(IBlogService blogService)
         {
-            _blogManager = blogManager;
+            _blogService = blogService;
         }
 
         [BindProperty(SupportsGet = true), FromRoute]
@@ -34,13 +34,13 @@ namespace Drudoca.Blog.Web.Pages
         
         public async Task<IActionResult> OnGet()
         {
-            Post = await _blogManager.GetPostAsync(PostUrl.GetDate(), PostUrl.Slug);
+            Post = await _blogService.GetPostAsync(PostUrl.GetDate(), PostUrl.Slug);
             if (Post == null)
             {
                 return NotFound();
             }
 
-            Comments = await _blogManager.GetCommentsAsync(Post.FileName);
+            Comments = await _blogService.GetCommentsAsync(Post.FileName);
 
             return Page();
         }
@@ -51,7 +51,7 @@ namespace Drudoca.Blog.Web.Pages
             if (!User.Identity.IsAuthenticated)
                 return Challenge();
 
-            Post = await _blogManager.GetPostAsync(PostUrl.GetDate(), PostUrl.Slug);
+            Post = await _blogService.GetPostAsync(PostUrl.GetDate(), PostUrl.Slug);
             if (Post == null)
             {
                 return NotFound();
@@ -61,7 +61,7 @@ namespace Drudoca.Blog.Web.Pages
             {
                 var form = CommentForm;
                 Debug.Assert(form != null, "Model can not be valid with null form");
-                var id = await _blogManager.CreateCommentAsync(
+                var id = await _blogService.CreateCommentAsync(
                     Post.FileName,
                     form.ParentId,
                     AuthorName,
@@ -81,7 +81,7 @@ namespace Drudoca.Blog.Web.Pages
             }
 
             // If we got to here, the input is wrong.
-            Comments = await _blogManager.GetCommentsAsync(Post.FileName);
+            Comments = await _blogService.GetCommentsAsync(Post.FileName);
             return Page();
         }
     }

@@ -5,6 +5,7 @@ namespace Drudoca.Blog.Config
 {
     public class SiteOptions
     {
+        public string Url { get; set; } = default!;
         public string[] Administrators { get; set; } = Array.Empty<string>();
         public string? DataProtectionPath { get; set; }
         public string? GoogleTagManagerClientId { get; set; }
