@@ -68,12 +68,10 @@ namespace Drudoca.Blog.Domain
             // it includes "hidden" posts.
             var count = 0;
             var stop = false;
-
-            var showFuture = _options.ListFuturePosts;
-
+            
             await foreach (var postData in _postRepository.GetAllPostsAsync())
             {
-                if (!ShowInListing(postData, showFuture))
+                if (!ShowInListing(postData, _options.ListFuturePosts))
                 {
                     continue;
                 }
@@ -130,6 +128,57 @@ namespace Drudoca.Blog.Domain
 
             _logger.LogDebug("Post with date {date} and slug {slug} not found", published, slug);
             return null;
+        }
+
+        public async Task<BlogPost?> GetMostRecentPostAsync()
+        {
+            await foreach (var postData in _postRepository.GetAllPostsAsync())
+            {
+                if (!ShowInListing(postData, _options.ListFuturePosts))
+                {
+                    continue;
+                }
+
+                var result = _postBuilder.Build(postData);
+                return result;
+            }
+
+            return null;
+        }
+
+        public async Task<(BlogPost? earlier, BlogPost? later)> GetSurroundingPostsAsync(string fileName)
+        {
+            PostData? previous = null;
+            PostData? next = null;
+
+            var setNext = false;
+
+            await foreach (var postData in _postRepository.GetAllPostsAsync())
+            {
+                if (!ShowInListing(postData, _options.ListFuturePosts))
+                {
+                    continue;
+                }
+
+                if (setNext)
+                {
+                    next = postData;
+                    break;
+                }
+
+                if (string.Equals(postData.FileName, fileName, StringComparison.OrdinalIgnoreCase))
+                {
+                    setNext = true;
+                }
+                else
+                {
+                    previous = postData;
+                }
+            }
+
+            var laterPost = previous == null ? null : _postBuilder.Build(previous);
+            var earlierPost = next == null ? null : _postBuilder.Build(next);
+            return (earlierPost, laterPost);
         }
 
         public async Task<int> CountCommentsAsync(string postFileName)

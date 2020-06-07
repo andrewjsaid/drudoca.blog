@@ -9,6 +9,15 @@
 
 <partial name="PostPartial" model="new PostPartialModel(post, false, null)" />
 
+@if (Model.SeeAlso != null)
+{
+    <hr />
+
+    <partial name="SeeAlsoPartial" model="Model.SeeAlso" />
+}
+
+<hr />
+
 <section class="new-comment">
     <div class="border p-3 shadow-sm mb-5">
         <h2><a id="new-comment">Join the Discussion</a></h2>

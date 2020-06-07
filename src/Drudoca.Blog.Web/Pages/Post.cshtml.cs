@@ -30,6 +30,7 @@ namespace Drudoca.Blog.Web.Pages
         public PostPageCommentForm? CommentForm { get; set; }
 
         public BlogPost? Post { get; private set; }
+        public SeeAlsoPartialModel? SeeAlso { get; private set; }
         public BlogComment[]? Comments { get; private set; }
         
         public async Task<IActionResult> OnGet()
@@ -41,7 +42,7 @@ namespace Drudoca.Blog.Web.Pages
             }
 
             Comments = await _blogService.GetCommentsAsync(Post.FileName);
-
+            await BuildSeeAlsoAsync(Post);
             return Page();
         }
 
@@ -82,7 +83,20 @@ namespace Drudoca.Blog.Web.Pages
 
             // If we got to here, the input is wrong.
             Comments = await _blogService.GetCommentsAsync(Post.FileName);
+            await BuildSeeAlsoAsync(Post);
             return Page();
+        }
+
+        private async Task BuildSeeAlsoAsync(BlogPost post)
+        {
+            var mostRecent = await _blogService.GetMostRecentPostAsync();
+
+            if (mostRecent?.FileName == post.FileName)
+                mostRecent = null;
+
+            var (earlier, later) = await _blogService.GetSurroundingPostsAsync(post.FileName);
+
+            SeeAlso = new SeeAlsoPartialModel(mostRecent, earlier, later);
         }
     }
 }

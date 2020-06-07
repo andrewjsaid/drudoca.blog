@@ -1,0 +1,42 @@
+﻿@model SeeAlsoPartialModel
+
+@{
+    var list = new List<(string header, BlogPost post)>();
+
+    @if (Model.MostRecent != null)
+    {
+        list.Add(("Most Recent", Model.MostRecent));
+    }
+
+    @if (Model.Next != null)
+    {
+        list.Add(("Next Post", Model.Next));
+    }
+
+    @if (Model.Previous != null)
+    {
+        list.Add(("Previous Post", Model.Previous));
+    }
+}
+
+<section class="mt-4">
+    <h3>Other posts you might like</h3>
+
+    <div class="row">
+        @foreach (var (header, post) in list)
+        {
+            <div class="col col-12 col-md-4 p-3">
+                <div class="border shadow p-3 h-100">
+                    <h4>@header</h4>
+                    <a asp-page="/Post"
+                       asp-route-year="@post.PublishedOn.Year"
+                       asp-route-month="@post.PublishedOn.Month"
+                       asp-route-day="@post.PublishedOn.Day"
+                       asp-route-slug="@post.Slug">
+                        @post.Title
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</section>
