@@ -11,16 +11,18 @@ namespace Drudoca.Blog.Domain
 
         public MarkdownParser()
         {
-            _trustedPipeline = new Lazy<MarkdownPipeline>(CreatePostPipeline);
-            _untrustedPipeline = new Lazy<MarkdownPipeline>(CreateCommentPipeline);
+            _trustedPipeline = new Lazy<MarkdownPipeline>(CreateTrustedPipeline);
+            _untrustedPipeline = new Lazy<MarkdownPipeline>(CreateUntrustedPipeline);
         }
 
-        private static MarkdownPipeline CreatePostPipeline()
+        private static MarkdownPipeline CreateTrustedPipeline()
         {
-            return new MarkdownPipelineBuilder().Build();
+            var pb = new MarkdownPipelineBuilder();
+            pb.Extensions.Add(new OnlyPublishedLinksMarkdownExtension());
+            return pb.Build();
         }
 
-        private static MarkdownPipeline CreateCommentPipeline()
+        private static MarkdownPipeline CreateUntrustedPipeline()
         {
             var pb = new MarkdownPipelineBuilder();
             pb.DisableHtml();
