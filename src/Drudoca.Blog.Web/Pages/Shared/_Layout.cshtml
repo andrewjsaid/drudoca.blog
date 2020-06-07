@@ -1,5 +1,5 @@
 ﻿@{
-    var model = (Models.LayoutModel)ViewData["LayoutModel"];
+    var model = (LayoutModel) ViewData["LayoutModel"];
     var pageMeta = (PageMetadata) ViewData["PageMetadata"];
     var title = ViewData["Title"];
 }
@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@title - Drudoca</title>
-    @if (model.ThemeColor != null)
+    @if (model?.ThemeColor != null)
     {
         <meta name="theme-color" content="@(model.ThemeColor)" />
     }
@@ -25,11 +25,13 @@
     {
         <meta name="keywords" content="@pageMeta.Keywords" />
     }
-    @foreach (var (name, value) in model.MetaTags)
-    {
-        <meta name="@name" content="@value" />
+    @if(model?.MetaTags != null){
+        @foreach (var (name, value) in model.MetaTags)
+        {
+            <meta name="@name" content="@value" />
+        }
     }
-    @if (model.Seo.Robots != null)
+    @if (model?.Seo.Robots != null)
     {
         <meta name="robots" content="@(model.Seo.Robots)" />
     }
@@ -44,12 +46,12 @@
     <link rel="stylesheet" href="~/site.min.css" asp-append-version="true" />
 
 
-    @if (model.FontAwesomeId != null)
+    @if (model?.FontAwesomeId != null)
     {
         <script src="https://kit.fontawesome.com/@(model.FontAwesomeId).js" crossorigin="anonymous"></script>
     }
 
-    @if (model.GoogleAnalyticsClientId != null)
+    @if (model?.GoogleAnalyticsClientId != null)
     {
         <environment names="Production">
             <!-- Global site tag (gtag.js) - Google Analytics -->
