@@ -20,14 +20,14 @@
 }
 
 <section class="mt-4">
-    <h3>Other posts you might like</h3>
+    <h2>Other posts you might like</h2>
 
     <div class="row">
         @foreach (var (header, post) in list)
         {
             <div class="col col-12 col-md-4 p-3">
                 <div class="border shadow p-3 h-100">
-                    <h4>@header</h4>
+                    <h3>@header</h3>
                     <a asp-page="/Post"
                        asp-route-year="@post.PublishedOn.Year"
                        asp-route-month="@post.PublishedOn.Month"
