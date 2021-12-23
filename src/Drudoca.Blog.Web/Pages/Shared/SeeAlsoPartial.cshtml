@@ -1,6 +1,13 @@
 ﻿@model SeeAlsoPartialModel
 
 @{
+    if (Model is null)
+    {
+        throw new ArgumentNullException(nameof(Model));
+    }
+}
+
+@{
     var list = new List<(string header, BlogPost post)>();
 
     @if (Model.MostRecent != null)

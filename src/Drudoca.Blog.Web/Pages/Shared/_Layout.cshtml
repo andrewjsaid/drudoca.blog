@@ -1,6 +1,6 @@
 ﻿@{
-    var model = (LayoutModel) ViewData["LayoutModel"];
-    var pageMeta = (PageMetadata) ViewData["PageMetadata"];
+    var model = (LayoutModel?)ViewData["LayoutModel"];
+    var pageMeta = (PageMetadata?)ViewData["PageMetadata"];
     var title = ViewData["Title"];
 }
 <!DOCTYPE html>
@@ -25,7 +25,8 @@
     {
         <meta name="keywords" content="@pageMeta.Keywords" />
     }
-    @if(model?.MetaTags != null){
+    @if (model?.MetaTags != null)
+    {
         @foreach (var (name, value) in model.MetaTags)
         {
             <meta name="@name" content="@value" />
@@ -55,7 +56,7 @@
     {
         <environment names="Production">
             <!-- Global site tag (gtag.js) - Google Analytics -->
-            <script async src="https://www.googletagmanager.com/gtag/js?id=@(model.GoogleAnalyticsClientId)"></script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=@(model.GoogleAnalyticsClientId)"></script>
             <script>
                 window.dataLayer = window.dataLayer || [];
                 function gtag() { dataLayer.push(arguments); }
@@ -83,19 +84,22 @@
                     </li>
 
                     @{
-                        var model2 = (Models.LayoutModel)ViewData["LayoutModel"];
-                    }
-                    @foreach (var menuItem in model2.Menu)
-                    {
-                        <li class="nav-item">
-                            <a href="/@menuItem.UriSegment" class="nav-link">
-                                @if (menuItem.Icon != null)
-                                {
-                                    <i class="@menuItem.Icon" aria-hidden="true"></i>
-                                }
-                                @menuItem.Text
-                            </a>
-                        </li>
+                        var model2 = (LayoutModel?)ViewData["LayoutModel"];
+                        @if (model2 != null)
+                        {
+                            foreach (var menuItem in model2.Menu)
+                            {
+                                <li class="nav-item">
+                                    <a href="/@menuItem.UriSegment" class="nav-link">
+                                        @if (menuItem.Icon != null)
+                                        {
+                                            <i class="@menuItem.Icon" aria-hidden="true"></i>
+                                        }
+                                        @menuItem.Text
+                                    </a>
+                                </li>
+                            }
+                        }
                     }
                 </menu>
                 <menu class="navbar-nav">
@@ -147,9 +151,9 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/vs2015.min.css" integrity="sha256-e+xyu+n0Lf/CcIJO7HoFhKOu97JVj09p39g25tzh6is=" crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js" integrity="sha256-/2C3CAfmuTGkUqK2mVrhkTacBscoR1caE0u2QZZ3Uh8=" crossorigin="anonymous"></script>
-<script>
-    hljs.configure({languages: ['csharp']});
-    hljs.initHighlighting();
-</script>
+    <script>
+        hljs.configure({languages: ['csharp']});
+        hljs.initHighlighting();
+    </script>
 </body>
 </html>

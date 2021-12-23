@@ -1,5 +1,12 @@
 ﻿@model BlogComment
 
+@{
+    if (Model is null)
+    {
+        throw new ArgumentNullException(nameof(Model));
+    }
+}
+
 <div class="comment">
     <div>
         <h3 class="comment-author d-inline-block"><a id="@($"c{Model.Id}")">@Model.Author</a></h3>

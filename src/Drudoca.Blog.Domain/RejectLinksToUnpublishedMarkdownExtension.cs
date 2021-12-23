@@ -28,7 +28,7 @@ namespace Drudoca.Blog.Domain
 
             private static bool IsLinkToUnpublished(LinkInline link)
             {
-                var match = _regex.Match(link.Url);
+                var match = _regex.Match(link.Url ?? string.Empty);
                 if (!match.Success)
                     return false; // Do not reject
 

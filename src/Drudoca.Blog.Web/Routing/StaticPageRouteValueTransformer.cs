@@ -4,6 +4,7 @@ using Drudoca.Blog.Domain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Drudoca.Blog.Web.Routing
 {
@@ -11,10 +12,9 @@ namespace Drudoca.Blog.Web.Routing
     {
         public override async ValueTask<RouteValueDictionary> TransformAsync(HttpContext httpContext, RouteValueDictionary values)
         {
-            var staticContentService = (IStaticContentService)httpContext.RequestServices.GetService(typeof(IStaticContentService));
-            Debug.Assert(staticContentService != null);
+            var staticContentService = (IStaticContentService)httpContext.RequestServices.GetRequiredService(typeof(IStaticContentService));
 
-            var uriSegment = (string)values["uriSegment"];
+            var uriSegment = (string?)values["uriSegment"];
             Debug.Assert(!string.IsNullOrEmpty(uriSegment));
 
             var isPage = await staticContentService.HasPageAsync(uriSegment);

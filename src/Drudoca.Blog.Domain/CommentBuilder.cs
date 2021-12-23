@@ -96,7 +96,7 @@ namespace Drudoca.Blog.Domain
 
         private static BlogComment[]? GetLeaves(long id, Dictionary<long, List<BlogComment>> leaves)
         {
-            if (!leaves.TryGetValue(id, out List<BlogComment> domainChildren))
+            if (!leaves.TryGetValue(id, out List<BlogComment>? domainChildren))
                 return null;
 
             if (domainChildren.Count == 0)
@@ -151,7 +151,8 @@ namespace Drudoca.Blog.Domain
 
         private class PostedOnUtcComparer : IComparer<BlogComment>
         {
-            public int Compare(BlogComment x, BlogComment y) => x.PostedOnUtc.CompareTo(y.PostedOnUtc);
+            public int Compare(BlogComment? x, BlogComment? y) 
+                => (x?.PostedOnUtc ?? default).CompareTo(y?.PostedOnUtc ?? default);
         }
 
     }

@@ -6,6 +6,7 @@ using Drudoca.Blog.Domain;
 using Drudoca.Blog.Web.Models;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Drudoca.Blog.Web.Filters
 {
@@ -25,10 +26,10 @@ namespace Drudoca.Blog.Web.Filters
 
         private static async Task AddLayoutModelAsync(PageHandlerExecutingContext context)
         {
-            var siteOptions = (SiteOptions)context.HttpContext.RequestServices.GetService(typeof(SiteOptions));
-            var seoOptions = (SeoOptions)context.HttpContext.RequestServices.GetService(typeof(SeoOptions));
+            var siteOptions = (SiteOptions)context.HttpContext.RequestServices.GetRequiredService(typeof(SiteOptions));
+            var seoOptions = (SeoOptions)context.HttpContext.RequestServices.GetRequiredService(typeof(SeoOptions));
 
-            var staticContentService = (IStaticContentService)context.HttpContext.RequestServices.GetService(typeof(IStaticContentService));
+            var staticContentService = (IStaticContentService)context.HttpContext.RequestServices.GetRequiredService(typeof(IStaticContentService));
             Debug.Assert(staticContentService != null);
 
             var menu = await staticContentService.GetStaticPageMenuAsync();

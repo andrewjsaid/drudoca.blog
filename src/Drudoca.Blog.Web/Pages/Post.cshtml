@@ -1,7 +1,11 @@
 ﻿@page "/{year:int}/{month:int}/{day:int}/{slug}"
 @model PostModel
 @{
-    var post = Model.Post!;
+    if (Model.Post is null)
+    {
+        throw new ArgumentNullException(nameof(Model.Post));
+    }
+    var post = Model.Post;
     ViewData["Title"] = post.Title;
     ViewData["PageMetadata"] = post.PageMetadata;
 }
@@ -21,7 +25,7 @@
 <section class="new-comment">
     <div class="border p-3 shadow-sm mb-5">
         <h2><a id="new-comment">Join the Discussion</a></h2>
-        @if (!Model.User.Identity.IsAuthenticated)
+        @if (Model.User.Identity?.IsAuthenticated != true)
         {
             <p class="lead">You must be signed in to comment.</p>
             <div>

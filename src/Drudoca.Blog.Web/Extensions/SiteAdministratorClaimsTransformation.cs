@@ -21,7 +21,7 @@ namespace Drudoca.Blog.Web.Extensions
 
 		public Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)
         {
-			if (principal.Identity.IsAuthenticated)
+			if (principal.Identity?.IsAuthenticated == true)
 			{
 				if (IsAdministrator(principal))
 				{
@@ -53,7 +53,7 @@ namespace Drudoca.Blog.Web.Extensions
 			if (user.HasClaim(ClaimTypes.Role, "SiteAdministrator"))
 				return; // Should be idempotent
 
-			_logger.LogInformation("Adding administrator claims for administrator {name}", user.Identity.Name);
+			_logger.LogInformation("Adding administrator claims for administrator {name}", user.Identity?.Name);
 
 			var identity = new ClaimsIdentity("Drudoca");
 			identity.AddClaim(new Claim(ClaimTypes.Role, "SiteAdministrator"));

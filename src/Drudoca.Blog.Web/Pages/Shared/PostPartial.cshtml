@@ -1,6 +1,12 @@
 ﻿@model PostPartialModel
 
 @{
+    if (Model is null)
+    {
+        throw new ArgumentNullException(nameof(Model));
+    }
+}
+@{
     var post = Model.Post;
 }
 

@@ -5,6 +5,7 @@ using Drudoca.Blog.Config;
 using Drudoca.Blog.Domain;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Drudoca.Blog.Web.Filters
 {
@@ -25,9 +26,8 @@ namespace Drudoca.Blog.Web.Filters
 
         private static void AddPageMetadata(PageHandlerExecutingContext context)
         {
-            var seoOptions = (SeoOptions)context.HttpContext.RequestServices.GetService(typeof(SeoOptions));
-            Debug.Assert(seoOptions != null);
-            
+            var seoOptions = (SeoOptions)context.HttpContext.RequestServices.GetRequiredService(typeof(SeoOptions));
+
             var pageMetadata = new PageMetadata(null, seoOptions.MetaDescription, seoOptions.MetaKeywords);
 
             var model = (PageModel)context.HandlerInstance;

@@ -23,7 +23,7 @@ namespace Drudoca.Blog.Web.Pages
         [BindProperty(SupportsGet = true), FromRoute]
         public PostUrlModel PostUrl { get; set; } = default!;
 
-        public string AuthorName => User.Identity.Name!;
+        public string AuthorName => User.Identity?.Name ?? string.Empty;
         public string AuthorEmail => User.FindFirstValue(ClaimTypes.Email)!;
 
         [BindProperty]
@@ -49,7 +49,7 @@ namespace Drudoca.Blog.Web.Pages
         public async Task<IActionResult> OnPost()
         {
             // Can't use authorization filters on single methods
-            if (!User.Identity.IsAuthenticated)
+            if (User.Identity?.IsAuthenticated != true)
                 return Challenge();
 
             Post = await _blogService.GetPostAsync(PostUrl.GetDate(), PostUrl.Slug);

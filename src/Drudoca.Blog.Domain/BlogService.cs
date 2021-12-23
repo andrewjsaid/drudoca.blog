@@ -252,7 +252,7 @@ namespace Drudoca.Blog.Domain
         {
             await _commentRepository.MarkDeletedAsync(id);
 
-            _logger.LogDebug("Marked comment {id} as deleted (if it exists)");
+            _logger.LogDebug("Marked comment {id} as deleted (if it exists)", id);
         }
 
         private async Task NotifyOnCommentAsync(PostData post, CommentData comment)
