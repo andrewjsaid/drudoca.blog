@@ -28,7 +28,8 @@ namespace Drudoca.Blog.DataAccess.Store
 
         public override async ValueTask<T[]> GetAllAsync()
         {
-            if (_memoryCache.TryGetValue<CachedBlogPosts>(_cacheKey, out var cacheItem))
+            if (_memoryCache.TryGetValue<CachedBlogPosts?>(_cacheKey, out var cacheItem)
+                && cacheItem is not null)
                 return cacheItem.Data;
 
             var data = await base.GetAllAsync();
