@@ -1,66 +1,53 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Drudoca.Blog.DataAccess;
+﻿using Drudoca.Blog.DataAccess;
 
-namespace Drudoca.Blog.Domain
+namespace Drudoca.Blog.Domain;
+
+internal class StaticContentService(
+    IStaticPageRepository repository,
+    IStaticPageBuilder builder,
+    IStaticPageMenuItemBuilder menuItemBuilder)
+    : IStaticContentService
 {
-    internal class StaticContentService : IStaticContentService
+    public async Task<StaticPageMenuItem[]> GetStaticPageMenuAsync()
     {
-        private readonly IStaticPageRepository _repository;
-        private readonly IStaticPageBuilder _builder;
-        private readonly IStaticPageMenuItemBuilder _menuItemBuilder;
+        var results = new List<StaticPageMenuItem>();
 
-        public StaticContentService(
-            IStaticPageRepository repository,
-            IStaticPageBuilder builder,
-            IStaticPageMenuItemBuilder menuItemBuilder)
+        await foreach (var staticPageData in repository.GetAllAsync())
         {
-            _repository = repository;
-            _builder = builder;
-            _menuItemBuilder = menuItemBuilder;
-        }
-
-        public async Task<StaticPageMenuItem[]> GetStaticPageMenuAsync()
-        {
-            var results = new List<StaticPageMenuItem>();
-
-            await foreach (var staticPageData in _repository.GetAllAsync())
+            var menuItem = menuItemBuilder.Build(staticPageData);
+            if (menuItem != null)
             {
-                var menuItem = _menuItemBuilder.Build(staticPageData);
-                if (menuItem != null)
-                {
-                    results.Add(menuItem);
-                }
+                results.Add(menuItem);
             }
-
-            return results.ToArray();
         }
 
-        public async Task<StaticPage[]> GetAllPagesAsync()
-        {
-            var results = new List<StaticPage>();
-
-            await foreach (var staticPageData in _repository.GetAllAsync())
-            {
-                var page = _builder.Build(staticPageData);
-                results.Add(page);
-            }
-
-            return results.ToArray();
-        }
-
-        public async Task<StaticPage?> GetPageAsync(string uriSegment)
-        {
-            var page = await _repository.GetByUriSegmentAsync(uriSegment);
-            if (page == null)
-            {
-                return null;
-            }
-
-            var result = _builder.Build(page);
-            return result;
-        }
-
-        public Task<bool> HasPageAsync(string uriSegment) => _repository.HasPageAsync(uriSegment);
+        return results.ToArray();
     }
+
+    public async Task<StaticPage[]> GetAllPagesAsync()
+    {
+        var results = new List<StaticPage>();
+
+        await foreach (var staticPageData in repository.GetAllAsync())
+        {
+            var page = builder.Build(staticPageData);
+            results.Add(page);
+        }
+
+        return results.ToArray();
+    }
+
+    public async Task<StaticPage?> GetPageAsync(string uriSegment)
+    {
+        var page = await repository.GetByUriSegmentAsync(uriSegment);
+        if (page == null)
+        {
+            return null;
+        }
+
+        var result = builder.Build(page);
+        return result;
+    }
+
+    public Task<bool> HasPageAsync(string uriSegment) => repository.HasPageAsync(uriSegment);
 }

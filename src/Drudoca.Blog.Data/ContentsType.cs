@@ -1,8 +1,7 @@
-﻿namespace Drudoca.Blog.Data
+﻿namespace Drudoca.Blog.Data;
+
+public enum ContentsType
 {
-    public enum ContentsType
-    {
-        Markdown,
-        Html
-    }
+    Markdown,
+    Html
 }

@@ -1,9 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿namespace Drudoca.Blog.DataAccess.Store;
 
-namespace Drudoca.Blog.DataAccess.Store
+internal interface IMarkdownDirectoryReader
 {
-    internal interface IMarkdownDirectoryReader
-    {
-        ValueTask<MarkdownFile[]> ReadAsync(string path);
-    }
+    ValueTask<MarkdownFile[]> ReadAsync(string path);
 }

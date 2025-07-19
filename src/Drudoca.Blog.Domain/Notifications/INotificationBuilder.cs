@@ -1,11 +1,9 @@
-﻿using System.Threading.Tasks;
-using Drudoca.Blog.Data;
+﻿using Drudoca.Blog.Data;
 
-namespace Drudoca.Blog.Domain.Notifications
+namespace Drudoca.Blog.Domain.Notifications;
+
+public interface INotificationBuilder
 {
-    public interface INotificationBuilder
-    {
-        Task<NotificationEvent> BlogCommentReplyAsync(PostData post, CommentData comment, CommentData parent);
-        Task<NotificationEvent> BlogCommentAuthorAsync(PostData post, CommentData comment);
-    }
+    Task<NotificationEvent> BlogCommentReplyAsync(PostData post, CommentData comment, CommentData parent);
+    Task<NotificationEvent> BlogCommentAuthorAsync(PostData post, CommentData comment);
 }

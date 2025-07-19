@@ -1,62 +1,66 @@
-﻿using System.Collections.Generic;
-using Drudoca.Blog.Config;
-using Drudoca.Blog.Data;
+﻿using Drudoca.Blog.Data;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
-namespace Drudoca.Blog.DataAccess.Store
+namespace Drudoca.Blog.DataAccess.Store;
+
+internal class StaticPageFileConverter(
+    ILogger<StaticPageFileConverter> logger,
+    IOptions<StoreOptions> storeOptions)
+    : IMarkdownFileConverter<StaticPageData>
 {
-    internal class StaticPageFileConverter : IMarkdownFileConverter<StaticPageData>
+    private readonly ILogger _logger = logger;
+
+    public string? DirectoryPath => storeOptions.Value.StaticPagePath;
+
+    public IComparer<StaticPageData> Comparer { get; } = new SequenceStaticPageComparer();
+
+    public StaticPageData? Convert(MarkdownFile file)
     {
-        private readonly ILogger _logger;
-        private readonly StoreOptions _storeOptions;
+        var helper = new MarkdownFileHelper(file, _logger);
 
-        public StaticPageFileConverter(ILogger<StaticPageFileConverter> logger, StoreOptions storeOptions)
+        var title = helper.GetRequiredString("title");
+        var uriSegment = helper.GetRequiredString("uri-segment");
+        var isPublished = helper.GetOptionalBoolean("published") ?? true;
+        var menuIcon = helper.GetOptionalString("menu-icon");
+        var menuText = helper.GetOptionalString("menu-text");
+        var menuSequence = helper.GetOptionalInt32("menu-sequence");
+
+        var metaAuthor = helper.GetOptionalString("meta-author");
+        var metaDescription = helper.GetOptionalString("meta-description");
+        var metaKeywords = helper.GetOptionalString("meta-keywords");
+
+        if (!helper.IsValid)
         {
-            _logger = logger;
-            _storeOptions = storeOptions;
+            return null;
         }
 
-        public string? DirectoryPath => _storeOptions.StaticPagePath;
-
-        public IComparer<StaticPageData> Comparer { get; } = new SequenceStaticPageComparer();
-
-        public StaticPageData? Convert(MarkdownFile file)
+        var metaData = new PageMetadata
         {
-            var helper = new MarkdownFileHelper(file, _logger);
+            Author = metaAuthor,
+            Description = metaDescription,
+            Keywords = metaKeywords
+        };
 
-            var title = helper.GetRequiredString("title");
-            var uriSegment = helper.GetRequiredString("uri-segment");
-            var isPublished = helper.GetOptionalBoolean("published") ?? true;
-            var menuIcon = helper.GetOptionalString("menu-icon");
-            var menuText = helper.GetOptionalString("menu-text");
-            var menuSequence = helper.GetOptionalInt32("menu-sequence");
+        var result = new StaticPageData
+        {
+            FileName = file.Name,
+            Title = title,
+            UriSegment = uriSegment,
+            IsPublished = isPublished,
+            MenuSequence = menuSequence,
+            MenuIcon = menuIcon,
+            MenuText = menuText,
+            Markdown = file.Markdown,
+            PageMetadata = metaData
+        };
 
-            var metaAuthor = helper.GetOptionalString("meta-author");
-            var metaDescription = helper.GetOptionalString("meta-description");
-            var metaKeywords = helper.GetOptionalString("meta-keywords");
+        return result;
+    }
 
-            if (!helper.IsValid)
-            {
-                return null;
-            }
-
-            var metaData = new PageMetaData(
-                metaAuthor,
-                metaDescription,
-                metaKeywords);
-
-            var result = new StaticPageData(
-                file.Name,
-                title,
-                uriSegment,
-                isPublished,
-                menuSequence,
-                menuIcon,
-                menuText,
-                file.Markdown,
-                metaData);
-
-            return result;
-        }
+    private class SequenceStaticPageComparer : IComparer<StaticPageData>
+    {
+        public int Compare(StaticPageData? x, StaticPageData? y)
+            => (x?.MenuSequence ?? default).CompareTo(y?.MenuSequence ?? default);
     }
 }

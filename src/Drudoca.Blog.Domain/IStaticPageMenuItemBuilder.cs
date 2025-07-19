@@ -1,9 +1,8 @@
 ﻿using Drudoca.Blog.Data;
 
-namespace Drudoca.Blog.Domain
+namespace Drudoca.Blog.Domain;
+
+internal interface IStaticPageMenuItemBuilder
 {
-    internal interface IStaticPageMenuItemBuilder
-    {
-        StaticPageMenuItem? Build(StaticPageData data);
-    }
+    StaticPageMenuItem? Build(StaticPageData data);
 }

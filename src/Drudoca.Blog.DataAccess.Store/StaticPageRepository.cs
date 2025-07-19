@@ -1,57 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Drudoca.Blog.Data;
+﻿using Drudoca.Blog.Data;
 
-namespace Drudoca.Blog.DataAccess.Store
+namespace Drudoca.Blog.DataAccess.Store;
+
+internal class StaticPageRepository(IMarkdownStore<StaticPageData> store) : IStaticPageRepository
 {
-    internal class StaticPageRepository : IStaticPageRepository
+    public async IAsyncEnumerable<StaticPageData> GetAllAsync()
     {
-        private readonly IMarkdownStore<StaticPageData> _store;
+        var posts = await store.GetAllAsync();
 
-        public StaticPageRepository(IMarkdownStore<StaticPageData> store)
+        foreach (var post in posts)
         {
-            _store = store;
+            yield return post;
         }
+    }
 
-        public async IAsyncEnumerable<StaticPageData> GetAllAsync()
+    public async Task<StaticPageData?> GetByUriSegmentAsync(string uriSegment)
+    {
+        var posts = await store.GetAllAsync();
+
+        foreach (var post in posts)
         {
-            var posts = await _store.GetAllAsync();
-
-            foreach (var post in posts)
+            if (string.Equals(uriSegment, post.UriSegment, StringComparison.OrdinalIgnoreCase))
             {
-                yield return post;
+                return post;
             }
         }
 
-        public async Task<StaticPageData?> GetByUriSegmentAsync(string uriSegment)
+        return null;
+    }
+
+    public async Task<bool> HasPageAsync(string uriSegment)
+    {
+        var posts = await store.GetAllAsync();
+
+        foreach (var post in posts)
         {
-            var posts = await _store.GetAllAsync();
-
-            foreach (var post in posts)
+            if (string.Equals(uriSegment, post.UriSegment, StringComparison.OrdinalIgnoreCase))
             {
-                if (string.Equals(uriSegment, post.UriSegment, StringComparison.OrdinalIgnoreCase))
-                {
-                    return post;
-                }
+                return true;
             }
-
-            return null;
         }
 
-        public async Task<bool> HasPageAsync(string uriSegment)
-        {
-            var posts = await _store.GetAllAsync();
-
-            foreach (var post in posts)
-            {
-                if (string.Equals(uriSegment, post.UriSegment, StringComparison.OrdinalIgnoreCase))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        return false;
     }
 }

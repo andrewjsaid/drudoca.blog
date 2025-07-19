@@ -1,42 +1,25 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
-namespace Drudoca.Blog.Data
+namespace Drudoca.Blog.Data;
+
+[DebuggerDisplay("{" + nameof(FileName) + "}")]
+public class PostData
 {
-    [DebuggerDisplay("{" + nameof(FileName) + "}")]
-    public class PostData
-    {
+    public required string FileName { get; init; }
 
-        public PostData(
-            string fileName,
-            string title,
-            string author,
-            string? email,
-            DateTime publishedOn,
-            bool isPublished,
-            bool isListed,
-            string markdown,
-            PageMetaData pageMetaData)
-        {
-            FileName = fileName;
-            Title = title;
-            Author = author;
-            Email = email;
-            PublishedOn = publishedOn;
-            IsPublished = isPublished;
-            IsListed = isListed;
-            Markdown = markdown;
-            PageMetaData = pageMetaData;
-        }
+    public required string Title { get; init; }
 
-        public string FileName { get; }
-        public string Title { get; }
-        public string Author { get; }
-        public string? Email { get; }
-        public DateTime PublishedOn { get; }
-        public bool IsPublished { get; }
-        public bool IsListed { get; }
-        public string Markdown { get; }
-        public PageMetaData PageMetaData { get; }
-    }
+    public required string Author { get; init; }
+
+    public required string? Email { get; init; }
+
+    public required DateTime PublishedOn { get; init; }
+
+    public required bool IsPublished { get; init; }
+
+    public required bool IsListed { get; init; }
+
+    public required string Markdown { get; init; }
+
+    public required PageMetadata PageMetadata { get; init; }
 }

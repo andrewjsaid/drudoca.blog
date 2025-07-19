@@ -1,17 +1,10 @@
 ﻿using System.Diagnostics;
 
-namespace Drudoca.Blog.Domain
-{
-    [DebuggerDisplay("{" + nameof(Post) + "}")]
-    public class BlogPagePost
-    {
-        public BlogPagePost(BlogPost post, int numComments)
-        {
-            Post = post;
-            NumComments = numComments;
-        }
+namespace Drudoca.Blog.Domain;
 
-        public BlogPost Post { get; }
-        public int NumComments { get; }
-    }
+[DebuggerDisplay("{" + nameof(Post) + "}")]
+public class BlogPagePost(BlogPost post, int numComments)
+{
+    public BlogPost Post { get; } = post;
+    public int NumComments { get; } = numComments;
 }

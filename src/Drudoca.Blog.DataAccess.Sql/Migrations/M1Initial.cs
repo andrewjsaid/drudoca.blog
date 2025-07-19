@@ -1,29 +1,28 @@
 ﻿using System.Data.Common;
-using System.Threading.Tasks;
 
-namespace Drudoca.Blog.DataAccess.Sql.Migrations
+namespace Drudoca.Blog.DataAccess.Sql.Migrations;
+
+internal class M1Initial : IMigration
 {
-    internal class M1Initial : IMigration
+    public async Task ApplyAsync(DbConnection connection)
     {
-        public async Task ApplyAsync(DbConnection connection)
-        {
-            var command = connection.CreateCommand();
+        var command = connection.CreateCommand();
 
-            command.CommandText = @"
-                CREATE TABLE Comments (
-	                Id              INTEGER PRIMARY KEY NOT NULL,
-	                PostFileName    TEXT(256) NOT NULL,
-	                ParentId        INTEGER,
-	                Author          TEXT(32) NOT NULL,
-	                Email           TEXT(256) NOT NULL,
-	                Markdown        TEXT(1024) NOT NULL,
-	                PostedOnUtc     DATETIME NOT NULL,
-	                IsDeleted       BOOLEAN DEFAULT 0 NOT NULL
-                );
-                CREATE INDEX Comments_PostFileName_IDX ON Comments (PostFileName);
-            ";
+        command.CommandText = 
+            """
+            CREATE TABLE Comments (
+              Id              INTEGER PRIMARY KEY NOT NULL,
+              PostFileName    TEXT(256) NOT NULL,
+              ParentId        INTEGER,
+              Author          TEXT(32) NOT NULL,
+              Email           TEXT(256) NOT NULL,
+              Markdown        TEXT(1024) NOT NULL,
+              PostedOnUtc     DATETIME NOT NULL,
+              IsDeleted       BOOLEAN DEFAULT 0 NOT NULL
+            );
+            CREATE INDEX Comments_PostFileName_IDX ON Comments (PostFileName);
+            """;
 
-            await command.ExecuteNonQueryAsync();
-        }
+        await command.ExecuteNonQueryAsync();
     }
 }

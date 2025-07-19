@@ -1,21 +1,13 @@
 ﻿using Drudoca.Blog.Domain;
 
-namespace Drudoca.Blog.Web.Models
-{
-    public class PostPartialModel
-    {
-        public PostPartialModel(
-            BlogPost post, 
-            bool onlyIntro,
-            int? numComments)
-        {
-            Post = post;
-            OnlyIntro = onlyIntro;
-            NumComments = numComments;
-        }
+namespace Drudoca.Blog.Web.Models;
 
-        public BlogPost Post { get; }
-        public bool OnlyIntro { get; }
-        public int? NumComments { get; }
-    }
+public class PostPartialModel(
+    BlogPost post,
+    bool onlyIntro,
+    int? numComments)
+{
+    public BlogPost Post { get; } = post;
+    public bool OnlyIntro { get; } = onlyIntro;
+    public int? NumComments { get; } = numComments;
 }

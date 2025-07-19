@@ -1,8 +1,7 @@
-﻿namespace Drudoca.Blog.Domain
+﻿namespace Drudoca.Blog.Domain;
+
+internal interface IMarkdownParser
 {
-    internal interface IMarkdownParser
-    {
-        string ToTrustedHtml(string markdown);
-        string ToUntrustedHtml(string markdown);
-    }
+    string ToTrustedHtml(string markdown);
+    string ToUntrustedHtml(string markdown);
 }

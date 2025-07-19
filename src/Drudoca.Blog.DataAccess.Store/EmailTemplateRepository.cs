@@ -1,39 +1,28 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using Drudoca.Blog.Data;
+﻿using Drudoca.Blog.Data;
 
-namespace Drudoca.Blog.DataAccess.Store
+namespace Drudoca.Blog.DataAccess.Store;
+
+internal class EmailTemplateRepository(IMarkdownStore<EmailTemplateData> store) : IEmailTemplateRepository
 {
-    internal class EmailTemplateRepository : IEmailTemplateRepository
+    public async Task<string?> GetLayoutHtmlAsync()
     {
-        private readonly IMarkdownStore<EmailTemplateData> _store;
+        await Task.CompletedTask;
+        return null;
+    }
 
-        public EmailTemplateRepository(IMarkdownStore<EmailTemplateData> store)
+    public async Task<EmailTemplateData?> GetEmailTemplateAsync(string fileName)
+    {
+        var files = await store.GetAllAsync();
+
+        foreach (var file in files)
         {
-            _store = store;
-        }
-
-        public async Task<string?> GetLayoutHtmlAsync()
-        {
-            await Task.CompletedTask;
-            return null;
-        }
-
-        public async Task<EmailTemplateData?> GetEmailTemplateAsync(string fileName)
-        {
-            var files = await _store.GetAllAsync();
-
-            foreach (var file in files)
+            var fileNameNoExt = Path.GetFileNameWithoutExtension(file.FileName);
+            if (string.Equals(fileNameNoExt, fileName, StringComparison.OrdinalIgnoreCase))
             {
-                var fileNameNoExt = Path.GetFileNameWithoutExtension(file.FileName);
-                if (string.Equals(fileNameNoExt, fileName, StringComparison.OrdinalIgnoreCase))
-                {
-                    return file;
-                }
+                return file;
             }
-
-            return null;
         }
+
+        return null;
     }
 }

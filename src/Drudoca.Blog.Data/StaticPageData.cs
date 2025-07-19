@@ -1,40 +1,25 @@
 ﻿using System.Diagnostics;
 
-namespace Drudoca.Blog.Data
-{
-    [DebuggerDisplay("{" + nameof(FileName) + "}")]
-    public class StaticPageData
-    {
-        public StaticPageData(
-            string fileName,
-            string title,
-            string uriSegment,
-            bool isPublished,
-            int? menuSequence,
-            string? menuIcon,
-            string? menuText,
-            string markdown,
-            PageMetaData pageMetaData)
-        {
-            FileName = fileName;
-            Title = title;
-            UriSegment = uriSegment;
-            IsPublished = isPublished;
-            MenuSequence = menuSequence;
-            MenuIcon = menuIcon;
-            MenuText = menuText;
-            Markdown = markdown;
-            PageMetaData = pageMetaData;
-        }
+namespace Drudoca.Blog.Data;
 
-        public string FileName { get; }
-        public string Title { get; }
-        public string UriSegment { get; }
-        public bool IsPublished { get; }
-        public int? MenuSequence { get; }
-        public string? MenuIcon { get; }
-        public string? MenuText { get; }
-        public string Markdown { get; }
-        public PageMetaData PageMetaData { get; }
-    }
+[DebuggerDisplay("{" + nameof(FileName) + "}")]
+public class StaticPageData
+{
+    public required string FileName { get; init; }
+
+    public required string Title { get; init; }
+
+    public required string UriSegment { get; init; }
+
+    public required bool IsPublished { get; init; }
+
+    public required int? MenuSequence { get; init; }
+
+    public required string? MenuIcon { get; init; }
+
+    public required string? MenuText { get; init; }
+
+    public required string Markdown { get; init; }
+
+    public required PageMetadata PageMetadata { get; init; }
 }

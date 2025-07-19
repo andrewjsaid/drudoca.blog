@@ -1,10 +1,9 @@
 ﻿using Drudoca.Blog.Data;
 
-namespace Drudoca.Blog.Domain
+namespace Drudoca.Blog.Domain;
+
+internal class PageMetadataBuilder : IPageMetadataBuilder
 {
-    internal class PageMetadataBuilder : IPageMetadataBuilder
-    {
-        public PageMetadata Build(PageMetaData data) 
-            => new PageMetadata(data.Author, data.Description, data.Keywords);
-    }
+    public PageMetadata Build(Data.PageMetadata data) 
+        => new PageMetadata(data.Author, data.Description, data.Keywords);
 }

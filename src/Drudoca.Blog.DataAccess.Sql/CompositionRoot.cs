@@ -1,15 +1,16 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Drudoca.Blog.DataAccess.Sql
+namespace Drudoca.Blog.DataAccess.Sql;
+
+public static class CompositionRoot
 {
-    public class CompositionRoot
+    public static IServiceCollection ConfigureDataAccessSqlServices(this IServiceCollection services)
     {
-        public static void ConfigureServices(IServiceCollection services)
-        {
-            services
-                .AddSingleton<MigrationManager>()
-                .AddTransient<IDbConnectionFactory, DbConnectionFactory>()
-                .AddTransient<ICommentRepository, SqlCommentRepository>();
-        }
+        services.AddSingleton<MigrationManager>();
+        services.AddTransient<IDbConnectionFactory, DbConnectionFactory>();
+        services.AddTransient<ICommentRepository, SqlCommentRepository>();
+
+        services.AddOptions<DatabaseOptions>().BindConfiguration("Database").ValidateOnStart();
+        return services;
     }
 }

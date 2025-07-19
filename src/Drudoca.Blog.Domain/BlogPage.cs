@@ -1,26 +1,16 @@
 ﻿using System.Diagnostics;
 
-namespace Drudoca.Blog.Domain
+namespace Drudoca.Blog.Domain;
+
+[DebuggerDisplay("Page {" + nameof(PageNum) + "}")]
+public class BlogPage(
+    int pageNum,
+    int pageSize,
+    int pageCount,
+    BlogPagePost[] posts)
 {
-    [DebuggerDisplay("Page {" + nameof(PageNum) + "}")]
-    public class BlogPage
-    {
-
-        public BlogPage(
-            int pageNum,
-            int pageSize,
-            int pageCount,
-            BlogPagePost[] posts)
-        {
-            PageNum = pageNum;
-            PageSize = pageSize;
-            PageCount = pageCount;
-            Posts = posts;
-        }
-
-        public int PageNum { get; }
-        public int PageSize { get; }
-        public int PageCount { get; }
-        public BlogPagePost[] Posts { get; }
-    }
+    public int PageNum { get; } = pageNum;
+    public int PageSize { get; } = pageSize;
+    public int PageCount { get; } = pageCount;
+    public BlogPagePost[] Posts { get; } = posts;
 }

@@ -1,14 +1,10 @@
-﻿using System.Threading.Tasks;
-using Drudoca.Blog.Data;
+﻿using Drudoca.Blog.Data;
 
-namespace Drudoca.Blog.DataAccess
+namespace Drudoca.Blog.DataAccess;
+
+public interface IEmailTemplateRepository
 {
-    public interface IEmailTemplateRepository
-    {
+    Task<string?> GetLayoutHtmlAsync();
 
-        Task<string?> GetLayoutHtmlAsync();
-
-        Task<EmailTemplateData?> GetEmailTemplateAsync(string fileName);
-
-    }
+    Task<EmailTemplateData?> GetEmailTemplateAsync(string fileName);
 }

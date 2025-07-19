@@ -1,64 +1,46 @@
-﻿using System;
-using System.Threading.Tasks;
-using Drudoca.Blog.Config;
-using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
-namespace Drudoca.Blog.DataAccess.Store
+namespace Drudoca.Blog.DataAccess.Store;
+
+internal class CachedMarkdownStore<T>(
+    IMemoryCache memoryCache,
+    IOptions<StoreOptions> storeOptions,
+    IMarkdownDirectoryReader reader,
+    IMarkdownFileConverter<T> converter,
+    ILogger<MarkdownStore<T>> logger)
+    : MarkdownStore<T>(reader, converter, logger)
+    where T : class
 {
-    internal class CachedMarkdownStore<T> : MarkdownStore<T> where T : class
+    private static readonly object _cacheKey = new ();
+
+    public override async ValueTask<T[]> GetAllAsync()
     {
-        // ReSharper disable once StaticMemberInGenericType
-        private static readonly object _cacheKey = new object();
-
-        private readonly IMemoryCache _memoryCache;
-        private readonly StoreOptions _storeOptions;
-
-        public CachedMarkdownStore(
-            IMemoryCache memoryCache,
-            StoreOptions storeOptions,
-            IMarkdownDirectoryReader reader,
-            IMarkdownFileConverter<T> converter,
-            ILogger<MarkdownStore<T>> logger)
-            : base(reader, converter, logger)
-        {
-            _memoryCache = memoryCache;
-            _storeOptions = storeOptions;
-        }
-
-        public override async ValueTask<T[]> GetAllAsync()
-        {
-            if (_memoryCache.TryGetValue<CachedBlogPosts?>(_cacheKey, out var cacheItem)
-                && cacheItem is not null)
-                return cacheItem.Data;
-
-            var data = await base.GetAllAsync();
-            var cacheMins = _storeOptions.CacheDurationMins;
-
-            if (cacheMins == 0)
-            {
-                return data;
-            }
-
-            cacheItem = new CachedBlogPosts(data);
-            var options = new MemoryCacheEntryOptions
-            {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(cacheMins),
-            };
-            _memoryCache.Set(_cacheKey, cacheItem, options);
-
+        if (memoryCache.TryGetValue<CachedBlogPosts?>(_cacheKey, out var cacheItem)
+            && cacheItem is not null)
             return cacheItem.Data;
-        }
 
-        private class CachedBlogPosts
+        var data = await base.GetAllAsync();
+        var cacheMins = storeOptions.Value.CacheDurationMins;
+
+        if (cacheMins == 0)
         {
-            public CachedBlogPosts(
-                T[] data)
-            {
-                Data = data;
-            }
-
-            public T[] Data { get; }
+            return data;
         }
+
+        cacheItem = new CachedBlogPosts(data);
+        var options = new MemoryCacheEntryOptions
+        {
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(cacheMins),
+        };
+        memoryCache.Set(_cacheKey, cacheItem, options);
+
+        return cacheItem.Data;
+    }
+
+    private class CachedBlogPosts(T[] data)
+    {
+        public T[] Data { get; } = data;
     }
 }

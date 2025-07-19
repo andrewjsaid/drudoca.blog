@@ -6,6 +6,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <UserSecretsId>7be422ff-65b1-4660-9fa5-bec16cc80ec3</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Drudoca.Blog.Config\Drudoca.Blog.Config.csproj" />
     <ProjectReference Include="..\Drudoca.Blog.DataAccess.Sql\Drudoca.Blog.DataAccess.Sql.csproj" />
     <ProjectReference Include="..\Drudoca.Blog.DataAccess.Store\Drudoca.Blog.DataAccess.Store.csproj" />
     <ProjectReference Include="..\Drudoca.Blog.DataAccess\Drudoca.Blog.DataAccess.csproj" />

@@ -1,10 +1,8 @@
 ﻿using System.Data;
-using System.Threading.Tasks;
 
-namespace Drudoca.Blog.DataAccess.Sql
+namespace Drudoca.Blog.DataAccess.Sql;
+
+internal interface IDbConnectionFactory
 {
-    internal interface IDbConnectionFactory
-    {
-        public Task<IDbConnection> CreateConnectionAsync();
-    }
+    public Task<IDbConnection> CreateConnectionAsync();
 }

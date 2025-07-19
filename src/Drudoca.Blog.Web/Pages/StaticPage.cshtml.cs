@@ -1,29 +1,20 @@
-﻿using System.Threading.Tasks;
-using Drudoca.Blog.Domain;
+﻿using Drudoca.Blog.Domain;
 using Drudoca.Blog.Web.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Drudoca.Blog.Web.Pages
+namespace Drudoca.Blog.Web.Pages;
+
+[LayoutModel]
+public class StaticPageModel(IStaticContentService staticContentService) : PageModel
 {
-    [LayoutModel]
-    public class StaticPageModel : PageModel
+    [BindProperty(SupportsGet = true), FromRoute]
+    public string UriSegment { get; set; } = default!;
+
+    public StaticPage? SPage { get; set; }
+
+    public async Task OnGetAsync()
     {
-        private readonly IStaticContentService _staticContentService;
-
-        public StaticPageModel(IStaticContentService staticContentService)
-        {
-            _staticContentService = staticContentService;
-        }
-
-        [BindProperty(SupportsGet = true), FromRoute]
-        public string UriSegment { get; set; } = default!;
-
-        public StaticPage? SPage { get; set; }
-
-        public async Task OnGetAsync()
-        {
-            SPage = await _staticContentService.GetPageAsync(UriSegment);
-        }
+        SPage = await staticContentService.GetPageAsync(UriSegment);
     }
 }

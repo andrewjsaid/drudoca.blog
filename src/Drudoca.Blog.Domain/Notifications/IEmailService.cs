@@ -1,9 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿namespace Drudoca.Blog.Domain.Notifications;
 
-namespace Drudoca.Blog.Domain.Notifications
+public interface IEmailService
 {
-    public interface IEmailService
-    {
-        Task SendEmailAsync(string to, NotificationEvent @event);
-    }
+    Task SendEmailAsync(string to, NotificationEvent @event);
 }

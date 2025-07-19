@@ -1,35 +1,26 @@
 ﻿using Drudoca.Blog.Data;
 
-namespace Drudoca.Blog.Domain
+namespace Drudoca.Blog.Domain;
+
+internal class StaticPageBuilder(
+    IMarkdownParser markdownParser,
+    IPageMetadataBuilder pageMetadataBuilder)
+    : IStaticPageBuilder
 {
-    internal class StaticPageBuilder: IStaticPageBuilder
+    public StaticPage Build(StaticPageData data)
     {
-        private readonly IMarkdownParser _markdownParser;
-        private readonly IPageMetadataBuilder _pageMetadataBuilder;
+        var html = markdownParser.ToTrustedHtml(data.Markdown);
 
-        public StaticPageBuilder(
-            IMarkdownParser markdownParser,
-            IPageMetadataBuilder pageMetadataBuilder)
-        {
-            _markdownParser = markdownParser;
-            _pageMetadataBuilder = pageMetadataBuilder;
-        }
+        var pageMetadata = pageMetadataBuilder.Build(data.PageMetadata);
 
-        public StaticPage Build(StaticPageData data)
-        {
-            var html = _markdownParser.ToTrustedHtml(data.Markdown);
+        var result = new StaticPage(
+            data.FileName,
+            data.Title,
+            data.UriSegment,
+            data.IsPublished,
+            html,
+            pageMetadata);
 
-            var pageMetadata = _pageMetadataBuilder.Build(data.PageMetaData);
-
-            var result = new StaticPage(
-                data.FileName,
-                data.Title,
-                data.UriSegment,
-                data.IsPublished,
-                html,
-                pageMetadata);
-
-            return result;
-        }
+        return result;
     }
 }

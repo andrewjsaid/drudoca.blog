@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
+﻿namespace Drudoca.Blog.Domain.Notifications;
 
-namespace Drudoca.Blog.Domain.Notifications
+internal interface ITemplateEngine
 {
-    internal interface ITemplateEngine
-    {
-        string Execute(string template, IReadOnlyDictionary<string, string> parameters);
-    }
+    string Execute(string template, IReadOnlyDictionary<string, string> parameters);
 }

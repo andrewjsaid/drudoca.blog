@@ -1,18 +1,10 @@
 ﻿using Drudoca.Blog.Domain;
 
-namespace Drudoca.Blog.Web.Models
-{
-    public class SeeAlsoPartialModel
-    {
-        public SeeAlsoPartialModel(BlogPost? mostRecent, BlogPost? previous, BlogPost? next)
-        {
-            MostRecent = mostRecent;
-            Previous = previous;
-            Next = next;
-        }
+namespace Drudoca.Blog.Web.Models;
 
-        public BlogPost? MostRecent { get; }
-        public BlogPost? Previous { get; }
-        public BlogPost? Next { get; }
-    }
+public class SeeAlsoPartialModel(BlogPost? mostRecent, BlogPost? previous, BlogPost? next)
+{
+    public BlogPost? MostRecent { get; } = mostRecent;
+    public BlogPost? Previous { get; } = previous;
+    public BlogPost? Next { get; } = next;
 }

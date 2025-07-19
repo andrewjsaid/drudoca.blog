@@ -1,39 +1,23 @@
 ﻿using System.Diagnostics;
 
-namespace Drudoca.Blog.Data
+namespace Drudoca.Blog.Data;
+
+[DebuggerDisplay("{" + nameof(FileName) + "}")]
+public class EmailTemplateData
 {
-    [DebuggerDisplay("{" + nameof(FileName) + "}")]
-    public class EmailTemplateData
-    {
+    public required string FileName { get; init; }
 
-        public EmailTemplateData(
-            string fileName,
-            string? from,
-            string[] cc,
-            string[] bcc,
-            string subject,
-            bool isEnabled,
-            ContentsType contentsType,
-            string contents)
-        {
-            FileName = fileName;
-            From = from;
-            Cc = cc;
-            Bcc = bcc;
-            Subject = subject;
-            IsEnabled = isEnabled;
-            ContentsType = contentsType;
-            Contents = contents;
-        }
+    public required string? From { get; init; }
 
-        public string FileName { get; }
-        public string? From { get; }
-        public string[] Cc { get; }
-        public string[] Bcc { get; }
-        public string Subject { get; }
-        public bool IsEnabled { get; }
+    public required string[] Cc { get; init; }
 
-        public ContentsType ContentsType { get; }
-        public string Contents { get; }
-    }
+    public required string[] Bcc { get; init; }
+
+    public required string Subject { get; init; }
+
+    public required bool IsEnabled { get; init; }
+
+    public required ContentsType ContentsType { get; init; }
+
+    public required string Contents { get; init; }
 }

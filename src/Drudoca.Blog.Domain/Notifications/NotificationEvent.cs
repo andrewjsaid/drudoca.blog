@@ -1,18 +1,10 @@
-﻿using System.Collections.Generic;
+﻿namespace Drudoca.Blog.Domain.Notifications;
 
-namespace Drudoca.Blog.Domain.Notifications
+public class NotificationEvent(
+    string eventName,
+    IReadOnlyDictionary<string, string> parameters)
 {
-    public class NotificationEvent
-    {
-        public NotificationEvent(
-            string eventName,
-            IReadOnlyDictionary<string, string> parameters)
-        {
-            EventName = eventName;
-            Parameters = parameters;
-        }
+    public string EventName { get; } = eventName;
 
-        public string EventName { get; }
-        public IReadOnlyDictionary<string, string> Parameters { get; }
-    }
+    public IReadOnlyDictionary<string, string> Parameters { get; } = parameters;
 }

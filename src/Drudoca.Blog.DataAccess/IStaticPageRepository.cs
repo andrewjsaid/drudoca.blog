@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Drudoca.Blog.Data;
+﻿using Drudoca.Blog.Data;
 
-namespace Drudoca.Blog.DataAccess
+namespace Drudoca.Blog.DataAccess;
+
+public interface IStaticPageRepository
 {
-    public interface IStaticPageRepository
-    {
-        IAsyncEnumerable<StaticPageData> GetAllAsync();
-        Task<StaticPageData?> GetByUriSegmentAsync(string uriSegment);
-        Task<bool> HasPageAsync(string uriSegment);
-    }
+    IAsyncEnumerable<StaticPageData> GetAllAsync();
+
+    Task<StaticPageData?> GetByUriSegmentAsync(string uriSegment);
+
+    Task<bool> HasPageAsync(string uriSegment);
 }

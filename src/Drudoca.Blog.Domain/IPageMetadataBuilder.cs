@@ -1,9 +1,8 @@
 ﻿using Drudoca.Blog.Data;
 
-namespace Drudoca.Blog.Domain
+namespace Drudoca.Blog.Domain;
+
+internal interface IPageMetadataBuilder
 {
-    internal interface IPageMetadataBuilder
-    {
-        PageMetadata Build(PageMetaData data);
-    }
+    PageMetadata Build(Data.PageMetadata data);
 }

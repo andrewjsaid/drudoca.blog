@@ -1,19 +1,10 @@
-﻿namespace Drudoca.Blog.Data
-{
-    public class PageMetaData
-    {
-        public PageMetaData(
-            string? author,
-            string? description,
-            string? keywords)
-        {
-            Author = author;
-            Description = description;
-            Keywords = keywords;
-        }
+﻿namespace Drudoca.Blog.Data;
 
-        public string? Author { get; }
-        public string? Description { get; }
-        public string? Keywords { get; }
-    }
+public class PageMetadata
+{
+    public required string? Author { get; init; }
+
+    public required string? Description { get; init; }
+
+    public required string? Keywords { get; init; }
 }

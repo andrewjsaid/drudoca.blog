@@ -1,64 +1,65 @@
-﻿using System.Collections.Generic;
-using Drudoca.Blog.Config;
-using Drudoca.Blog.Data;
+﻿using Drudoca.Blog.Data;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
-namespace Drudoca.Blog.DataAccess.Store
+namespace Drudoca.Blog.DataAccess.Store;
+
+internal class BlogPostFileConverter(
+    ILogger<BlogPostFileConverter> logger,
+    IOptions<StoreOptions> storeOptions)
+    : IMarkdownFileConverter<PostData>
 {
-    internal class BlogPostFileConverter : IMarkdownFileConverter<PostData>
+    private readonly ILogger _logger = logger;
+
+    public string? DirectoryPath => storeOptions.Value.BlogPostPath;
+
+    public IComparer<PostData> Comparer { get; } = new MostRecentFirstPostComparer();
+
+    public PostData? Convert(MarkdownFile file)
     {
-        private readonly ILogger _logger;
-        private readonly StoreOptions _storeOptions;
+        var helper = new MarkdownFileHelper(file, _logger);
 
-        public BlogPostFileConverter(
-            ILogger<BlogPostFileConverter> logger,
-            StoreOptions storeOptions)
+        var title = helper.GetRequiredString("title");
+        var author = helper.GetRequiredString("author");
+        var email = helper.GetOptionalString("email");
+        var publishedOn = helper.GetRequiredDate("date");
+        var isPublished = helper.GetOptionalBoolean("published") ?? true;
+        var isListed = helper.GetOptionalBoolean("listed") ?? true;
+
+        var metaAuthor = helper.GetOptionalString("meta-author");
+        var metaDescription = helper.GetOptionalString("meta-description");
+        var metaKeywords = helper.GetOptionalString("meta-keywords");
+
+        if (!helper.IsValid)
         {
-            _logger = logger;
-            _storeOptions = storeOptions;
+            return null;
         }
 
-        public string? DirectoryPath => _storeOptions.BlogPostPath;
-
-        public IComparer<PostData> Comparer { get; } = new MostRecentFirstPostComparer();
-
-        public PostData? Convert(MarkdownFile file)
+        var metaData = new PageMetadata
         {
-            var helper = new MarkdownFileHelper(file, _logger);
+            Author = metaAuthor ?? author,
+            Description = metaDescription,
+            Keywords = metaKeywords
+        };
 
-            var title = helper.GetRequiredString("title");
-            var author = helper.GetRequiredString("author");
-            var email = helper.GetOptionalString("email");
-            var publishedOn = helper.GetRequiredDate("date");
-            var isPublished = helper.GetOptionalBoolean("published") ?? true;
-            var isListed = helper.GetOptionalBoolean("listed") ?? true;
+        var result = new PostData
+        {
+            FileName = file.Name,
+            Title = title,
+            Author = author,
+            Email = email,
+            PublishedOn = publishedOn,
+            IsPublished = isPublished,
+            IsListed = isListed,
+            Markdown = file.Markdown,
+            PageMetadata = metaData
+        };
 
-            var metaAuthor = helper.GetOptionalString("meta-author");
-            var metaDescription = helper.GetOptionalString("meta-description");
-            var metaKeywords = helper.GetOptionalString("meta-keywords");
-
-            if (!helper.IsValid)
-            {
-                return null;
-            }
-
-            var metaData = new PageMetaData(
-                metaAuthor ?? author,
-                metaDescription, 
-                metaKeywords);
-
-            var result = new PostData(
-                file.Name,
-                title, 
-                author,
-                email,
-                publishedOn, 
-                isPublished, 
-                isListed, 
-                file.Markdown, 
-                metaData);
-
-            return result;
-        }
+        return result;
+    }
+    private class MostRecentFirstPostComparer : IComparer<PostData>
+    {
+        public int Compare(PostData? x, PostData? y)
+            => (y?.PublishedOn ?? default).CompareTo(x?.PublishedOn ?? default);
     }
 }

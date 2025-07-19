@@ -1,9 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿namespace Drudoca.Blog.DataAccess.Store;
 
-namespace Drudoca.Blog.DataAccess.Store
+internal interface IMarkdownStore<T>
 {
-    internal interface IMarkdownStore<T>
-    {
-        ValueTask<T[]> GetAllAsync();
-    }
+    ValueTask<T[]> GetAllAsync();
 }

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29926.136
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drudoca.Blog.Web", "Drudoca.Blog.Web\Drudoca.Blog.Web.csproj", "{AAAB26D8-7895-4787-AF81-9F40220A497C}"
 EndProject
@@ -10,8 +10,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drudoca.Blog.DataAccess", "Drudoca.Blog.DataAccess\Drudoca.Blog.DataAccess.csproj", "{A13D894E-3DC2-4C63-874D-E1041D6404A3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drudoca.Blog.DataAccess.Store", "Drudoca.Blog.DataAccess.Store\Drudoca.Blog.DataAccess.Store.csproj", "{089E0F36-077E-49C0-B49A-4CA05F0B5361}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drudoca.Blog.Config", "Drudoca.Blog.Config\Drudoca.Blog.Config.csproj", "{BC040EE2-9291-4DE4-8347-A833EF2DA86F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drudoca.Blog.Domain", "Drudoca.Blog.Domain\Drudoca.Blog.Domain.csproj", "{973B6B4D-74F3-4951-9AEC-27E0A4CAB1F4}"
 EndProject
@@ -55,10 +53,6 @@ Global
 		{089E0F36-077E-49C0-B49A-4CA05F0B5361}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{089E0F36-077E-49C0-B49A-4CA05F0B5361}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{089E0F36-077E-49C0-B49A-4CA05F0B5361}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BC040EE2-9291-4DE4-8347-A833EF2DA86F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BC040EE2-9291-4DE4-8347-A833EF2DA86F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BC040EE2-9291-4DE4-8347-A833EF2DA86F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BC040EE2-9291-4DE4-8347-A833EF2DA86F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{973B6B4D-74F3-4951-9AEC-27E0A4CAB1F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{973B6B4D-74F3-4951-9AEC-27E0A4CAB1F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{973B6B4D-74F3-4951-9AEC-27E0A4CAB1F4}.Release|Any CPU.ActiveCfg = Release|Any CPU

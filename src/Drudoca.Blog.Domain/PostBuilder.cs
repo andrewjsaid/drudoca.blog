@@ -1,50 +1,40 @@
-﻿using System;
-using Drudoca.Blog.Data;
+﻿using Drudoca.Blog.Data;
 
-namespace Drudoca.Blog.Domain
+namespace Drudoca.Blog.Domain;
+
+internal class PostBuilder(
+    IMarkdownParser markdownParser,
+    IPageMetadataBuilder pageMetadataBuilder)
+    : IPostBuilder
 {
-    internal class PostBuilder : IPostBuilder
+    public BlogPost Build(PostData data)
     {
-        private readonly IMarkdownParser _markdownParser;
-        private readonly IPageMetadataBuilder _pageMetadataBuilder;
+        var title = UrlSlug.Slugify(data.Title);
+        var html = markdownParser.ToTrustedHtml(data.Markdown);
 
-        public PostBuilder(
-            IMarkdownParser markdownParser,
-            IPageMetadataBuilder pageMetadataBuilder)
+        string? introHtml = null;
+
+        var mainSectionIndex = data.Markdown.IndexOf("\n[//]: # (Main Section)", StringComparison.Ordinal);
+        if (mainSectionIndex > -1)
         {
-            _markdownParser = markdownParser;
-            _pageMetadataBuilder = pageMetadataBuilder;
+            var introMarkdown = data.Markdown.Substring(0, mainSectionIndex);
+            introHtml = markdownParser.ToTrustedHtml(introMarkdown);
         }
 
-        public BlogPost Build(PostData data)
-        {
-            var title = UrlSlug.Slugify(data.Title);
-            var html = _markdownParser.ToTrustedHtml(data.Markdown);
+        var pageMetadata = pageMetadataBuilder.Build(data.PageMetadata);
 
-            string? introHtml = null;
-
-            var mainSectionIndex = data.Markdown.IndexOf("\n[//]: # (Main Section)", StringComparison.Ordinal);
-            if (mainSectionIndex > -1)
-            {
-                var introMarkdown = data.Markdown.Substring(0, mainSectionIndex);
-                introHtml = _markdownParser.ToTrustedHtml(introMarkdown);
-            }
-
-            var pageMetadata = _pageMetadataBuilder.Build(data.PageMetaData);
-
-            var result = new BlogPost(
-                data.FileName,
-                data.Title,
-                data.Author,
-                data.PublishedOn,
-                data.IsPublished,
-                data.IsListed,
-                title,
-                html,
-                introHtml,
-                pageMetadata
-            );
-            return result;
-        }
+        var result = new BlogPost(
+            data.FileName,
+            data.Title,
+            data.Author,
+            data.PublishedOn,
+            data.IsPublished,
+            data.IsListed,
+            title,
+            html,
+            introHtml,
+            pageMetadata
+        );
+        return result;
     }
 }
