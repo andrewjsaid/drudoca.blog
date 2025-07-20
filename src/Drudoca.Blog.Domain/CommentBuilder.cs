@@ -126,7 +126,7 @@ internal class CommentBuilder(IMarkdownParser markdownParser) : ICommentBuilder
 
     private BlogComment BuildComment(CommentData data, BlogComment[]? children)
     {
-        var html = markdownParser.ToUntrustedHtml(data.Markdown);
+        var html = markdownParser.UntrustedToHtml(data.Markdown);
 
         var result = new BlogComment(
             data.Id,

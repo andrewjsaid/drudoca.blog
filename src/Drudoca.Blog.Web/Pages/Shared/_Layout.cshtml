@@ -117,13 +117,11 @@
             </div>
         </div>
     </nav>
-    <header class="shadow">
+    <header class="main-header shadow">
         <div class="container text-center py-2">
-            <div class="display-4">Dru's Delirium <small class="super-small d-inline-block">and Other Coding Antics</small></div>
+            <div class="display-4"><span class="site-title">Dru's Deliriu</span>m <small class="super-small d-inline-block site-subtitle">and Other Coding Antics</small></div>
         </div>
     </header>
-    <div class="main-parallax shadow mb-4" role="banner"></div>
-
     <div class="container mt-5">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -149,11 +147,13 @@
 
     @await RenderSectionAsync("Scripts", required: false)
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/vs2015.min.css" integrity="sha256-e+xyu+n0Lf/CcIJO7HoFhKOu97JVj09p39g25tzh6is=" crossorigin="anonymous" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js" integrity="sha256-/2C3CAfmuTGkUqK2mVrhkTacBscoR1caE0u2QZZ3Uh8=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/vs.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
     <script>
-        hljs.configure({languages: ['csharp']});
-        hljs.initHighlighting();
+        hljs.highlightAll();
+        document.querySelectorAll('code[class^="language-"]').forEach((el) => {
+          hljs.highlightElement(el);
+        });
     </script>
 </body>
 </html>

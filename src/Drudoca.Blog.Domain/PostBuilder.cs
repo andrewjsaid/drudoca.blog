@@ -10,15 +10,15 @@ internal class PostBuilder(
     public BlogPost Build(PostData data)
     {
         var title = UrlSlug.Slugify(data.Title);
-        var html = markdownParser.ToTrustedHtml(data.Markdown);
+        var html = markdownParser.TrustedToHtml(data.Markdown);
 
         string? introHtml = null;
 
         var mainSectionIndex = data.Markdown.IndexOf("\n[//]: # (Main Section)", StringComparison.Ordinal);
         if (mainSectionIndex > -1)
         {
-            var introMarkdown = data.Markdown.Substring(0, mainSectionIndex);
-            introHtml = markdownParser.ToTrustedHtml(introMarkdown);
+            var introMarkdown = data.Markdown[..mainSectionIndex];
+            introHtml = markdownParser.TrustedToHtml(introMarkdown);
         }
 
         var pageMetadata = pageMetadataBuilder.Build(data.PageMetadata);

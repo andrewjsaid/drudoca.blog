@@ -2,6 +2,6 @@
 
 internal interface IMarkdownParser
 {
-    string ToTrustedHtml(string markdown);
-    string ToUntrustedHtml(string markdown);
+    string TrustedToHtml(string markdown);
+    string UntrustedToHtml(string markdown);
 }

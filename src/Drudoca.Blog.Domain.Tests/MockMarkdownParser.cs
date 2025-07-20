@@ -2,6 +2,6 @@
 
 internal class MockMarkdownParser : IMarkdownParser
 {
-    public string ToTrustedHtml(string markdown) => markdown;
-    public string ToUntrustedHtml(string markdown) => markdown;
+    public string TrustedToHtml(string markdown) => markdown;
+    public string UntrustedToHtml(string markdown) => markdown;
 }

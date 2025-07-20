@@ -19,7 +19,7 @@ internal class NotificationBuilder(IOptions<NotificationOptions> options, IMarkd
                 {"post.author", post.Author},
                 {"comment.author", comment.Author},
                 {"comment.url", GetCommentUrl(post, comment)},
-                {"comment.html", markdownParser.ToUntrustedHtml(comment.Markdown)},
+                {"comment.html", markdownParser.UntrustedToHtml(comment.Markdown)},
                 {"parent.author", comment.Author},
                 {"parent.url", GetCommentUrl(post, parent)},
             });
@@ -36,7 +36,7 @@ internal class NotificationBuilder(IOptions<NotificationOptions> options, IMarkd
                 {"post.author", post.Author},
                 {"comment.author", comment.Author},
                 {"comment.url", GetCommentUrl(post, comment)},
-                {"comment.html", markdownParser.ToUntrustedHtml(comment.Markdown)},
+                {"comment.html", markdownParser.UntrustedToHtml(comment.Markdown)},
             });
         return Task.FromResult(notificationEvent);
     }

@@ -32,7 +32,7 @@ internal class EmailService(
         {
             case ContentsType.Markdown:
                 var markdown = templateEngine.Execute(templateData.Contents, @event.Parameters);
-                bodyHtml = markdownParser.ToTrustedHtml(markdown);
+                bodyHtml = markdownParser.TrustedToHtml(markdown);
                 break;
 
             case ContentsType.Html:

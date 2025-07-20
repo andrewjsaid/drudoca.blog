@@ -16,6 +16,7 @@
 
 .navbar menu {
     margin-top: 0;
+    line-height: initial;
 }
 
 a.navbar-brand {

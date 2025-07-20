@@ -9,7 +9,7 @@ internal class StaticPageBuilder(
 {
     public StaticPage Build(StaticPageData data)
     {
-        var html = markdownParser.ToTrustedHtml(data.Markdown);
+        var html = markdownParser.TrustedToHtml(data.Markdown);
 
         var pageMetadata = pageMetadataBuilder.Build(data.PageMetadata);
 

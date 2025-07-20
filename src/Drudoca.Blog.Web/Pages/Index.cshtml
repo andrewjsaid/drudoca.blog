@@ -8,7 +8,7 @@
 <div class="blog-page">
     @foreach (var post in blogPage.Posts)
     {
-    <div class="border p-3 shadow mb-3">
+    <div class="border p-3 shadow mb-3 blog-post-preview">
         <partial name="PostPartial" model="new PostPartialModel(post.Post, true, post.NumComments)" />
     </div>
     }
