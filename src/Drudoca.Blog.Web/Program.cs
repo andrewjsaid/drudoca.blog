@@ -7,6 +7,7 @@ using Drudoca.Blog.Web.Extensions;
 using Drudoca.Blog.Web.Routing;
 using Drudoca.Blog.Web.Setup;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
