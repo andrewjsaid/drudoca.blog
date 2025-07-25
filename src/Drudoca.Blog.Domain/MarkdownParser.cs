@@ -39,9 +39,11 @@ internal class MarkdownParser : IMarkdownParser
         var document = Markdown.Parse(markdown, pipeline);
 
         var htmlRenderer = new HtmlRenderer(new StringWriter());
+        htmlRenderer.LinkRewriter = url => url.StartsWith("images/") ? "/blog-content/" + url : url;
 
         htmlRenderer.ObjectRenderers.RemoveAll(r => r is CodeInlineRenderer);
         htmlRenderer.ObjectRenderers.Add(new CSharpInlineCodeRenderer());
+
 
         htmlRenderer.Render(document);
 

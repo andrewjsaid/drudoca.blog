@@ -23,6 +23,19 @@ p {
     margin-block: 1em;
 }
 
+img {
+    max-width: 100%;
+}
+
+blockquote {
+    line-height: 1.6;
+    border-left: 3px solid #36453B;
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+    position: relative;
+    font-style: italic;
+}
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {

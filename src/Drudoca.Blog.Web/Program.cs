@@ -7,7 +7,7 @@ using Drudoca.Blog.Web.Extensions;
 using Drudoca.Blog.Web.Routing;
 using Drudoca.Blog.Web.Setup;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -52,14 +52,19 @@ app.UseStaticFiles(new StaticFileOptions
     }
 });
 
+app.UseStaticFiles(new StaticFileOptions
+{
+    RequestPath = "/blog-content/images",
+    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Configuration["Store:BlogPostPath"]!, "images")),
+});
+
 app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapAuthApiEndpoints();
 app.MapDynamicPageRoute<StaticPageRouteValueTransformer>("{uriSegment}");
 app.MapRazorPages();
-
-app.MapAuthApiEndpoints();
 
 await app.RunAsync();
