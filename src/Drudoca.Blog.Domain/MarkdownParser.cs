@@ -16,6 +16,7 @@ internal class MarkdownParser : IMarkdownParser
     private static MarkdownPipeline CreateTrustedPipeline()
     {
         var pb = new MarkdownPipelineBuilder();
+        pb.UseAdvancedExtensions();
         pb.Extensions.Add(new OnlyPublishedLinksMarkdownExtension());
         return pb.Build();
     }
@@ -23,6 +24,7 @@ internal class MarkdownParser : IMarkdownParser
     private static MarkdownPipeline CreateUntrustedPipeline()
     {
         var pb = new MarkdownPipelineBuilder();
+        pb.UseAdvancedExtensions();
         pb.DisableHtml();
         pb.DisableHeadings();
         pb.InlineParsers.TryRemove<LinkInlineParser>();
@@ -36,14 +38,16 @@ internal class MarkdownParser : IMarkdownParser
 
     private static string RenderToHtml(string markdown, MarkdownPipeline pipeline)
     {
+
         var document = Markdown.Parse(markdown, pipeline);
 
         var htmlRenderer = new HtmlRenderer(new StringWriter());
+        pipeline.Setup(htmlRenderer);
+
         htmlRenderer.LinkRewriter = url => url.StartsWith("images/") ? "/blog-content/" + url : url;
 
         htmlRenderer.ObjectRenderers.RemoveAll(r => r is CodeInlineRenderer);
         htmlRenderer.ObjectRenderers.Add(new CSharpInlineCodeRenderer());
-
 
         htmlRenderer.Render(document);
 
