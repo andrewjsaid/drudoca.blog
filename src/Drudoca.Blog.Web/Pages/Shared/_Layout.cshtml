@@ -52,22 +52,6 @@
         <script src="https://kit.fontawesome.com/@(model.FontAwesomeId).js" crossorigin="anonymous"></script>
     }
 
-    @if (model?.GoogleAnalyticsClientId != null)
-    {
-        <environment names="Production">
-            <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=@(model.GoogleAnalyticsClientId)"></script>
-            <script>
-                window.dataLayer = window.dataLayer || [];
-                function gtag() { dataLayer.push(arguments); }
-                gtag('js', new Date());
-
-                gtag('config', '@(model.GoogleAnalyticsClientId)');
-            </script>
-        </environment>
-
-    }
-
 </head>
 <body>
     <!-- Change to "navbar-expand-sm navbar-toggleable-sm" if menu grows -->

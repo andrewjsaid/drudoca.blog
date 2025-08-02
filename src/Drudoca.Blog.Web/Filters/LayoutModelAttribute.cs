@@ -34,7 +34,6 @@ public sealed class LayoutModelAttribute : ActionFilterAttribute, IAsyncPageFilt
         var layoutModel = new LayoutModel(
             menu,
             seoOptions,
-            siteOptions.GoogleTagManagerClientId,
             siteOptions.FontAwesomeId,
             siteOptions.ThemeColor,
             siteOptions.MetaTags);
