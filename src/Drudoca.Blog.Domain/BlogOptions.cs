@@ -2,7 +2,7 @@
 
 internal class BlogOptions
 {
-    public int PageSize { get; set; } = 3;
+    public int PageSize { get; set; } = 5;
 
     public bool ListFuturePosts { get; set; } = false;
 }
